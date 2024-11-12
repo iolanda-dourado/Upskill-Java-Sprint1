@@ -71,5 +71,38 @@ public class Empresa {
         this.morada = morada;
     }
 
+    public boolean adicionarCliente(Cliente novoCliente) {
+        if (listaClientes.contains(novoCliente)) return false;
 
+        listaClientes.add(novoCliente);
+        return true;
+    }
+
+    public boolean adicionarHotel(Hotel novoHotel) {
+        if (listaHoteis.contains(novoHotel)) return false;
+
+        listaHoteis.add(novoHotel);
+        return true;
+    }
+
+    public boolean adicionarAeroporto(Aeroporto novoAeroporto) {
+        if (listaAeroportos.contains(novoAeroporto)) return false;
+
+        listaAeroportos.add(novoAeroporto);
+        return true;
+    }
+
+    public boolean adicionarVoo(Voo novoVoo) {
+        if (listaVoos.contains(novoVoo)) return false;
+
+        listaVoos.add(novoVoo);
+        return true;
+    }
+
+    public boolean adicionarReserva(Reserva novaReserva) {
+        if (listaReservas.contains(novaReserva)) return false;
+
+        listaReservas.add(novaReserva);
+        return true;
+    }
 }

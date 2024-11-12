@@ -16,12 +16,14 @@ public abstract class Reserva implements Identificacavel {
     private static final boolean ISCONCRETIZADA_OMISSAO = false;
 
     private static int reservaCount = 0;
+    private static int taxaReserva = 20;
+    private static int numMultiploDeX = 5;
 
-    public Reserva (Data dataReserva, int qntPessoas, Cliente cliente, boolean isConcretizada) {
+    public Reserva (Data dataReserva, int qntPessoas, Cliente cliente) {
         this.dataReserva = dataReserva;
         this.qntPessoas = qntPessoas;
         this.cliente = cliente;
-        this.isConcretizada = isConcretizada;
+        this.isConcretizada = false;
         ++reservaCount;
     }
 
@@ -86,4 +88,7 @@ public abstract class Reserva implements Identificacavel {
     public static int getReservaCount() {
         return reservaCount;
     }
+
+    public abstract double calcularCustoReserva();
+
 }
