@@ -89,7 +89,8 @@ public class Hotel implements Identificacavel {
 
     @Override
     public String toString() {
-        return String.format("--- HOTEL ---\nCódigo do Hotel: %d\nNome do Hotel: %s\nCategoria do Hotel: %s\nLocalidade: %s\nTem transfer? %s\nPreço por quarto: %.2f", codigoHotel, nomeHotel, categoria, localidade, transfer, precoPorQuarto);
+        String resposta = transfer ? "Sim" : "Não";
+        return String.format("--- HOTEL ---\nCódigo do Hotel: %s\nNome do Hotel: %s\nCategoria do Hotel: %s\nLocalidade: %s\nTem transfer? %s\nPreço por quarto: %.2f", codigoHotel, nomeHotel, categoria, localidade, resposta, precoPorQuarto);
     }
 
     @Override
@@ -97,7 +98,7 @@ public class Hotel implements Identificacavel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Hotel hotel = (Hotel) o;
-        return codigoHotel == hotel.codigoHotel && transfer == hotel.transfer && Double.compare(precoPorQuarto, hotel.precoPorQuarto) == 0 && Objects.equals(nomeHotel, hotel.nomeHotel) && categoria == hotel.categoria && Objects.equals(localidade, hotel.localidade);
+        return Objects.equals(codigoHotel, hotel.codigoHotel) && transfer == hotel.transfer && Double.compare(precoPorQuarto, hotel.precoPorQuarto) == 0 && Objects.equals(nomeHotel, hotel.nomeHotel) && categoria == hotel.categoria && Objects.equals(localidade, hotel.localidade);
     }
 
     @Override

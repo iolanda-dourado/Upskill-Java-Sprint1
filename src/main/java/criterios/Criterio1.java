@@ -13,7 +13,13 @@ public class Criterio1 implements Comparator<Cliente> {
         } else if (c2.getDataNascimento().isMaior(c1.getDataNascimento())) {
             return -1;
         } else {
-            return 0;
+            if (c1.getNumReservasConcretizadas() > c2.getNumReservasConcretizadas()) {
+                return -1;
+            } else if (c1.getNumReservasConcretizadas() < c2.getNumReservasConcretizadas()) {
+                return 1;
+            } else {
+                return (c1.getNomeCliente()).compareTo(c2.getNomeCliente());
+            }
         }
 
     }

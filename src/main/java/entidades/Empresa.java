@@ -1,7 +1,11 @@
 package entidades;
 
+import criterios.Criterio1;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class Empresa {
     private String nomeEmpresa;
@@ -99,10 +103,214 @@ public class Empresa {
         return true;
     }
 
-    public boolean adicionarReserva(Reserva novaReserva) {
+    public boolean adicionarReserva(ReservaVoo novaReserva) {
         if (listaReservas.contains(novaReserva)) return false;
 
         listaReservas.add(novaReserva);
         return true;
     }
+    public boolean adicionarReserva(ReservaVooIdaVolta novaReserva) {
+        if (listaReservas.contains(novaReserva)) return false;
+
+        listaReservas.add(novaReserva);
+        return true;
+    }
+    public boolean adicionarReserva(ReservaHotel novaReserva) {
+        if (listaReservas.contains(novaReserva)) return false;
+
+        listaReservas.add(novaReserva);
+        return true;
+    }
+    public boolean adicionarReserva(ReservaHotelVoo novaReserva) {
+        if (listaReservas.contains(novaReserva)) return false;
+
+        listaReservas.add(novaReserva);
+        return true;
+    }
+    public boolean adicionarReserva(ReservaHotelVooIdaVolta novaReserva) {
+        if (listaReservas.contains(novaReserva)) return false;
+
+        listaReservas.add(novaReserva);
+        return true;
+    }
+
+    public void listarClientes() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("** LISTA DE CLIENTES **\n");
+        for(Cliente cliente : listaClientes) {
+            sb.append(cliente);
+            sb.append("------------------------");
+            sb.append("\n");
+        }
+        sb.append(String.format("\nTotal de Clientes = %d", listaClientes.size()));
+        System.out.println(sb.toString());
+    }
+
+    public void listarAeroportos() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("** LISTA DE AEROPORTOS **\n");
+        for(Aeroporto aero : listaAeroportos) {
+            sb.append(aero);
+            sb.append("------------------------");
+            sb.append("\n");
+        }
+        sb.append(String.format("\nTotal de Aeroportos = %d", listaAeroportos.size()));
+        System.out.println(sb.toString());
+    }
+
+    public void listarHoteis() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("** LISTA DE HOTÉIS **\n");
+        for(Hotel htl : listaHoteis) {
+            sb.append(htl);
+            sb.append("------------------------");
+            sb.append("\n");
+        }
+        sb.append(String.format("\nTotal de Hotéis = %d", listaHoteis.size()));
+        System.out.println(sb.toString());
+    }
+
+    public void listarVoos() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("** LISTA DE VOOS **\n");
+        for(Voo v : listaVoos) {
+            sb.append(v);
+            sb.append("------------------------");
+            sb.append("\n");
+        }
+        sb.append(String.format("\nTotal de Voos = %d", listaVoos.size()));
+        System.out.println(sb.toString());
+    }
+
+    public void listarReservas() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("** LISTA DE RESERVAS **\n");
+        for(Reserva res : listaReservas) {
+            sb.append(res);
+            sb.append("------------------------");
+            sb.append("\n");
+        }
+        sb.append(String.format("\nTotal de Reservas = %d", listaReservas.size()));
+        System.out.println(sb.toString());
+    }
+
+    public void listarReservaCliente(String codigoCliente) {
+        StringBuilder sb = new StringBuilder();
+        int countTemp = 0;
+        for(Cliente cliente : listaClientes) {
+            if (codigoCliente.equals(cliente.getCodigoCliente())) {
+                sb.append(String.format("** LISTA DE RESERVAS DO CLIENTE - %s **\n", cliente.getNomeCliente()));
+                for(Reserva res : listaReservas) {
+                    if(res.getCliente() == cliente) {
+                    sb.append(res);
+                    sb.append("------------------------");
+                    sb.append("\n");
+                    countTemp++;
+                    }
+                }
+            }
+            sb.append(String.format("\nTotal de Reservas do Cliente %s = %d", cliente.getNomeCliente(), countTemp));
+            break;
+        }
+        System.out.println(sb.toString());
+    }
+
+    public void listarHoteisComTransfer() {
+        StringBuilder sb = new StringBuilder();
+        int countTemp = 0;
+        sb.append("** LISTA DE HOTÉIS QUE FORNECEM O SERVIÇO DE TRANSFER **\n");
+        for(Hotel htl : listaHoteis) {
+            if (htl.isTransfer()) {
+                sb.append(htl);
+                countTemp++;
+            }
+            sb.append("------------------------");
+            sb.append("\n");
+        }
+        sb.append(String.format("\nTotal de Hoteis com Transfer = %d", countTemp));
+        System.out.println(sb.toString());
+    }
+
+
+    public boolean eliminarReserva(String codigoReserva) {
+        Reserva reservaEncontrada = null;
+
+        for (Reserva reserva : listaReservas) {
+            if (Objects.equals(reserva.getCodigoReserva(), codigoReserva)) {
+                reservaEncontrada = reserva;
+                break;
+            }
+        }
+
+        return listaReservas.remove(reservaEncontrada);
+    }
+
+    public Cliente pesquisarCliente(String codigoCliente) {
+        for (Cliente cliente : listaClientes) {
+            if (cliente.getCodigoCliente().equals(codigoCliente)) {
+                return cliente;
+            }
+        }
+
+        return null;
+    }
+
+    public Hotel pesquisarHotel(String codigoHotel) {
+        for (Hotel hotel : listaHoteis) {
+            if (hotel.getCodigoHotel().equals(codigoHotel)) {
+                return hotel;
+            }
+        }
+
+        return null;
+    }
+
+    public Aeroporto pesquisarAeroporto(String codigoAeroporto) {
+        for (Aeroporto aeroporto : listaAeroportos) {
+            if (aeroporto.getCodigoAeroporto().equals(codigoAeroporto)) {
+                return aeroporto;
+            }
+        }
+
+        return null;
+    }
+
+    public Voo pesquisarVoo(String codigoVoo) {
+        for (Voo voo : listaVoos) {
+            if (voo.getCodigoVoo().equals(codigoVoo)) {
+                return voo;
+            }
+        }
+
+        return null;
+    }
+
+    public Reserva pesquisarReserva(String codigoReserva) {
+        for (Reserva reserva : listaReservas) {
+            if (reserva.getCodigoReserva().equals(codigoReserva)) {
+                return reserva;
+            }
+        }
+
+        return null;
+    }
+
+    public void atualizarReservasConcretizadas(Reserva reserva) {
+        reserva.setConcretizada(true);
+        reserva.getCliente().setNumReservasConcretizadas(reserva.getCliente().getNumReservasConcretizadas() + 1);
+    }
+
+    public List<Reserva> retornarReservasEfetuadasDataCrescente() {
+        List<Reserva> copia = new ArrayList<>(listaReservas);
+        Collections.sort(copia);
+        return copia;
+    }
+
+    public List<Cliente> retornarClientesOrdenados() {
+        List<Cliente> listaClienteTemp = new ArrayList<>(listaClientes);
+        Criterio1 crit = new Criterio1();
+        Collections.sort(listaClienteTemp, crit);
+        return listaClienteTemp;
+    }
+
 }

@@ -1,6 +1,8 @@
-package entidades;
+package utilidades;
 import java.util.Calendar;
-    /**
+import java.util.Date;
+
+/**
      * Representa uma data através do dia, mês e ano.
      *
      * @author ISEP-DEI-PPROG
@@ -293,4 +295,6 @@ import java.util.Calendar;
 
             return totalDias;
         }
+
+        Date data = new Date();
 }

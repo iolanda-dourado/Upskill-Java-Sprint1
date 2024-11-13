@@ -1,11 +1,12 @@
 package entidades;
 
 import interfaces.Identificacavel;
+import utilidades.Data;
 
 import java.util.Objects;
 
-public abstract class Reserva implements Identificacavel {
-    private String identificador;
+public abstract class Reserva implements Identificacavel, Comparable<Reserva> {
+    private String codigoReserva;
     private Data dataReserva;
     private int qntPessoas;
     private Cliente cliente;
@@ -20,8 +21,9 @@ public abstract class Reserva implements Identificacavel {
     private static double taxaReserva = 20;
     private static int numMultiploDeX = 5;
 
-    public Reserva (Data dataReserva, int qntPessoas, Cliente cliente) {
-        this.identificador = gerarIdentificador();
+
+    public Reserva(Data dataReserva, int qntPessoas, Cliente cliente) {
+        this.codigoReserva = gerarIdentificador();
         this.dataReserva = dataReserva;
         this.qntPessoas = qntPessoas;
         this.cliente = cliente;
@@ -29,8 +31,8 @@ public abstract class Reserva implements Identificacavel {
         ++reservaCount;
     }
 
-    public Reserva () {
-        this.identificador = gerarIdentificador();
+    public Reserva() {
+        this.codigoReserva = gerarIdentificador();
         this.dataReserva = DATA_RESERVA_OMISSAO;
         this.qntPessoas = QNT_PESSOAS_OMISSAO;
         this.cliente = CLIENTE_OMISSAO;
@@ -38,8 +40,8 @@ public abstract class Reserva implements Identificacavel {
         ++reservaCount;
     }
 
-    public String identificador() {
-        return identificador;
+    public String getCodigoReserva() {
+        return codigoReserva;
     }
 
     public Data getDataReserva() {
@@ -58,8 +60,8 @@ public abstract class Reserva implements Identificacavel {
         return isConcretizada;
     }
 
-    protected void setIdentificador(String identificador) {
-        this.identificador = identificador;
+    protected void setCodigoReserva(String codigoReserva) {
+        this.codigoReserva = codigoReserva;
     }
 
     public void setDataReserva(Data dataReserva) {
@@ -81,7 +83,7 @@ public abstract class Reserva implements Identificacavel {
     @Override
     public String toString() {
         String resposta = isConcretizada ? "Sim" : "Não";
-        return String.format("Informações da reserva:\nData da reserva: %s\nCliente: %s\nQuantidade de pessoas: %d\nReserva concretizada? %s\n", dataReserva, cliente.getNomeCliente(), qntPessoas, resposta );
+        return String.format("--- Informações da reserva ---\nData da reserva: %s\nCliente: %s\nQuantidade de pessoas: %d\nReserva concretizada? %s\n", dataReserva, cliente.getNomeCliente(), qntPessoas, resposta);
 
     }
 
@@ -109,15 +111,27 @@ public abstract class Reserva implements Identificacavel {
     }
 
     public void setTaxaReserva(double taxaReserva) {
-        this.taxaReserva = taxaReserva;
+        Reserva.taxaReserva = taxaReserva;
     }
 
-    public void setNumMultiploDeX(int numMultiploDeX) {
-        this.numMultiploDeX = numMultiploDeX;
+    public static void setNumMultiploDeX(int numMultiploDeX) {
+        Reserva.numMultiploDeX = numMultiploDeX;
     }
 
     public abstract double calcularCustoReserva();
 
     @Override
     public abstract String gerarIdentificador();
+
+    // Implementa Comparable (ordenar por ordem crescente de Data)
+    @Override
+    public int compareTo(Reserva outraReserva) {
+        if (dataReserva.isMaior(outraReserva.dataReserva)) {
+            return -1;
+        } else if (!dataReserva.isMaior(outraReserva.dataReserva)) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }

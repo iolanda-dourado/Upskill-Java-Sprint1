@@ -1,6 +1,7 @@
 package entidades;
 
 import enums.CompanhiaAerea;
+import utilidades.Data;
 
 import java.time.LocalTime;
 import java.util.Objects;
@@ -28,11 +29,13 @@ public class Voo {
     private static final Data DATA_PARTIDA_OMISSAO = new Data();
     private static final LocalTime HORA_PARTIDA_OMISSAO = LocalTime.of(0,0);
 
-    public Voo(String codigoVoo, CompanhiaAerea companhia, int qntLugares, int qntLugaresDisponiveis, Aeroporto aeroportoSaida, Aeroporto aeroportoChegada, int distanciaKmAeroporto, double precoBilhete, Data dataPartida, LocalTime horaPartida) {
+    private static double descontoVoo = 0.3;
+
+    public Voo(String codigoVoo, CompanhiaAerea companhia, int qntLugares, Aeroporto aeroportoSaida, Aeroporto aeroportoChegada, int distanciaKmAeroporto, double precoBilhete, Data dataPartida, LocalTime horaPartida) {
         this.codigoVoo = codigoVoo;
         companhiaAerea = companhia;
         this.qntLugares = qntLugares;
-        this.qntLugaresDisponiveis = qntLugaresDisponiveis;
+        this.qntLugaresDisponiveis = qntLugares;
         this.aeroportoSaida = aeroportoSaida;
         this.aeroportoChegada = aeroportoChegada;
         this.distanciaKmAeroporto = distanciaKmAeroporto;
@@ -115,6 +118,9 @@ public class Voo {
     }
 
     public void setAeroportoChegada(Aeroporto aeroportoChegada) {
+        if (this.aeroportoSaida == aeroportoChegada) {
+            throw new IllegalArgumentException("O aeroporto da volta deve ser diferente do aeroporto da ida.");
+        }
         this.aeroportoChegada = aeroportoChegada;
     }
 
@@ -147,4 +153,8 @@ public class Voo {
         Voo voo = (Voo) o;
         return qntLugares == voo.qntLugares && qntLugaresDisponiveis == voo.qntLugaresDisponiveis && distanciaKmAeroporto == voo.distanciaKmAeroporto && Double.compare(precoBilhete, voo.precoBilhete) == 0 && Objects.equals(codigoVoo, voo.codigoVoo) && companhiaAerea == voo.companhiaAerea && Objects.equals(aeroportoSaida, voo.aeroportoSaida) && Objects.equals(aeroportoChegada, voo.aeroportoChegada) && Objects.equals(dataPartida, voo.dataPartida) && Objects.equals(horaPartida, voo.horaPartida);
     }
+
+//    public double CalcularPrecoFinal() {
+//        if ( (dataPartida))
+//    }
 }
