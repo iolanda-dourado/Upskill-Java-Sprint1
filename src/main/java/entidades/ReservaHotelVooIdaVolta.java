@@ -1,6 +1,6 @@
 package entidades;
 
-public class ReservaHotelVooIdaVolta extends Reserva{
+public class ReservaHotelVooIdaVolta extends ReservaHotel{
     private ReservaVoo reservaVooRegresso;
     private static final String PREFIXO_RESERVA_HOTEL_VOO = "R_HTL_VOO_IV-";
     /**
@@ -11,11 +11,8 @@ public class ReservaHotelVooIdaVolta extends Reserva{
         return 0;
     }
 
-    /**
-     * @return
-     */
     @Override
-    public int gerarIdentificador() {
-        return 0;
+    public String gerarIdentificador() {
+        return "";
     }
 }

@@ -181,7 +181,7 @@ import java.util.Calendar;
          */
         @Override
         public int compareTo(Data outraData) {
-            return (outraData.isMaior(this)) ? -1 : (isMaior(outraData)) ? 1 : 0;
+            return (outraData.isMaior(this)) ? -1 : (this.isMaior(outraData)) ? 1 : 0;
         }
 
         /**

@@ -5,8 +5,8 @@ public class ReservaHotelVoo extends Reserva {
 
     private static final String PREFIXO_RESERVA_HOTEL_VOO = "R_HTL_VOO-";
     @Override
-    public int gerarIdentificador() {
-        return 0;
+    public String gerarIdentificador() {
+        return "";
     }
 
     @Override
