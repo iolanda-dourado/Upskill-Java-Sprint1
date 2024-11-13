@@ -1,4 +1,4 @@
-package upskill;
+package entidades;
 
 public class ReservaHotel extends Reserva {
     private static final String PREFIXO_RESERVA_HOTEL = "R_HTL-";

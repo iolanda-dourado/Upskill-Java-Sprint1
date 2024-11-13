@@ -1,4 +1,4 @@
-package upskill;
+package entidades;
 
 public class ReservaVooIdaVolta extends ReservaVoo{
     private Voo vooRegresso;
