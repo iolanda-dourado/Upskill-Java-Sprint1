@@ -5,6 +5,7 @@ import interfaces.Identificacavel;
 import java.util.Objects;
 
 public abstract class Reserva implements Identificacavel {
+    private String identificador;
     private Data dataReserva;
     private int qntPessoas;
     private Cliente cliente;
@@ -16,10 +17,11 @@ public abstract class Reserva implements Identificacavel {
     private static final boolean ISCONCRETIZADA_OMISSAO = false;
 
     private static int reservaCount = 0;
-    private static int taxaReserva = 20;
+    private static double taxaReserva = 20;
     private static int numMultiploDeX = 5;
 
     public Reserva (Data dataReserva, int qntPessoas, Cliente cliente) {
+        this.identificador = gerarIdentificador();
         this.dataReserva = dataReserva;
         this.qntPessoas = qntPessoas;
         this.cliente = cliente;
@@ -28,10 +30,16 @@ public abstract class Reserva implements Identificacavel {
     }
 
     public Reserva () {
+        this.identificador = gerarIdentificador();
         this.dataReserva = DATA_RESERVA_OMISSAO;
         this.qntPessoas = QNT_PESSOAS_OMISSAO;
         this.cliente = CLIENTE_OMISSAO;
         this.isConcretizada = ISCONCRETIZADA_OMISSAO;
+        ++reservaCount;
+    }
+
+    public String identificador() {
+        return identificador;
     }
 
     public Data getDataReserva() {
@@ -50,6 +58,9 @@ public abstract class Reserva implements Identificacavel {
         return isConcretizada;
     }
 
+    protected void setIdentificador(String identificador) {
+        this.identificador = identificador;
+    }
 
     public void setDataReserva(Data dataReserva) {
         this.dataReserva = dataReserva;
@@ -89,6 +100,24 @@ public abstract class Reserva implements Identificacavel {
         return reservaCount;
     }
 
+    public static double getTaxaReserva() {
+        return taxaReserva;
+    }
+
+    public static int getNumMultiploDeX() {
+        return numMultiploDeX;
+    }
+
+    public void setTaxaReserva(double taxaReserva) {
+        this.taxaReserva = taxaReserva;
+    }
+
+    public void setNumMultiploDeX(int numMultiploDeX) {
+        this.numMultiploDeX = numMultiploDeX;
+    }
+
     public abstract double calcularCustoReserva();
 
+    @Override
+    public abstract String gerarIdentificador();
 }

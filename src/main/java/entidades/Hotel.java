@@ -6,7 +6,7 @@ import interfaces.Identificacavel;
 import java.util.Objects;
 
 public class Hotel implements Identificacavel {
-    private int codigoHotel;
+    private String codigoHotel;
     private String nomeHotel;
     private CategoriaHotel categoria;
     private String localidade;
@@ -39,7 +39,7 @@ public class Hotel implements Identificacavel {
         this.precoPorQuarto = PRECO_QUARTO_POR_OMISSAO;
     }
 
-    public int getCodigoHotel() {
+    public String getCodigoHotel() {
         return codigoHotel;
     }
 
@@ -101,7 +101,7 @@ public class Hotel implements Identificacavel {
     }
 
     @Override
-    public int gerarIdentificador() {
-        return ++contadorHotel;
+    public String gerarIdentificador() {
+        return String.valueOf(++contadorHotel);
     }
 }

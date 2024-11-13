@@ -5,11 +5,11 @@ import interfaces.Identificacavel;
 import java.util.Objects;
 
 public class Cliente implements Identificacavel {
-    private int codigoCliente;
+    private String codigoCliente;
     private String nomeCliente;
     private Data dataNascimento;
     private String genero;
-    private String nif;
+    private int nif;
     private String numPassaporte;
     private String email;
     private double percentagemDesconto;
@@ -18,7 +18,7 @@ public class Cliente implements Identificacavel {
     private static final int CODIGO_CLIENTE_POR_OMISSAO = -2;
     private static final String NOME_CLIENTE_POR_OMISSAO = "Sem nome";
     private static final String GENERO_POR_OMISSAO = "Desconhecido";
-    private static final String NIF_POR_OMISSAO = "-1";
+    private static final int NIF_POR_OMISSAO = 999999999;
     private static final String NUM_PASSAPORTE_POR_OMISSAO = "P000";
     private static final String EMAIL_POR_OMISSAO = "Não informado";
     private static final double PERCENTAGEM_DESCONTO_POR_OMISSAO = -1;
@@ -27,11 +27,11 @@ public class Cliente implements Identificacavel {
     private static int contadorCliente = 0;
 
 
-    public Cliente(String nomeCliente, String genero, String nif, String numPassaporte, String email, double percentagemDesconto, int numReservasConcretizadas) {
+    public Cliente(String nomeCliente, String genero, int nif, String numPassaporte, String email, double percentagemDesconto, int numReservasConcretizadas) {
         this.codigoCliente = gerarIdentificador();
-        this.nomeCliente = nomeCliente;
+        setNomeCliente(nomeCliente);
         this.genero = genero;
-        this.nif = nif;
+        setNif(nif);
         this.numPassaporte = numPassaporte;
         this.email = email;
         this.percentagemDesconto = percentagemDesconto;
@@ -49,7 +49,7 @@ public class Cliente implements Identificacavel {
         this.numReservasConcretizadas = NUM_RESERVAS_CONCRETIZADAS_POR_OMISSAO;
     }
 
-    public int getCodigoCliente() {
+    public String getCodigoCliente() {
         return codigoCliente;
     }
 
@@ -65,7 +65,7 @@ public class Cliente implements Identificacavel {
         return genero;
     }
 
-    public String getNif() {
+    public int getNif() {
         return nif;
     }
 
@@ -86,6 +86,13 @@ public class Cliente implements Identificacavel {
     }
 
     public void setNomeCliente(String nomeCliente) {
+        char c;
+        for(int i=0;i<nomeCliente.length();i++) {
+            c = nomeCliente.charAt(i);
+            if (!Character.isLetter(c) && !Character.isSpaceChar(c))
+                throw new IllegalArgumentException(String.format("O %s tem caracteres que não são letras!", nomeCliente));
+        }
+
         this.nomeCliente = nomeCliente;
     }
 
@@ -97,7 +104,10 @@ public class Cliente implements Identificacavel {
         this.genero = genero;
     }
 
-    public void setNif(String nif) {
+    public void setNif(int nif) {
+        if (nif < 100000000 || nif > 999999999) {
+            throw new IllegalArgumentException("Número de identificação fiscal inválido!");
+        }
         this.nif = nif;
     }
 
@@ -127,11 +137,11 @@ public class Cliente implements Identificacavel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cliente cliente = (Cliente) o;
-        return codigoCliente == cliente.codigoCliente && Double.compare(percentagemDesconto, cliente.percentagemDesconto) == 0 && numReservasConcretizadas == cliente.numReservasConcretizadas && Objects.equals(nomeCliente, cliente.nomeCliente) && Objects.equals(dataNascimento, cliente.dataNascimento) && Objects.equals(genero, cliente.genero) && Objects.equals(nif, cliente.nif) && Objects.equals(numPassaporte, cliente.numPassaporte) && Objects.equals(email, cliente.email);
+        return Objects.equals(codigoCliente, cliente.codigoCliente) && Double.compare(percentagemDesconto, cliente.percentagemDesconto) == 0 && numReservasConcretizadas == cliente.numReservasConcretizadas && Objects.equals(nomeCliente, cliente.nomeCliente) && Objects.equals(dataNascimento, cliente.dataNascimento) && Objects.equals(genero, cliente.genero) && Objects.equals(nif, cliente.nif) && Objects.equals(numPassaporte, cliente.numPassaporte) && Objects.equals(email, cliente.email);
     }
 
     @Override
-    public int gerarIdentificador() {
-        return ++contadorCliente;
+    public String gerarIdentificador() {
+        return String.valueOf(++contadorCliente);
     }
 }
