@@ -1,6 +1,8 @@
 package entidades;
 
+import enums.Genero;
 import interfaces.Identificacavel;
+import utilidades.Data;
 
 import java.util.Objects;
 
@@ -8,45 +10,44 @@ public class Cliente implements Identificacavel {
     private String codigoCliente;
     private String nomeCliente;
     private Data dataNascimento;
-    private String genero;
+    private Genero genero;
     private int nif;
     private String numPassaporte;
     private String email;
     private double percentagemDesconto;
     private int numReservasConcretizadas;
 
-    private static final int CODIGO_CLIENTE_POR_OMISSAO = -2;
     private static final String NOME_CLIENTE_POR_OMISSAO = "Sem nome";
-    private static final String GENERO_POR_OMISSAO = "Desconhecido";
+    private static final Genero GENERO_POR_OMISSAO = Genero.OUTRO;
     private static final int NIF_POR_OMISSAO = 999999999;
     private static final String NUM_PASSAPORTE_POR_OMISSAO = "P000";
     private static final String EMAIL_POR_OMISSAO = "Não informado";
     private static final double PERCENTAGEM_DESCONTO_POR_OMISSAO = -1;
-    private static final int NUM_RESERVAS_CONCRETIZADAS_POR_OMISSAO = -1;
 
     private static int contadorCliente = 0;
 
 
-    public Cliente(String nomeCliente, String genero, int nif, String numPassaporte, String email, double percentagemDesconto, int numReservasConcretizadas) {
+    public Cliente(String nomeCliente, Data data, Genero genero, int nif, String numPassaporte, String email, double percentagemDesconto) {
         this.codigoCliente = gerarIdentificador();
         setNomeCliente(nomeCliente);
+        this.dataNascimento = new Data(data);
         this.genero = genero;
         setNif(nif);
         this.numPassaporte = numPassaporte;
         this.email = email;
         this.percentagemDesconto = percentagemDesconto;
-        this.numReservasConcretizadas = numReservasConcretizadas;
+        this.numReservasConcretizadas = 0;
     }
 
     public Cliente() {
         this.codigoCliente = gerarIdentificador();
         this.nomeCliente = NOME_CLIENTE_POR_OMISSAO;
+        this.dataNascimento = new Data();
         this.genero = GENERO_POR_OMISSAO;
         this.nif = NIF_POR_OMISSAO;
         this.numPassaporte = NUM_PASSAPORTE_POR_OMISSAO;
         this.email = EMAIL_POR_OMISSAO;
         this.percentagemDesconto = PERCENTAGEM_DESCONTO_POR_OMISSAO;
-        this.numReservasConcretizadas = NUM_RESERVAS_CONCRETIZADAS_POR_OMISSAO;
     }
 
     public String getCodigoCliente() {
@@ -61,7 +62,7 @@ public class Cliente implements Identificacavel {
         return dataNascimento;
     }
 
-    public String getGenero() {
+    public Genero getGenero() {
         return genero;
     }
 
@@ -100,7 +101,7 @@ public class Cliente implements Identificacavel {
         this.dataNascimento = dataNascimento;
     }
 
-    public void setGenero(String genero) {
+    public void setGenero(Genero genero) {
         this.genero = genero;
     }
 
@@ -123,13 +124,13 @@ public class Cliente implements Identificacavel {
         this.percentagemDesconto = percentagemDesconto;
     }
 
-    public void setNumReservasConcretizadas(int numReservasConcretizadas) {
+    protected void setNumReservasConcretizadas(int numReservasConcretizadas) {
         this.numReservasConcretizadas = numReservasConcretizadas;
     }
 
     @Override
     public String toString() {
-        return String.format("--- Cliente ---\nCódigo de Cliente: %d\nNome do Cliente: %s\nData de Nascimento: %s\nGênero: %s\nNIF: %s\nNúmero de Passaporte: %s\nEmail: %s\nPercentagem de Desconto: %.2f\nNúmero de Reservas Concretizadas: %d", codigoCliente, nomeCliente, dataNascimento, genero, nif, numPassaporte, email, percentagemDesconto, numReservasConcretizadas);
+        return String.format("--- Cliente ---\nCódigo de Cliente: %s\nNome do Cliente: %s\nData de Nascimento: %s\nGênero: %s\nNIF: %s\nNúmero de Passaporte: %s\nEmail: %s\nPercentagem de Desconto: %.2f\nNúmero de Reservas Concretizadas: %d", codigoCliente, nomeCliente, dataNascimento, genero, nif, numPassaporte, email, percentagemDesconto, numReservasConcretizadas);
     }
 
     @Override
@@ -144,4 +145,6 @@ public class Cliente implements Identificacavel {
     public String gerarIdentificador() {
         return String.valueOf(++contadorCliente);
     }
+
+
 }
