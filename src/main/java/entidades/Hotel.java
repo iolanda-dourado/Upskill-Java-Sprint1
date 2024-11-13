@@ -1,4 +1,4 @@
-package upskill;
+package entidades;
 
 import enums.CategoriaHotel;
 import interfaces.Identificacavel;
@@ -27,7 +27,7 @@ public class Hotel implements Identificacavel {
         this.categoria = categoria;
         this.localidade = localidade;
         this.transfer = transfer;
-        this.precoPorQuarto = precoPorQuarto;
+        setPrecoPorQuarto(precoPorQuarto);
     }
 
     public Hotel() {
@@ -80,6 +80,10 @@ public class Hotel implements Identificacavel {
     }
 
     public void setPrecoPorQuarto(double precoPorQuarto) {
+        if (precoPorQuarto < 0) {
+            throw new IllegalArgumentException("O preço do quarto não pode ser negativo.");
+        }
+
         this.precoPorQuarto = precoPorQuarto;
     }
 

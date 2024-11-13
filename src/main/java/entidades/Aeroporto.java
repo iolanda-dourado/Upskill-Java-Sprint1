@@ -1,4 +1,4 @@
-package upskill;
+package entidades;
 
 import java.util.Objects;
 
@@ -7,8 +7,8 @@ public class Aeroporto {
     private String paginaWeb;
     private String codigoAeroporto;
 
-    private static final String ENDERECO_OMISSAO = " ";
-    private static final String  PAGINAWEB_OMISSAO = " ";
+    private static final String ENDERECO_OMISSAO = "Desconhecido";
+    private static final String  PAGINAWEB_OMISSAO = "Não informada";
     private static final String  CODIGO_AEROPORTO_OMISSAO = "XXX";
 
 
@@ -50,12 +50,9 @@ public class Aeroporto {
 
     @Override
     public String toString() {
-        return "Aeroporto{" +
-                "endereco='" + endereco + '\'' +
-                ", paginaWeb='" + paginaWeb + '\'' +
-                ", codigoAeroporto='" + codigoAeroporto + '\'' +
-                '}';
+        return String.format("--- Aeroporto ---\nCódigo do Aeroporto: %s\nEndereço: %s\nPágina Web: %s", codigoAeroporto, endereco, paginaWeb);
     }
+
 
     @Override
     public boolean equals(Object o) {

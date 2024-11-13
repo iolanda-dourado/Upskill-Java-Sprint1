@@ -1,4 +1,4 @@
-package upskill;
+package entidades;
 
 public class ReservaHotelVoo extends Reserva {
     private ReservaVoo reservaVoo;

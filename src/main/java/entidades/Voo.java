@@ -1,4 +1,4 @@
-package upskill;
+package entidades;
 
 import enums.CompanhiaAerea;
 
@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class Voo {
     private String codigoVoo;
-    private CompanhiaAerea Companhia;
+    private CompanhiaAerea companhiaAerea;
     private int qntLugares;
     private int qntLugaresDisponiveis;
     private Aeroporto aeroportoSaida;
@@ -30,7 +30,7 @@ public class Voo {
 
     public Voo(String codigoVoo, CompanhiaAerea companhia, int qntLugares, int qntLugaresDisponiveis, Aeroporto aeroportoSaida, Aeroporto aeroportoChegada, int distanciaKmAeroporto, double precoBilhete, Data dataPartida, LocalTime horaPartida) {
         this.codigoVoo = codigoVoo;
-        Companhia = companhia;
+        companhiaAerea = companhia;
         this.qntLugares = qntLugares;
         this.qntLugaresDisponiveis = qntLugaresDisponiveis;
         this.aeroportoSaida = aeroportoSaida;
@@ -43,7 +43,7 @@ public class Voo {
 
     public Voo() {
         this.codigoVoo = CODIGO_VOO_OMISSAO;
-        Companhia = COMPANHIA_OMISSAO;
+        companhiaAerea = COMPANHIA_OMISSAO;
         this.qntLugares = QNT_LUGARES_OMISSAO;
         this.qntLugaresDisponiveis = QNT_LUGARES_DISPONIVEIS_OMISSAO;
         this.aeroportoSaida = AEROPORTO_SAIDA_OMISSAO;
@@ -58,8 +58,8 @@ public class Voo {
         return codigoVoo;
     }
 
-    public CompanhiaAerea getCompanhia() {
-        return Companhia;
+    public CompanhiaAerea getCompanhiaAerea() {
+        return companhiaAerea;
     }
 
     public int getQntLugares() {
@@ -98,8 +98,8 @@ public class Voo {
         this.codigoVoo = codigoVoo;
     }
 
-    public void setCompanhia(CompanhiaAerea companhia) {
-        Companhia = companhia;
+    public void setCompanhiaAerea(CompanhiaAerea companhiaAerea) {
+        this.companhiaAerea = companhiaAerea;
     }
 
     public void setQntLugares(int qntLugares) {
@@ -136,15 +136,15 @@ public class Voo {
 
     @Override
     public String toString() {
-        return String.format("Voo: %s\nCompanhia: %s\nQuantidade de lugares: %d\nQuantidade de lugares ainda disponíveis: %d\nAeroporto de Saída: %s\nAeroporto de Chegada: %s\nQuilommetragem entre os aeroportos: %s\nPreço do bilhete: %f\nData de Saída: %s\nHora de Saída: %s\n", Companhia.toString(), qntLugares, qntLugaresDisponiveis, aeroportoSaida.getCodigoAeroporto(), aeroportoChegada.getCodigoAeroporto(), distanciaKmAeroporto, precoBilhete, dataPartida, horaPartida);
-
+        return String.format("--- Voo ---\nCódigo do Voo: %s\nCompanhia Aérea: %s\nQuantidade de Lugares: %d\nQuantidade de Lugares Disponíveis: %d\nAeroporto de Saída: %s\nAeroporto de Chegada: %s\nDistância entre Aeroportos: %.2f km\nPreço do Bilhete: %.2f\nData de Partida: %s\nHora de Partida: %s", codigoVoo, companhiaAerea, qntLugares, qntLugaresDisponiveis, aeroportoSaida.getCodigoAeroporto(), aeroportoChegada.getCodigoAeroporto(), distanciaKmAeroporto, precoBilhete, dataPartida, horaPartida);
     }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Voo voo = (Voo) o;
-        return qntLugares == voo.qntLugares && qntLugaresDisponiveis == voo.qntLugaresDisponiveis && distanciaKmAeroporto == voo.distanciaKmAeroporto && Double.compare(precoBilhete, voo.precoBilhete) == 0 && Objects.equals(codigoVoo, voo.codigoVoo) && Companhia == voo.Companhia && Objects.equals(aeroportoSaida, voo.aeroportoSaida) && Objects.equals(aeroportoChegada, voo.aeroportoChegada) && Objects.equals(dataPartida, voo.dataPartida) && Objects.equals(horaPartida, voo.horaPartida);
+        return qntLugares == voo.qntLugares && qntLugaresDisponiveis == voo.qntLugaresDisponiveis && distanciaKmAeroporto == voo.distanciaKmAeroporto && Double.compare(precoBilhete, voo.precoBilhete) == 0 && Objects.equals(codigoVoo, voo.codigoVoo) && companhiaAerea == voo.companhiaAerea && Objects.equals(aeroportoSaida, voo.aeroportoSaida) && Objects.equals(aeroportoChegada, voo.aeroportoChegada) && Objects.equals(dataPartida, voo.dataPartida) && Objects.equals(horaPartida, voo.horaPartida);
     }
 }
