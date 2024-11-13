@@ -1,6 +1,7 @@
 package entidades;
 
 import enums.CompanhiaAerea;
+import interfaces.Descontavel;
 import utilidades.Data;
 
 import java.time.LocalTime;
@@ -154,7 +155,7 @@ public class Voo {
         return qntLugares == voo.qntLugares && qntLugaresDisponiveis == voo.qntLugaresDisponiveis && distanciaKmAeroporto == voo.distanciaKmAeroporto && Double.compare(precoBilhete, voo.precoBilhete) == 0 && Objects.equals(codigoVoo, voo.codigoVoo) && companhiaAerea == voo.companhiaAerea && Objects.equals(aeroportoSaida, voo.aeroportoSaida) && Objects.equals(aeroportoChegada, voo.aeroportoChegada) && Objects.equals(dataPartida, voo.dataPartida) && Objects.equals(horaPartida, voo.horaPartida);
     }
 
-//    public double CalcularPrecoFinal() {
-//        if ( (dataPartida))
-//    }
+    public static double getDescontoVoo() {
+        return descontoVoo;
+    }
 }

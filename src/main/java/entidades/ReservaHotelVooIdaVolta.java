@@ -1,18 +1,22 @@
 package entidades;
 
+import interfaces.DescontavelVooIdaVolta;
+import utilidades.Data;
+
 import java.util.Objects;
 
-public class ReservaHotelVooIdaVolta extends ReservaHotel{
+public class ReservaHotelVooIdaVolta extends ReservaHotelVoo {
     private Voo vooRegresso;
 
     private static final String PREFIXO_RESERVA_HOTEL_VOO_IV = "R_HTL_VOO_IV-";
     private static int reservaHotelVooIdaVoltaCount = 0;
 
-//    public ReservaHotelVooIdaVolta(Hotel hotel, Data dataChegada, int numNoitesEstadia, Voo vooRegresso) {
-//        super(hotel, dataChegada, numNoitesEstadia);
-//        ++reservaHotelVooIdaVoltaCount;
-//        this.vooRegresso = vooRegresso;
-//    }
+
+    public ReservaHotelVooIdaVolta(Data dataReserva, int qntPessoas, Cliente cliente, Hotel hotel, Data dataChegada, int numNoitesEstadia, Voo voo, Voo vooRegresso) {
+        super(dataReserva, qntPessoas, cliente, hotel, dataChegada, numNoitesEstadia, voo);
+        ++reservaHotelVooIdaVoltaCount;
+        this.vooRegresso = vooRegresso;
+    }
 
     public ReservaHotelVooIdaVolta() {
         super();
@@ -30,9 +34,7 @@ public class ReservaHotelVooIdaVolta extends ReservaHotel{
 
     @Override
     public String toString() {
-        return "ReservaHotelVooIdaVolta{" +
-                "vooRegresso=" + vooRegresso +
-                "} " + super.toString();
+        return String.format("-- Reserva de Hotel com Voo de Ida e Volta --\n%s\nVoo de Regresso: %s", super.toString(), vooRegresso);
     }
 
     @Override

@@ -4,24 +4,24 @@ import utilidades.Data;
 
 import java.util.Objects;
 
-public class ReservaVooIdaVolta extends ReservaHotelVoo {
+public class ReservaVooIdaVolta extends ReservaVoo {
     private Voo vooRegresso;
 
     private static final String PREFIXO_RESERVA_VOO_IDA_VOLTA = "R_VOO_IV-";
+    private static final int KMS_PARA_DAR_DESCONTO = 1000;
+    private static final double TAXA_DESCONTO_VOO_REGRESSO = 0.01;
 
     private int reservaVooIdaVoltaCount = 0;
 
-    public ReservaVooIdaVolta(Data dataReserva, int qntPessoas, Cliente cliente, Hotel hotel, Data dataChegada, int numNoitesEstadia, Voo voo, Voo vooRegresso) {
-        super(dataReserva, qntPessoas, cliente, hotel, dataChegada, numNoitesEstadia, voo);
+    public ReservaVooIdaVolta(Data dataReserva, int qntPessoas, Cliente cliente, Voo voo, Voo vooRegresso) {
+        super(dataReserva, qntPessoas, cliente, voo);
         ++reservaVooIdaVoltaCount;
-        this.setCodigoReserva(gerarIdentificador());
         this.vooRegresso = vooRegresso;
     }
 
     public ReservaVooIdaVolta() {
         super();
         ++reservaVooIdaVoltaCount;
-        this.setCodigoReserva(gerarIdentificador());
         this.vooRegresso = new Voo();
     }
 
@@ -59,6 +59,12 @@ public class ReservaVooIdaVolta extends ReservaHotelVoo {
 
     @Override
     public double calcularCustoReserva() {
-        return 1;
+        double custoBilheteVooIda = getVoo().getPrecoBilhete();
+        double custoBilheteVooRegresso = vooRegresso.getPrecoBilhete();
+        double distanciaVolta = vooRegresso.getDistanciaKmAeroporto();
+
+        double blocosDe1000km = distanciaVolta / KMS_PARA_DAR_DESCONTO;
+        double desconto = blocosDe1000km * TAXA_DESCONTO_VOO_REGRESSO;
+        return custoBilheteVooIda + (custoBilheteVooRegresso - (custoBilheteVooRegresso * desconto)) + getTaxaReserva();
     }
 }

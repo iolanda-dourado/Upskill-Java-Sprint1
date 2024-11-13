@@ -1,11 +1,12 @@
 package entidades;
 
+import interfaces.Descontavel;
 import interfaces.Identificacavel;
 import utilidades.Data;
 
 import java.util.Objects;
 
-public abstract class Reserva implements Identificacavel, Comparable<Reserva> {
+public abstract class Reserva implements Identificacavel, Comparable<Reserva>, Descontavel {
     private String codigoReserva;
     private Data dataReserva;
     private int qntPessoas;
@@ -133,5 +134,29 @@ public abstract class Reserva implements Identificacavel, Comparable<Reserva> {
         } else {
             return 0;
         }
+    }
+
+    @Override
+    public int formatarData(Data umaData) {
+        String st = umaData.toAnoMesDiaString().replace("/", "");
+        return Integer.parseInt(st);
+    }
+
+
+    @Override
+    public boolean isPromocao(int a, Data umaData) {
+        int dataTemp1 = Integer.parseInt(umaData.getAno() + Descontavel.INICIO_TEMP1);
+        int dataTemp2 = Integer.parseInt(umaData.getAno() +  Descontavel.FINAL_TEMP1);
+        int dataTemp3 = Integer.parseInt(umaData.getAno() +  Descontavel.INICIO_TEMP2);
+        int dataTemp4 = Integer.parseInt(umaData.getAno() + Descontavel.FINAL_TEMP2);
+        int dataTemp5 = Integer.parseInt(umaData.getAno() + Descontavel.INICIO_TEMP3);
+        int dataTemp6 = Integer.parseInt(umaData.getAno() + Descontavel.FINAL_TEMP3);
+
+        if (a >= dataTemp1 || a <= dataTemp2){
+            return true;
+        } else if (a >= dataTemp3 || a <= dataTemp4) {
+            return true;
+        } else return a >= dataTemp5 || a <= dataTemp6;
+
     }
 }

@@ -110,6 +110,7 @@ public class ReservaHotel extends Reserva {
 
     @Override
     public double calcularCustoReserva() {
+        double precoPorNoite = getHotel().getPrecoPorQuarto();
         return 0;
     }
 }
