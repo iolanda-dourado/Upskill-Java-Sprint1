@@ -2,13 +2,13 @@ package entidades;
 
 import criterios.Criterio1;
 import criterios.Criterio3_ReservaCustoCrescente;
-import enums.CompanhiaAerea;
-import interfaces.GerarInfoAuto;
+import enums.GerarAutomaticoAeroporto;
+import enums.GerarAutomaticoVoo;
 
 import java.io.Serializable;
 import java.util.*;
 
-public class Empresa implements GerarInfoAuto, Serializable {
+public class Empresa implements Serializable {
     private String nomeEmpresa;
     private String morada;
     private List<Cliente> listaClientes;
@@ -333,56 +333,44 @@ public class Empresa implements GerarInfoAuto, Serializable {
         return listaClienteTemp;
     }
 
-    public Aeroporto gerarAeroportoAuto() {
-        GerarInfoAuto infoAuto;
-        Random gerador = new Random();
-        int indice = gerador.nextInt(10)+1;
-        String endereco = "", paginaWeb = "", codigoAeroporto = "";
+    public void gerarAeroportoAuto() {
+        int cont = 0;
+        do {
+            Random gerador = new Random();
+            GerarAutomaticoAeroporto infoAero = GerarAutomaticoAeroporto.values()[gerador.nextInt(GerarAutomaticoAeroporto.values().length)];
 
-        try {
-            endereco = (String) GerarInfoAuto.class.getField("ENDERECO" + indice).get(null);
-            paginaWeb = (String) GerarInfoAuto.class.getField("PAGINA_WEB" + indice).get(null);
-            codigoAeroporto = (String) GerarInfoAuto.class.getField("CODIGO_AEROPORTO" + indice).get(null);
-
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            System.out.println("Valores inexistentes");
-        }
-
-        Aeroporto aeroporto = new Aeroporto(endereco, paginaWeb, codigoAeroporto);
-        this.adicionarAeroporto(aeroporto);
-        return aeroporto;
+            Aeroporto aeroporto = new Aeroporto(infoAero.getEndereco(), infoAero.getPaginaWeb(), infoAero.getCodigoAeroporto());
+            if (adicionarAeroporto(aeroporto)) {
+                cont++;
+            }
+        } while (cont != 4);
     }
 
-    public Voo gerarVoo() {
-        GerarInfoAuto infoAuto;
-        Random gerador = new Random();
-        int indice = gerador.nextInt(10)+1;
-        String codigoVoo = "";
+//         this.codigoVoo = codigoVoo;
+//        companhiaAerea = companhia;
+//        this.qntLugares = qntLugares;
+//        this.qntLugaresDisponiveis = qntLugares;
+//        this.aeroportoSaida = aeroportoSaida;
+//        this.aeroportoChegada = aeroportoChegada;
+//        this.distanciaKmAeroporto = distanciaKmAeroporto;
+//        this.precoBilhete = precoBilhete;
+//        this.dataPartida = dataPartida;
+//        this.horaPartida = horaPartida;
+
+    public void gerarVooAuto() {
         int cont = 0;
-        CompanhiaAerea companhiaAerea;
-        for (CompanhiaAerea companhia1 : CompanhiaAerea.values()) {
+        do {
+            Random gerador = new Random();
+            GerarAutomaticoVoo infoVoo = GerarAutomaticoVoo.values()[gerador.nextInt(GerarAutomaticoAeroporto.values().length)];
+            Voo voo = new Voo();
+            voo.setCodigoVoo(infoVoo.getCodigoVoo());
+            voo.setCompanhiaAerea(infoVoo.getCompanhiaAerea());
+            voo.setQntLugares(infoVoo.getQntLugares());
+            voo.setQntLugaresDisponiveis(infoVoo.getQntLugaresDisponiveis());
+            voo.setAeroportoSaida(listaAeroportos.get(cont));
+            voo.setAeroportoChegada(listaAeroportos.get(cont+1));
+
             cont++;
-            if (cont == indice) {
-                companhiaAerea = companhia1;
-                break;
-            }
-        }
-        int qntLugares = gerador.nextInt(150) + 31;
-        int qntLugaresDisponiveis = gerador.nextInt(20) + 1;
-        Aeroporto aeroportoSaida = listaAeroportos.get(gerador.nextInt(2)+1);
-        Aeroporto aeroportoChegada = listaAeroportos.get(gerador.nextInt(4)+2);
-        double distanciaKmAeroporto = gerador.nextInt(15000)+2000;
-        double precoBilhete = gerador.nextDouble(700)+1;
-        //    private Data dataPartida;
-        //    private LocalTime horaPartida;
-
-        try {
-            codigoVoo = (String) GerarInfoAuto.class.getField("VOO_CODIGO" + indice).get(null);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            System.out.println("Valores inexistentes");
-        }
-
-
-        return null;
+        } while (cont != 6);
     }
 }
