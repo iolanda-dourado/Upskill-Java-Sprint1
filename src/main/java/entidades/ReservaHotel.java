@@ -103,10 +103,15 @@ public class ReservaHotel extends Reserva implements Descontavel {
     }
 
     public int verificaDiariasPromocao() {
+        int anoTemp = dataChegada.getAno();
         int[] diasPorMes = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        if (Data.isAnoBissexto(anoTemp)) {
+            diasPorMes[2] = 29;
+        }
+
         int diaTemp = dataChegada.getDia();
         int mesTemp = dataChegada.getMes();
-        int anoTemp = dataChegada.getAno();
+
         int diasParametro = diasPorMes[mesTemp];
         boolean bool = false;
         int count = 0;
@@ -116,6 +121,7 @@ public class ReservaHotel extends Reserva implements Descontavel {
         for (int i = 0; i < numNoitesEstadia; i++) {
             if (countTemp > 0) {
                 dataTemp += 1;
+                diaTemp+=1;
             }
             if (diasParametro < diaTemp) {
                 if (mesTemp == 12) {
@@ -125,9 +131,10 @@ public class ReservaHotel extends Reserva implements Descontavel {
                 mesTemp += 1;
                 String st = String.format("%d01", mesTemp);
                 dataTemp = Integer.parseInt(st);
+                diaTemp = 1;
                 diasParametro = diasPorMes[mesTemp];
             }
-            bool = isPromocao(dataTemp, dataChegada);
+            bool = isPromocao(dataTemp);
             if (bool) {
                 count++;
             }
@@ -158,14 +165,7 @@ public class ReservaHotel extends Reserva implements Descontavel {
 
 
     @Override
-    public boolean isPromocao(int dataFormatada, Data umaData) {
-
-//        int dataTemp1 = Integer.parseInt(umaData.getAno() + Descontavel.INICIO_TEMP1);
-//        int dataTemp2 = Integer.parseInt(umaData.getAno() + Descontavel.FINAL_TEMP1);
-//        int dataTemp3 = Integer.parseInt(umaData.getAno() + Descontavel.INICIO_TEMP2);
-//        int dataTemp4 = Integer.parseInt(umaData.getAno() + Descontavel.FINAL_TEMP2);
-//        int dataTemp5 = Integer.parseInt(umaData.getAno() + Descontavel.INICIO_TEMP3);
-//        int dataTemp6 = Integer.parseInt(umaData.getAno() + Descontavel.FINAL_TEMP3);
+    public boolean isPromocao(int dataFormatada) {
 
         if (dataFormatada >= Descontavel.INICIO_TEMP1 && dataFormatada <= Descontavel.FINAL_TEMP1) {
             return true;

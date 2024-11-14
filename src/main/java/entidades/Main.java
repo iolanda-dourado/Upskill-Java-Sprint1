@@ -45,14 +45,16 @@ public class Main {
         ReservaHotel reserva1 = new ReservaHotel(data, 2, client, hotel2, data1, 25);
 //        ReservaHotel reserva2 = new ReservaHotel(data2, 4, client, hotel1, data7, 10);
 //        ReservaHotelVoo reserva3 = new ReservaHotelVoo (data2, 4, client, hotel2, data7, 10, v1);
-//        ReservaHotelVooIdaVolta reserva4 = new ReservaHotelVooIdaVolta (data2, 4, client, hotel2, data7, 10, v1, v2);
-//        ReservaVoo reserva5 = new ReservaVoo (data2, 4, client, v1);
+        ReservaHotelVooIdaVolta reserva4 = new ReservaHotelVooIdaVolta (data2, 4, client, hotel2, data7, 10, v1, v2);
+        ReservaVoo reserva5 = new ReservaVoo (data2, 4, client, v1);
 
-        System.out.println("O valor da reserva 1 é igual a " + reserva1.calcularCustoReserva()+"euros");
+
+        System.out.println("O valor da reserva 1 é igual a " + reserva1.calcularCustoReserva()+"euros. Dias de promoção: " + reserva1.verificaDiariasPromocao());
+
         System.out.println("*****-----------------------------------*****");
 //        System.out.println("O valor da reserva 2 é igual a " + reserva2.calcularCustoReserva()+"euros");
-//        System.out.println("O valor da reserva 4 é igual a " + reserva4.calcularCustoReserva()+"euros");
-//        System.out.println("O valor da reserva Voo é igual a " + reserva5.calcularCustoReserva()+"euros");
+        System.out.println("O valor da reserva 4 é igual a " + reserva4.calcularCustoReserva()+"euros");
+        System.out.println("O valor da reserva Voo é igual a " + reserva5.calcularCustoReserva()+"euros");
         //System.out.println(v1.calcularCustoBilheteIda());
 
         Empresa empresa1 = new Empresa("Empresa 1", "Rua Sem Nome");

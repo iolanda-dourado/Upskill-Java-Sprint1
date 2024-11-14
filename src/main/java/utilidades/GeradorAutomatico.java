@@ -28,39 +28,39 @@ public class GeradorAutomatico {
         } while (cont != NUM_AEROPORTOS);
     }
 
-//    public static void gerarVooAuto(Empresa empresa) {
-//        int cont = 0;
-//        Random gerador = new Random();
-//
-//        do {
-//            Voo voo = new Voo();
-//            GerarAutomaticoVoo infoVoo = GerarAutomaticoVoo.values()[gerador.nextInt(GerarAutomaticoVoo.values().length)];
-//            List<Aeroporto> listaAeroportos = empresa.getListaAeroportos();
-//
-//            voo.setCodigoVoo(infoVoo.getCodigoVoo());
-//            voo.setCompanhiaAerea(infoVoo.getCompanhiaAerea());
-//            voo.setQntLugares(infoVoo.getQntLugares());
-//            voo.setQntLugaresDisponiveis(infoVoo.getQntLugaresDisponiveis());
-//
-//            Aeroporto aeroportoSaida = listaAeroportos.get(gerador.nextInt(4));
-//            Aeroporto aeroportoChegada;
-//            do {
-//                aeroportoChegada = listaAeroportos.get(gerador.nextInt(4));
-//            } while (aeroportoChegada.equals(aeroportoSaida));
-//
-//            voo.setAeroportoSaida(aeroportoSaida);
-//            voo.setAeroportoChegada(aeroportoChegada);
-//            voo.setDistanciaKmAeroporto(infoVoo.getDistanciaKmAeroporto());
-//            voo.setPrecoBilhete(infoVoo.getPrecoBilhete());
-//            voo.setDataPartida(infoVoo.getDataPartida());
-//            voo.setHoraPartida(infoVoo.getHoraPartida());
-//            cont++;
-//
-//            if (empresa.adicionarVoo(voo)) {
-//                cont++;
-//            }
-//        } while (cont != NUM_VOOS);
-//    }
+    public static void gerarVooAuto(Empresa empresa) {
+        int cont = 0;
+        Random gerador = new Random();
+
+        do {
+            Voo voo = new Voo();
+            GerarAutomaticoVoo infoVoo = GerarAutomaticoVoo.values()[gerador.nextInt(GerarAutomaticoVoo.values().length)];
+            List<Aeroporto> listaAeroportos = empresa.getListaAeroportos();
+
+            voo.setCodigoVoo(infoVoo.getCodigoVoo());
+            voo.setCompanhiaAerea(infoVoo.getCompanhiaAerea());
+            voo.setQntLugares(infoVoo.getQntLugares());
+            voo.setQntLugaresDisponiveis(infoVoo.getQntLugaresDisponiveis());
+
+            Aeroporto aeroportoSaida = listaAeroportos.get(gerador.nextInt(4));
+            Aeroporto aeroportoChegada;
+            do {
+                aeroportoChegada = listaAeroportos.get(gerador.nextInt(4));
+            } while (aeroportoChegada.equals(aeroportoSaida));
+
+            voo.setAeroportoSaida(aeroportoSaida);
+            voo.setAeroportoChegada(aeroportoChegada);
+            voo.setDistanciaKmAeroporto(infoVoo.getDistanciaKmAeroporto());
+            voo.setPrecoBilhete(infoVoo.getPrecoBilhete());
+            voo.setDataPartida(infoVoo.getDataPartida());
+            voo.setHoraPartida(infoVoo.getHoraPartida());
+            cont++;
+
+            if (empresa.adicionarVoo(voo)) {
+                cont++;
+            }
+        } while (cont != NUM_VOOS);
+    }
 
     public static void gerarHoteisAuto(Empresa empresa) {
         int cont = 0;
