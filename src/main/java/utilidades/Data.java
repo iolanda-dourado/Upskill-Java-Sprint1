@@ -48,6 +48,7 @@ import java.util.Date;
         /**
          * Número de dias de cada mês do ano.
          */
+
         private static int[] diasPorMes = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30,
                 31, 30, 31};
 

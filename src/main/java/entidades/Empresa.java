@@ -2,8 +2,6 @@ package entidades;
 
 import criterios.Criterio1;
 import criterios.Criterio3_ReservaCustoCrescente;
-import enums.GerarAutomaticoAeroporto;
-import enums.GerarAutomaticoVoo;
 
 import java.io.Serializable;
 import java.util.*;
@@ -140,7 +138,7 @@ public class Empresa implements Serializable {
         sb.append("** LISTA DE CLIENTES **\n");
         for(Cliente cliente : listaClientes) {
             sb.append(cliente);
-            sb.append("------------------------");
+            sb.append("\n------------------------");
             sb.append("\n");
         }
         sb.append(String.format("\nTotal de Clientes = %d", listaClientes.size()));
@@ -152,7 +150,7 @@ public class Empresa implements Serializable {
         sb.append("** LISTA DE AEROPORTOS **\n");
         for(Aeroporto aero : listaAeroportos) {
             sb.append(aero);
-            sb.append("------------------------");
+            sb.append("\n------------------------");
             sb.append("\n");
         }
         sb.append(String.format("\nTotal de Aeroportos = %d", listaAeroportos.size()));
@@ -164,7 +162,7 @@ public class Empresa implements Serializable {
         sb.append("** LISTA DE HOTÉIS **\n");
         for(Hotel htl : listaHoteis) {
             sb.append(htl);
-            sb.append("------------------------");
+            sb.append("\n------------------------");
             sb.append("\n");
         }
         sb.append(String.format("\nTotal de Hotéis = %d", listaHoteis.size()));
@@ -176,7 +174,7 @@ public class Empresa implements Serializable {
         sb.append("** LISTA DE VOOS **\n");
         for(Voo v : listaVoos) {
             sb.append(v);
-            sb.append("------------------------");
+            sb.append("\n------------------------");
             sb.append("\n");
         }
         sb.append(String.format("\nTotal de Voos = %d", listaVoos.size()));
@@ -188,7 +186,7 @@ public class Empresa implements Serializable {
         sb.append("** LISTA DE RESERVAS **\n");
         for(Reserva res : listaReservas) {
             sb.append(res);
-            sb.append("------------------------");
+            sb.append("\n------------------------");
             sb.append("\n");
         }
         sb.append(String.format("\nTotal de Reservas = %d", listaReservas.size()));
@@ -204,7 +202,7 @@ public class Empresa implements Serializable {
                 for(Reserva res : listaReservas) {
                     if(res.getCliente() == cliente) {
                     sb.append(res);
-                    sb.append("------------------------");
+                    sb.append("\n------------------------");
                     sb.append("\n");
                     countTemp++;
                     }
@@ -225,7 +223,7 @@ public class Empresa implements Serializable {
                 sb.append(htl);
                 countTemp++;
             }
-            sb.append("------------------------");
+            sb.append("\n------------------------");
             sb.append("\n");
         }
         sb.append(String.format("\nTotal de Hoteis com Transfer = %d", countTemp));
@@ -331,46 +329,5 @@ public class Empresa implements Serializable {
         Criterio1 crit = new Criterio1();
         Collections.sort(listaClienteTemp, crit);
         return listaClienteTemp;
-    }
-
-    public void gerarAeroportoAuto() {
-        int cont = 0;
-        do {
-            Random gerador = new Random();
-            GerarAutomaticoAeroporto infoAero = GerarAutomaticoAeroporto.values()[gerador.nextInt(GerarAutomaticoAeroporto.values().length)];
-
-            Aeroporto aeroporto = new Aeroporto(infoAero.getEndereco(), infoAero.getPaginaWeb(), infoAero.getCodigoAeroporto());
-            if (adicionarAeroporto(aeroporto)) {
-                cont++;
-            }
-        } while (cont != 4);
-    }
-
-//         this.codigoVoo = codigoVoo;
-//        companhiaAerea = companhia;
-//        this.qntLugares = qntLugares;
-//        this.qntLugaresDisponiveis = qntLugares;
-//        this.aeroportoSaida = aeroportoSaida;
-//        this.aeroportoChegada = aeroportoChegada;
-//        this.distanciaKmAeroporto = distanciaKmAeroporto;
-//        this.precoBilhete = precoBilhete;
-//        this.dataPartida = dataPartida;
-//        this.horaPartida = horaPartida;
-
-    public void gerarVooAuto() {
-        int cont = 0;
-        do {
-            Random gerador = new Random();
-            GerarAutomaticoVoo infoVoo = GerarAutomaticoVoo.values()[gerador.nextInt(GerarAutomaticoAeroporto.values().length)];
-            Voo voo = new Voo();
-            voo.setCodigoVoo(infoVoo.getCodigoVoo());
-            voo.setCompanhiaAerea(infoVoo.getCompanhiaAerea());
-            voo.setQntLugares(infoVoo.getQntLugares());
-            voo.setQntLugaresDisponiveis(infoVoo.getQntLugaresDisponiveis());
-            voo.setAeroportoSaida(listaAeroportos.get(cont));
-            voo.setAeroportoChegada(listaAeroportos.get(cont+1));
-
-            cont++;
-        } while (cont != 6);
     }
 }

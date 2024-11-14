@@ -5,6 +5,7 @@ import enums.CategoriaHotel;
 import enums.CompanhiaAerea;
 import enums.Genero;
 import utilidades.Data;
+import utilidades.GeradorAutomatico;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -18,7 +19,8 @@ public class Main {
         Aeroporto aero2 = new Aeroporto("lalala","www.ssa.com.br", "SSA" );
         Aeroporto aero3 = new Aeroporto("lalala","www.opo.com.br", "OPO" );
 
-        Data data1 = new Data(1997, 3, 25);
+        Data data = new Data(1997, 3, 20);
+        Data data1 = new Data(1997, 12, 25);
         Data data3 = new Data(1997, 3, 10);
         Data data4 = new Data(1980, 5, 10);
         Data data2 = Data.dataAtual();
@@ -29,14 +31,9 @@ public class Main {
 
         Cliente client = new Cliente("Maira", data1, Genero.FEMENINO, 322259339, "GF815694", "xxx@gmail.com", 5);
         Cliente client1 = new Cliente("Luis", data2, Genero.MASCULINO, 322259193, "GF155692", "xx1@gmail.com", 10);
-//        Cliente client2 = new Cliente("Amalia", data3, Genero.FEMENINO, 322259183, "GF955692", "xx11@gmail.com", 4);
+        Cliente client2 = new Cliente("Amalia", data3, Genero.FEMENINO, 322259183, "GF955692", "xx11@gmail.com", 4);
 //        Cliente client3 = new Cliente("Dante", data4, Genero.MASCULINO, 312259193, "GF858692", "xx12@gmail.com", 8);
 
-        List<Cliente> lista1 = new ArrayList<>();
-        lista1.add(client);
-        lista1.add(client1);
-//        lista1.add(client2);
-//        lista1.add(client3);
 
 
         Hotel hotel1 = new Hotel("Hotel 1", CategoriaHotel.UMA_ESTRELA, "Fim", true, 200);
@@ -45,24 +42,32 @@ public class Main {
         Voo v2 = new Voo("VOO-350", CompanhiaAerea.EASYJET, 100, aero3, aero1, 14000, 250, data8, horario );
         // (Data dataReserva, int qntPessoas, Cliente cliente, Hotel hotel, Data dataChegada, int numNoitesEstadia)
 //        System.out.println(client);
-        ReservaHotel reserva1 = new ReservaHotel(data2, 2, client, hotel2, data1, 10);
-        ReservaHotel reserva2 = new ReservaHotel(data2, 4, client, hotel1, data7, 10);
-        ReservaHotelVoo reserva3 = new ReservaHotelVoo (data2, 4, client, hotel2, data7, 10, v1);
-        ReservaHotelVooIdaVolta reserva4 = new ReservaHotelVooIdaVolta (data2, 4, client, hotel2, data7, 10, v1, v2);
-        ReservaVoo reserva5 = new ReservaVoo (data2, 4, client, v1);
+        ReservaHotel reserva1 = new ReservaHotel(data, 2, client, hotel2, data1, 25);
+//        ReservaHotel reserva2 = new ReservaHotel(data2, 4, client, hotel1, data7, 10);
+//        ReservaHotelVoo reserva3 = new ReservaHotelVoo (data2, 4, client, hotel2, data7, 10, v1);
+//        ReservaHotelVooIdaVolta reserva4 = new ReservaHotelVooIdaVolta (data2, 4, client, hotel2, data7, 10, v1, v2);
+//        ReservaVoo reserva5 = new ReservaVoo (data2, 4, client, v1);
 
-        System.out.println("O valor da reserva 3 é igual a " + reserva3.calcularCustoReserva()+"euros");
-        System.out.println("O valor da reserva 2 é igual a " + reserva2.calcularCustoReserva()+"euros");
-        System.out.println("O valor da reserva 4 é igual a " + reserva4.calcularCustoReserva()+"euros");
-        System.out.println("O valor da reserva Voo é igual a " + reserva5.calcularCustoReserva()+"euros");
-        System.out.println(v1.calcularCustoBilheteIda());
+        System.out.println("O valor da reserva 1 é igual a " + reserva1.calcularCustoReserva()+"euros");
+        System.out.println("*****-----------------------------------*****");
+//        System.out.println("O valor da reserva 2 é igual a " + reserva2.calcularCustoReserva()+"euros");
+//        System.out.println("O valor da reserva 4 é igual a " + reserva4.calcularCustoReserva()+"euros");
+//        System.out.println("O valor da reserva Voo é igual a " + reserva5.calcularCustoReserva()+"euros");
+        //System.out.println(v1.calcularCustoBilheteIda());
 
         Empresa empresa1 = new Empresa("Empresa 1", "Rua Sem Nome");
         empresa1.adicionarReserva(reserva1);
-        for (int i = 0; i < 2; i++) {
-            empresa1.gerarAeroportoAuto();
-        }
+        GeradorAutomatico.gerarAeroportoAuto(empresa1);
+       // GeradorAutomatico.gerarVooAuto(empresa1);
         empresa1.listarAeroportos();
+        empresa1.listarVoos();
+
+        System.out.println("\n");
+        System.out.println("\n");
+        novaEmpresa.adicionarCliente(client);
+        novaEmpresa.adicionarCliente(client1);
+        novaEmpresa.adicionarCliente(client2);
+        novaEmpresa.listarClientes();
 
 //        System.out.println("Resultado de adicionar empresa repetida: " + empresa1.adicionarReserva(reserva1));
 //        empresa1.adicionarReserva(reserva2);

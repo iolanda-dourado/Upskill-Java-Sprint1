@@ -21,7 +21,7 @@ public class ReservaHotel extends Reserva implements Descontavel {
         ++reservaHotelCount;
         this.setCodigoReserva(gerarIdentificador());
         this.hotel = hotel;
-        this.dataChegada = new Data (dataChegada);
+        this.dataChegada = new Data(dataChegada);
         this.numNoitesEstadia = numNoitesEstadia;
     }
 
@@ -103,20 +103,43 @@ public class ReservaHotel extends Reserva implements Descontavel {
     }
 
     public int verificaDiariasPromocao() {
+        int[] diasPorMes = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        int diaTemp = dataChegada.getDia();
+        int mesTemp = dataChegada.getMes();
+        int anoTemp = dataChegada.getAno();
+        int diasParametro = diasPorMes[mesTemp];
+        boolean bool = false;
         int count = 0;
         int dataTemp = formatarData(dataChegada);
+        int countTemp = 0;
+
         for (int i = 0; i < numNoitesEstadia; i++) {
-            if (isPromocao(dataTemp+i, dataChegada)) {
+            if (countTemp > 0) {
+                dataTemp += 1;
+            }
+            if (diasParametro < diaTemp) {
+                if (mesTemp == 12) {
+//                    anoTemp += 1;
+                    mesTemp = 0;
+                }
+                mesTemp += 1;
+                String st = String.format("%d01", mesTemp);
+                dataTemp = Integer.parseInt(st);
+                diasParametro = diasPorMes[mesTemp];
+            }
+            bool = isPromocao(dataTemp, dataChegada);
+            if (bool) {
                 count++;
             }
+            countTemp++;
         }
         return count;
     }
 
     public int verificaQuantidadeQuartos() {
-        int numQuartos = getQntPessoas()/capacidadeMax;
-        if(getQntPessoas() % capacidadeMax == 1) {
-            numQuartos = (getQntPessoas()/capacidadeMax) +1;
+        int numQuartos = getQntPessoas() / capacidadeMax;
+        if (getQntPessoas() % capacidadeMax == 1) {
+            numQuartos = (getQntPessoas() / capacidadeMax) + 1;
         }
 
         return numQuartos;
@@ -129,40 +152,43 @@ public class ReservaHotel extends Reserva implements Descontavel {
 
     @Override
     public int formatarData(Data umaData) {
-        String st = umaData.toAnoMesDiaString().replace("/", "");
+        String st = String.format("%d%d",umaData.getMes(), umaData.getDia());
         return Integer.parseInt(st);
     }
 
 
     @Override
-    public boolean isPromocao(int a, Data umaData) {
-        int dataTemp1 = Integer.parseInt(umaData.getAno() + Descontavel.INICIO_TEMP1);
-        int dataTemp2 = Integer.parseInt(umaData.getAno() +  Descontavel.FINAL_TEMP1);
-        int dataTemp3 = Integer.parseInt(umaData.getAno() +  Descontavel.INICIO_TEMP2);
-        int dataTemp4 = Integer.parseInt(umaData.getAno() + Descontavel.FINAL_TEMP2);
-        int dataTemp5 = Integer.parseInt(umaData.getAno() + Descontavel.INICIO_TEMP3);
-        int dataTemp6 = Integer.parseInt(umaData.getAno() + Descontavel.FINAL_TEMP3);
+    public boolean isPromocao(int dataFormatada, Data umaData) {
 
-        if (a >= dataTemp1 || a <= dataTemp2){
+//        int dataTemp1 = Integer.parseInt(umaData.getAno() + Descontavel.INICIO_TEMP1);
+//        int dataTemp2 = Integer.parseInt(umaData.getAno() + Descontavel.FINAL_TEMP1);
+//        int dataTemp3 = Integer.parseInt(umaData.getAno() + Descontavel.INICIO_TEMP2);
+//        int dataTemp4 = Integer.parseInt(umaData.getAno() + Descontavel.FINAL_TEMP2);
+//        int dataTemp5 = Integer.parseInt(umaData.getAno() + Descontavel.INICIO_TEMP3);
+//        int dataTemp6 = Integer.parseInt(umaData.getAno() + Descontavel.FINAL_TEMP3);
+
+        if (dataFormatada >= Descontavel.INICIO_TEMP1 && dataFormatada <= Descontavel.FINAL_TEMP1) {
             return true;
-        } else if (a >= dataTemp3 || a <= dataTemp4) {
+        } else if (dataFormatada >= Descontavel.INICIO_TEMP2 && dataFormatada <= Descontavel.FINAL_TEMP2) {
             return true;
-        } else return a >= dataTemp5 || a <= dataTemp6;
+        } else if (dataFormatada >= Descontavel.INICIO_TEMP3 && dataFormatada <= Descontavel.FINAL_TEMP3) {
+            return true;
+        } else return false;
     }
 
     @Override
     public double calcularCustoReserva() {
         double precoQuarto = hotel.getPrecoPorQuarto();
-        double precoPromocao = precoQuarto-(precoQuarto*descontoDiaria);
+        double precoPromocao = precoQuarto - (precoQuarto * descontoDiaria);
         int quartos = verificaQuantidadeQuartos();
         int diariasPromocao = verificaDiariasPromocao();
 
-        if(numNoitesEstadia == diariasPromocao) {
-            return (quartos * precoPromocao *numNoitesEstadia) + getTaxaReserva();
+        if (numNoitesEstadia == diariasPromocao) {
+            return (quartos * precoPromocao * numNoitesEstadia) + getTaxaReserva();
 
         } else {
             int diariasRestantes = numNoitesEstadia - diariasPromocao;
-            return (quartos * precoPromocao * diariasPromocao)+(quartos * precoQuarto * diariasRestantes)+getTaxaReserva();
+            return (quartos * precoPromocao * diariasPromocao) + (quartos * precoQuarto * diariasRestantes) + getTaxaReserva();
         }
     }
 }
