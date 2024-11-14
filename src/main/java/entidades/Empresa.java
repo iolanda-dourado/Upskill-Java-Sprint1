@@ -1,6 +1,7 @@
 package entidades;
 
 import criterios.Criterio1;
+import criterios.Criterio3_ReservaCustoCrescente;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -298,6 +299,25 @@ public class Empresa {
     public void atualizarReservasConcretizadas(Reserva reserva) {
         reserva.setConcretizada(true);
         reserva.getCliente().setNumReservasConcretizadas(reserva.getCliente().getNumReservasConcretizadas() + 1);
+    }
+
+    public double retornarCustoTodasReservas() {
+        double custoAcumulado = 0;
+
+        for (Reserva reserva : listaReservas) {
+            custoAcumulado += reserva.calcularCustoReserva();
+        }
+
+        return custoAcumulado;
+    }
+
+    public List<Reserva> retornarReservasCustoDecrescente() {
+        List<Reserva> listaReservasTemp = new ArrayList<>(listaReservas);
+        Criterio3_ReservaCustoCrescente criterio = new Criterio3_ReservaCustoCrescente();
+        Collections.sort(listaReservasTemp, criterio);
+        Collections.reverse(listaReservasTemp);
+
+        return listaReservasTemp;
     }
 
     public List<Reserva> retornarReservasEfetuadasDataCrescente() {

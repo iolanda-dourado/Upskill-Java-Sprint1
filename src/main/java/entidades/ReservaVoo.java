@@ -69,30 +69,17 @@ public class ReservaVoo extends Reserva {
         return this.voo.getQntLugaresDisponiveis() - this.getQntPessoas();
     }
 
-    // Situações
     @Override
     public double calcularCustoReserva() {
-        double bilheteTemp = 0;
-        double reservaComDesconto = 0;
-
-        // 1 - Ter desconto da temporada e multiplo de 5
-        if (isPromocao(formatarData(voo.getDataPartida()), voo.getDataPartida())){
-            if (getCliente().getNumReservasConcretizadas() % getNumMultiploDeX() == 0) {
-                bilheteTemp = voo.getPrecoBilhete() - (voo.getPrecoBilhete()*Voo.getDescontoVoo());
-                reservaComDesconto = (bilheteTemp * getQntPessoas()) + getTaxaReserva();
-                return reservaComDesconto - (reservaComDesconto*getCliente().getPercentagemDesconto());
-        // 2 - Ter desconto só da temporada
-            } else {
-                bilheteTemp = voo.getPrecoBilhete() - (voo.getPrecoBilhete()*Voo.getDescontoVoo());
-                return (bilheteTemp * getQntPessoas()) + getTaxaReserva();
-            }
-        // 3 - Ter só desconto de multiplo de 5
-        } else if (getCliente().getNumReservasConcretizadas() % getNumMultiploDeX() == 0) {
-            reservaComDesconto = (voo.getPrecoBilhete() * getQntPessoas()) + getTaxaReserva();
-            return reservaComDesconto - (reservaComDesconto*getCliente().getPercentagemDesconto());
+        double novoPreco = voo.calcularCustoBilheteIda();
+        double custoReserva = getQntPessoas()*novoPreco + getTaxaReserva();
+        if (saoReservasMultiplasDe5()) {
+            double desconto = custoReserva * (getCliente().getPercentagemDesconto()/100);
+            return custoReserva - desconto;
+        } else{
+            return custoReserva;
         }
-
-        // 4 - Não ter nenhum desconto
-        return this.voo.getPrecoBilhete() * this.getQntPessoas() + getTaxaReserva();
     }
+
+
 }

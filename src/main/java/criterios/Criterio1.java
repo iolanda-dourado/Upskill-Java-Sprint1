@@ -3,7 +3,6 @@ package criterios;
 import entidades.Cliente;
 
 import java.util.Comparator;
-import java.util.Objects;
 
 public class Criterio1 implements Comparator<Cliente> {
 

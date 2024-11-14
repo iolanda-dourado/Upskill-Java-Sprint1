@@ -6,7 +6,7 @@ import utilidades.Data;
 
 import java.util.Objects;
 
-public abstract class Reserva implements Identificacavel, Comparable<Reserva>, Descontavel {
+public abstract class Reserva implements Identificacavel, Comparable<Reserva> {
     private String codigoReserva;
     private Data dataReserva;
     private int qntPessoas;
@@ -25,7 +25,7 @@ public abstract class Reserva implements Identificacavel, Comparable<Reserva>, D
 
     public Reserva(Data dataReserva, int qntPessoas, Cliente cliente) {
         this.codigoReserva = gerarIdentificador();
-        this.dataReserva = dataReserva;
+        this.dataReserva = new Data (dataReserva);
         this.qntPessoas = qntPessoas;
         this.cliente = cliente;
         this.isConcretizada = false;
@@ -119,7 +119,6 @@ public abstract class Reserva implements Identificacavel, Comparable<Reserva>, D
         Reserva.numMultiploDeX = numMultiploDeX;
     }
 
-    public abstract double calcularCustoReserva();
 
     @Override
     public abstract String gerarIdentificador();
@@ -136,27 +135,9 @@ public abstract class Reserva implements Identificacavel, Comparable<Reserva>, D
         }
     }
 
-    @Override
-    public int formatarData(Data umaData) {
-        String st = umaData.toAnoMesDiaString().replace("/", "");
-        return Integer.parseInt(st);
+    public boolean saoReservasMultiplasDe5() {
+        return getCliente().getNumReservasConcretizadas() % getNumMultiploDeX() == 0;
     }
 
-
-    @Override
-    public boolean isPromocao(int a, Data umaData) {
-        int dataTemp1 = Integer.parseInt(umaData.getAno() + Descontavel.INICIO_TEMP1);
-        int dataTemp2 = Integer.parseInt(umaData.getAno() +  Descontavel.FINAL_TEMP1);
-        int dataTemp3 = Integer.parseInt(umaData.getAno() +  Descontavel.INICIO_TEMP2);
-        int dataTemp4 = Integer.parseInt(umaData.getAno() + Descontavel.FINAL_TEMP2);
-        int dataTemp5 = Integer.parseInt(umaData.getAno() + Descontavel.INICIO_TEMP3);
-        int dataTemp6 = Integer.parseInt(umaData.getAno() + Descontavel.FINAL_TEMP3);
-
-        if (a >= dataTemp1 || a <= dataTemp2){
-            return true;
-        } else if (a >= dataTemp3 || a <= dataTemp4) {
-            return true;
-        } else return a >= dataTemp5 || a <= dataTemp6;
-
-    }
+    public abstract double calcularCustoReserva();
 }

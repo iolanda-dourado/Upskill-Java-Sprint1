@@ -7,7 +7,9 @@ import utilidades.Data;
 import java.time.LocalTime;
 import java.util.Objects;
 
-public class Voo {
+import static entidades.Reserva.getTaxaReserva;
+
+public class Voo implements Descontavel {
     private String codigoVoo;
     private CompanhiaAerea companhiaAerea;
     private int qntLugares;
@@ -29,6 +31,8 @@ public class Voo {
     private static final double PRECO_BILHETE_OMISSAO = 0;
     private static final Data DATA_PARTIDA_OMISSAO = new Data();
     private static final LocalTime HORA_PARTIDA_OMISSAO = LocalTime.of(0,0);
+    private static final int KMS_PARA_DAR_DESCONTO = 1000;
+    private static final double TAXA_DESCONTO_VOO_REGRESSO = 0.01;
 
     private static double descontoVoo = 0.3;
 
@@ -157,5 +161,52 @@ public class Voo {
 
     public static double getDescontoVoo() {
         return descontoVoo;
+    }
+
+    @Override
+    public int formatarData(Data data) {
+        String st = data.toAnoMesDiaString().replace("/", "");
+        return Integer.parseInt(st);
+    }
+
+    @Override
+    public boolean isPromocao(int a, Data umaData) {
+        int dataTemp1 = Integer.parseInt(umaData.getAno() + Descontavel.INICIO_TEMP1);
+        int dataTemp2 = Integer.parseInt(umaData.getAno() +  Descontavel.FINAL_TEMP1);
+        int dataTemp3 = Integer.parseInt(umaData.getAno() +  Descontavel.INICIO_TEMP2);
+        int dataTemp4 = Integer.parseInt(umaData.getAno() + Descontavel.FINAL_TEMP2);
+        int dataTemp5 = Integer.parseInt(umaData.getAno() + Descontavel.INICIO_TEMP3);
+        int dataTemp6 = Integer.parseInt(umaData.getAno() + Descontavel.FINAL_TEMP3);
+
+        if (a >= dataTemp1 || a <= dataTemp2){
+            return true;
+        } else if (a >= dataTemp3 || a <= dataTemp4) {
+            return true;
+        } else return a >= dataTemp5 || a <= dataTemp6;
+    }
+
+    public double calcularCustoBilheteIda() {
+        double valorDescontoTemporada = precoBilhete * descontoVoo;
+        // 1 - Ter desconto da temporada
+        if (isPromocao(formatarData(dataPartida), dataPartida)){
+            return precoBilhete - (valorDescontoTemporada);
+        }
+
+        return precoBilhete;
+    }
+
+    public double calcularCustoBilheteVolta() {
+       // Desconto da temporada
+        double valorDescontoTemporada = precoBilhete * descontoVoo;
+        boolean estaNaPromocao = isPromocao(formatarData(dataPartida), dataPartida);
+        // Desconto da Kms
+        double blocosDe1000km = distanciaKmAeroporto / KMS_PARA_DAR_DESCONTO;
+        double descontoKms = blocosDe1000km * TAXA_DESCONTO_VOO_REGRESSO;
+        double valorDescontoKms = descontoKms * precoBilhete;
+
+        if (estaNaPromocao) {
+            return precoBilhete - (valorDescontoTemporada + valorDescontoKms);
+        }
+        return precoBilhete - (valorDescontoTemporada);
     }
 }

@@ -68,6 +68,15 @@ public class Hotel implements Identificacavel {
     }
 
     public void setCategoria(CategoriaHotel categoria) {
+        boolean categoriaInvalida = true;
+        for (int i = 0; i < CategoriaHotel.values().length; i++) {
+            if (categoria == ) {
+                categoriaInvalida = false;
+            }
+        }
+        if (categoriaInvalida) {
+            throw new IllegalArgumentException("A categoria informada não é válida.");
+        }
         this.categoria = categoria;
     }
 

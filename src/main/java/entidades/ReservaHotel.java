@@ -1,28 +1,27 @@
 package entidades;
 
+import interfaces.Descontavel;
 import utilidades.Data;
 
 import java.util.Objects;
 
-public class ReservaHotel extends Reserva {
+public class ReservaHotel extends Reserva implements Descontavel {
     private Hotel hotel;
     private Data dataChegada;
     private int numNoitesEstadia;
-
 
     private static final int NUM_NOITES_ESTADIA_OMISSAO = -1;
     private static final String PREFIXO_RESERVA_HOTEL = "R_HTL-";
     private static int reservaHotelCount = 0;
     private static int capacidadeMax = 2;
-    private static double descontoDiaria = 30;
-
+    private static double descontoDiaria = 0.3;
 
     public ReservaHotel(Data dataReserva, int qntPessoas, Cliente cliente, Hotel hotel, Data dataChegada, int numNoitesEstadia) {
         super(dataReserva, qntPessoas, cliente);
         ++reservaHotelCount;
         this.setCodigoReserva(gerarIdentificador());
         this.hotel = hotel;
-        this.dataChegada = dataChegada;
+        this.dataChegada = new Data (dataChegada);
         this.numNoitesEstadia = numNoitesEstadia;
     }
 
@@ -103,14 +102,67 @@ public class ReservaHotel extends Reserva {
         ReservaHotel.descontoDiaria = descontoDiaria;
     }
 
+    public int verificaDiariasPromocao() {
+        int count = 0;
+        int dataTemp = formatarData(dataChegada);
+        for (int i = 0; i < numNoitesEstadia; i++) {
+            if (isPromocao(dataTemp+i, dataChegada)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int verificaQuantidadeQuartos() {
+        int numQuartos = getQntPessoas()/capacidadeMax;
+        if(getQntPessoas() % capacidadeMax == 1) {
+            numQuartos = (getQntPessoas()/capacidadeMax) +1;
+        }
+
+        return numQuartos;
+    }
+
     @Override
     public String gerarIdentificador() {
         return String.format("%s%s", PREFIXO_RESERVA_HOTEL, reservaHotelCount);
     }
 
     @Override
+    public int formatarData(Data umaData) {
+        String st = umaData.toAnoMesDiaString().replace("/", "");
+        return Integer.parseInt(st);
+    }
+
+
+    @Override
+    public boolean isPromocao(int a, Data umaData) {
+        int dataTemp1 = Integer.parseInt(umaData.getAno() + Descontavel.INICIO_TEMP1);
+        int dataTemp2 = Integer.parseInt(umaData.getAno() +  Descontavel.FINAL_TEMP1);
+        int dataTemp3 = Integer.parseInt(umaData.getAno() +  Descontavel.INICIO_TEMP2);
+        int dataTemp4 = Integer.parseInt(umaData.getAno() + Descontavel.FINAL_TEMP2);
+        int dataTemp5 = Integer.parseInt(umaData.getAno() + Descontavel.INICIO_TEMP3);
+        int dataTemp6 = Integer.parseInt(umaData.getAno() + Descontavel.FINAL_TEMP3);
+
+        if (a >= dataTemp1 || a <= dataTemp2){
+            return true;
+        } else if (a >= dataTemp3 || a <= dataTemp4) {
+            return true;
+        } else return a >= dataTemp5 || a <= dataTemp6;
+    }
+
+    @Override
     public double calcularCustoReserva() {
-        double precoPorNoite = getHotel().getPrecoPorQuarto();
-        return 0;
+        double precoQuarto = hotel.getPrecoPorQuarto();
+        double precoPromocao = precoQuarto-(precoQuarto*descontoDiaria);
+        int quartos = verificaQuantidadeQuartos();
+        int diariasPromocao = verificaDiariasPromocao();
+
+        if(numNoitesEstadia == diariasPromocao) {
+            return (quartos * precoPromocao *numNoitesEstadia) + getTaxaReserva();
+
+        } else {
+            int diariasRestantes = numNoitesEstadia - diariasPromocao;
+            return (quartos * precoPromocao * diariasPromocao)+(quartos * precoQuarto * diariasRestantes)+getTaxaReserva();
+        }
     }
 }
