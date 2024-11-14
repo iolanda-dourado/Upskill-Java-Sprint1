@@ -72,7 +72,8 @@ public class ReservaVoo extends Reserva {
     @Override
     public double calcularCustoReserva() {
         double novoPreco = voo.calcularCustoBilheteIda();
-        double custoReserva = getQntPessoas()*novoPreco + getTaxaReserva();
+        double custoReserva = (getQntPessoas()*novoPreco) + getTaxaReserva();
+
         if (saoReservasMultiplasDe5()) {
             double desconto = custoReserva * (getCliente().getPercentagemDesconto()/100);
             return custoReserva - desconto;
@@ -80,6 +81,5 @@ public class ReservaVoo extends Reserva {
             return custoReserva;
         }
     }
-
 
 }

@@ -2,13 +2,13 @@ package entidades;
 
 import criterios.Criterio1;
 import criterios.Criterio3_ReservaCustoCrescente;
+import enums.CompanhiaAerea;
+import interfaces.GerarInfoAuto;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.io.Serializable;
+import java.util.*;
 
-public class Empresa {
+public class Empresa implements GerarInfoAuto, Serializable {
     private String nomeEmpresa;
     private String morada;
     private List<Cliente> listaClientes;
@@ -333,4 +333,56 @@ public class Empresa {
         return listaClienteTemp;
     }
 
+    public Aeroporto gerarAeroportoAuto() {
+        GerarInfoAuto infoAuto;
+        Random gerador = new Random();
+        int indice = gerador.nextInt(10)+1;
+        String endereco = "", paginaWeb = "", codigoAeroporto = "";
+
+        try {
+            endereco = (String) GerarInfoAuto.class.getField("ENDERECO" + indice).get(null);
+            paginaWeb = (String) GerarInfoAuto.class.getField("PAGINA_WEB" + indice).get(null);
+            codigoAeroporto = (String) GerarInfoAuto.class.getField("CODIGO_AEROPORTO" + indice).get(null);
+
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            System.out.println("Valores inexistentes");
+        }
+
+        Aeroporto aeroporto = new Aeroporto(endereco, paginaWeb, codigoAeroporto);
+        this.adicionarAeroporto(aeroporto);
+        return aeroporto;
+    }
+
+    public Voo gerarVoo() {
+        GerarInfoAuto infoAuto;
+        Random gerador = new Random();
+        int indice = gerador.nextInt(10)+1;
+        String codigoVoo = "";
+        int cont = 0;
+        CompanhiaAerea companhiaAerea;
+        for (CompanhiaAerea companhia1 : CompanhiaAerea.values()) {
+            cont++;
+            if (cont == indice) {
+                companhiaAerea = companhia1;
+                break;
+            }
+        }
+        int qntLugares = gerador.nextInt(150) + 31;
+        int qntLugaresDisponiveis = gerador.nextInt(20) + 1;
+        Aeroporto aeroportoSaida = listaAeroportos.get(gerador.nextInt(2)+1);
+        Aeroporto aeroportoChegada = listaAeroportos.get(gerador.nextInt(4)+2);
+        double distanciaKmAeroporto = gerador.nextInt(15000)+2000;
+        double precoBilhete = gerador.nextDouble(700)+1;
+        //    private Data dataPartida;
+        //    private LocalTime horaPartida;
+
+        try {
+            codigoVoo = (String) GerarInfoAuto.class.getField("VOO_CODIGO" + indice).get(null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            System.out.println("Valores inexistentes");
+        }
+
+
+        return null;
+    }
 }

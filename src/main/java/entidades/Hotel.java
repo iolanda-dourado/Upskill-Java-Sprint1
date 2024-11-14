@@ -3,9 +3,10 @@ package entidades;
 import enums.CategoriaHotel;
 import interfaces.Identificacavel;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Hotel implements Identificacavel {
+public class Hotel implements Identificacavel, Serializable {
     private String codigoHotel;
     private String nomeHotel;
     private CategoriaHotel categoria;
@@ -24,7 +25,7 @@ public class Hotel implements Identificacavel {
     public Hotel(String nomeHotel, CategoriaHotel categoria, String localidade, boolean transfer, double precoPorQuarto) {
         this.codigoHotel = gerarIdentificador();
         this.nomeHotel = nomeHotel;
-        this.categoria = categoria;
+        setCategoria(categoria);
         this.localidade = localidade;
         this.transfer = transfer;
         setPrecoPorQuarto(precoPorQuarto);
@@ -69,9 +70,10 @@ public class Hotel implements Identificacavel {
 
     public void setCategoria(CategoriaHotel categoria) {
         boolean categoriaInvalida = true;
-        for (int i = 0; i < CategoriaHotel.values().length; i++) {
-            if (categoria == ) {
+        for (CategoriaHotel cat : CategoriaHotel.values()) {
+            if (cat == categoria) {
                 categoriaInvalida = false;
+                break;
             }
         }
         if (categoriaInvalida) {

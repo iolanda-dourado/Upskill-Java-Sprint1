@@ -4,14 +4,16 @@ import interfaces.Descontavel;
 import interfaces.Identificacavel;
 import utilidades.Data;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class Reserva implements Identificacavel, Comparable<Reserva> {
+public abstract class Reserva implements Identificacavel, Comparable<Reserva>, Serializable {
     private String codigoReserva;
     private Data dataReserva;
     private int qntPessoas;
     private Cliente cliente;
     private boolean isConcretizada;
+    private boolean isAtributoSet;
 
     private static final Data DATA_RESERVA_OMISSAO = Data.dataAtual();
     private static final int QNT_PESSOAS_OMISSAO = 0;
@@ -23,12 +25,14 @@ public abstract class Reserva implements Identificacavel, Comparable<Reserva> {
     private static int numMultiploDeX = 5;
 
 
+
     public Reserva(Data dataReserva, int qntPessoas, Cliente cliente) {
         this.codigoReserva = gerarIdentificador();
         this.dataReserva = new Data (dataReserva);
         this.qntPessoas = qntPessoas;
         this.cliente = cliente;
         this.isConcretizada = false;
+        isAtributoSet = false;
         ++reservaCount;
     }
 
@@ -78,7 +82,12 @@ public abstract class Reserva implements Identificacavel, Comparable<Reserva> {
     }
 
     public void setConcretizada(boolean concretizada) {
-        isConcretizada = concretizada;
+        if (!isAtributoSet) {
+            this.isConcretizada = concretizada;
+            isAtributoSet = true;
+        } else {
+            throw new UnsupportedOperationException("A reserva já foi concretizada  e não pode ser alterada.");
+        }
     }
 
     @Override
@@ -136,7 +145,7 @@ public abstract class Reserva implements Identificacavel, Comparable<Reserva> {
     }
 
     public boolean saoReservasMultiplasDe5() {
-        return getCliente().getNumReservasConcretizadas() % getNumMultiploDeX() == 0;
+        return getCliente().getNumReservasConcretizadas() != 0 && getCliente().getNumReservasConcretizadas() % getNumMultiploDeX() == 0;
     }
 
     public abstract double calcularCustoReserva();

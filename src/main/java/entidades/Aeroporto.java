@@ -1,8 +1,9 @@
 package entidades;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Aeroporto {
+public class Aeroporto implements Serializable {
     private String endereco;
     private String paginaWeb;
     private String codigoAeroporto;

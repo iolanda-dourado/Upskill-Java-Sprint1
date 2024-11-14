@@ -4,12 +4,13 @@ import enums.CompanhiaAerea;
 import interfaces.Descontavel;
 import utilidades.Data;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Objects;
 
 import static entidades.Reserva.getTaxaReserva;
 
-public class Voo implements Descontavel {
+public class Voo implements Descontavel, Serializable {
     private String codigoVoo;
     private CompanhiaAerea companhiaAerea;
     private int qntLugares;
@@ -189,7 +190,7 @@ public class Voo implements Descontavel {
         double valorDescontoTemporada = precoBilhete * descontoVoo;
         // 1 - Ter desconto da temporada
         if (isPromocao(formatarData(dataPartida), dataPartida)){
-            return precoBilhete - (valorDescontoTemporada);
+            return precoBilhete - valorDescontoTemporada;
         }
 
         return precoBilhete;

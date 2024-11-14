@@ -4,9 +4,10 @@ import enums.Genero;
 import interfaces.Identificacavel;
 import utilidades.Data;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Cliente implements Identificacavel {
+public class Cliente implements Identificacavel, Serializable {
     private String codigoCliente;
     private String nomeCliente;
     private Data dataNascimento;
