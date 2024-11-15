@@ -57,7 +57,6 @@ public class Main {
 
         Empresa empresa1 = new Empresa("Empresa 1", "Rua Sem Nome");
         empresa1.adicionarReserva(reserva1);
-        GeradorAutomatico.gerarAeroportoAuto(empresa1);
        // GeradorAutomatico.gerarVooAuto(empresa1);
         empresa1.listarAeroportos();
         empresa1.listarVoos();
