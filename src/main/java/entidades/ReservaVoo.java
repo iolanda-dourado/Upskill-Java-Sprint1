@@ -9,7 +9,7 @@ public class ReservaVoo extends Reserva {
 
     private static final String PREFIXO_RESERVA_VOO = "R_VOO-";
 
-    private int reservaVooCount = 0;
+    private static int reservaVooCount = 0;
 
     public ReservaVoo(Data dataReserva, int qntPessoas, Cliente cliente, Voo voo) {
         super(dataReserva, qntPessoas, cliente);
@@ -24,6 +24,11 @@ public class ReservaVoo extends Reserva {
         ++reservaVooCount;
         this.setCodigoReserva(gerarIdentificador());
         this.voo = new Voo();
+    }
+
+    public ReservaVoo(ReservaVoo outra) {
+        super(outra);
+        this.voo = new Voo(outra.voo);
     }
 
     public Voo getVoo() {
@@ -41,15 +46,10 @@ public class ReservaVoo extends Reserva {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         ReservaVoo that = (ReservaVoo) o;
-        return reservaVooCount == that.reservaVooCount && Objects.equals(voo, that.voo);
-    }
-
-    public int getReservaVooCount() {
-        return reservaVooCount;
+        return Objects.equals(voo, that.voo);
     }
 
     @Override
@@ -59,9 +59,6 @@ public class ReservaVoo extends Reserva {
 
 
     public int atualizarNumLugaresDisponiveis() {
-        if (voo.getQntLugaresDisponiveis() == 0) {
-            throw new ArithmeticException("Não existem mais lugares disponíveis.");
-        }
         if (this.getQntPessoas() > voo.getQntLugaresDisponiveis()) {
             throw new ArithmeticException("O avião não tem lugares disponíveis suficientes.");
         }
@@ -80,7 +77,9 @@ public class ReservaVoo extends Reserva {
         } else{
             return custoReserva;
         }
-
     }
 
+    public int getReservaVooCount() {
+        return reservaVooCount;
+    }
 }

@@ -60,7 +60,6 @@ public class Aeroporto implements Serializable {
         return String.format("--- Aeroporto ---\nCódigo do Aeroporto: %s\nEndereço: %s\nPágina Web: %s", codigoAeroporto, endereco, paginaWeb);
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -11,7 +11,7 @@ public class ReservaVooIdaVolta extends ReservaVoo {
     private static final int KMS_PARA_DAR_DESCONTO = 1000;
     private static final double TAXA_DESCONTO_VOO_REGRESSO = 0.01;
 
-    private int reservaVooIdaVoltaCount = 0;
+    private static int reservaVooIdaVoltaCount = 0;
 
     public ReservaVooIdaVolta(Data dataReserva, int qntPessoas, Cliente cliente, Voo voo, Voo vooRegresso) {
         super(dataReserva, qntPessoas, cliente, voo);
@@ -23,6 +23,11 @@ public class ReservaVooIdaVolta extends ReservaVoo {
         super();
         ++reservaVooIdaVoltaCount;
         this.vooRegresso = new Voo();
+    }
+
+    public ReservaVooIdaVolta(ReservaVooIdaVolta outra) {
+        super(outra);
+        this.vooRegresso = new Voo (outra.vooRegresso);
     }
 
     public Voo getVooRegresso() {
@@ -40,17 +45,11 @@ public class ReservaVooIdaVolta extends ReservaVoo {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         ReservaVooIdaVolta that = (ReservaVooIdaVolta) o;
-        return reservaVooIdaVoltaCount == that.reservaVooIdaVoltaCount && Objects.equals(vooRegresso, that.vooRegresso);
+        return Objects.equals(vooRegresso, that.vooRegresso);
     }
-
-    public int getReservaVooIdaVoltaCount() {
-        return reservaVooIdaVoltaCount;
-    }
-
 
     @Override
     public String gerarIdentificador() {
@@ -70,5 +69,9 @@ public class ReservaVooIdaVolta extends ReservaVoo {
             return custoReservaTotal - (custoReservaTotal * percentagemDesconto);
         }
         return custoReservaTotal;
+    }
+
+    public int getReservaVooIdaVoltaCount() {
+        return reservaVooIdaVoltaCount;
     }
 }

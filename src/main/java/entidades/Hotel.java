@@ -40,6 +40,15 @@ public class Hotel implements Identificacavel, Serializable {
         this.precoPorQuarto = PRECO_QUARTO_POR_OMISSAO;
     }
 
+    public Hotel(Hotel outro) {
+        this.codigoHotel = outro.codigoHotel;
+        this.nomeHotel = outro.nomeHotel;
+        this.categoria = outro.categoria;
+        this.localidade = outro.localidade;
+        this.transfer = outro.transfer;
+        this.precoPorQuarto = outro.precoPorQuarto;
+    }
+
     public String getCodigoHotel() {
         return codigoHotel;
     }
@@ -109,7 +118,7 @@ public class Hotel implements Identificacavel, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Hotel hotel = (Hotel) o;
-        return Objects.equals(codigoHotel, hotel.codigoHotel) && transfer == hotel.transfer && Double.compare(precoPorQuarto, hotel.precoPorQuarto) == 0 && Objects.equals(nomeHotel, hotel.nomeHotel) && categoria == hotel.categoria && Objects.equals(localidade, hotel.localidade);
+        return transfer == hotel.transfer && Double.compare(precoPorQuarto, hotel.precoPorQuarto) == 0 && Objects.equals(nomeHotel, hotel.nomeHotel) && categoria == hotel.categoria && Objects.equals(localidade, hotel.localidade);
     }
 
     @Override

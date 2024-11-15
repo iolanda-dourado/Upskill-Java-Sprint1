@@ -39,12 +39,12 @@ public class Voo implements Descontavel, Serializable {
         this.codigoVoo = codigoVoo;
         companhiaAerea = companhia;
         this.qntLugares = qntLugares;
-        this.qntLugaresDisponiveis = qntLugares;
+        setQntLugaresDisponiveis(qntLugares);
         this.aeroportoSaida = aeroportoSaida;
         this.aeroportoChegada = aeroportoChegada;
         this.distanciaKmAeroporto = distanciaKmAeroporto;
         this.precoBilhete = precoBilhete;
-        this.dataPartida = dataPartida;
+        this.dataPartida = new Data(dataPartida);
         this.horaPartida = horaPartida;
     }
 
@@ -59,6 +59,19 @@ public class Voo implements Descontavel, Serializable {
         this.precoBilhete = PRECO_BILHETE_OMISSAO;
         this.dataPartida = DATA_PARTIDA_OMISSAO;
         this.horaPartida = HORA_PARTIDA_OMISSAO;
+    }
+
+    public Voo(Voo outro) {
+        this.codigoVoo = outro.codigoVoo;
+        this.companhiaAerea = outro.companhiaAerea;
+        this.qntLugares = outro.qntLugares;
+        this.qntLugaresDisponiveis = outro.qntLugaresDisponiveis;
+        this.aeroportoSaida = new Aeroporto(outro.aeroportoChegada);
+        this.aeroportoChegada = new Aeroporto(outro.aeroportoChegada);
+        this.distanciaKmAeroporto = outro.distanciaKmAeroporto;
+        this.precoBilhete = outro.precoBilhete;
+        this.dataPartida = new Data(outro.dataPartida);
+        this.horaPartida = outro.horaPartida;
     }
 
     public String getCodigoVoo() {
@@ -94,7 +107,7 @@ public class Voo implements Descontavel, Serializable {
     }
 
     public Data getDataPartida() {
-        return dataPartida;
+        return new Data (dataPartida);
     }
 
     public LocalTime getHoraPartida() {
@@ -114,6 +127,10 @@ public class Voo implements Descontavel, Serializable {
     }
 
     public void setQntLugaresDisponiveis(int qntLugaresDisponiveis) {
+        if (qntLugaresDisponiveis == 0) {
+            throw new ArithmeticException("Não existem mais lugares disponíveis.");
+        }
+
         this.qntLugaresDisponiveis = qntLugaresDisponiveis;
     }
 
@@ -137,7 +154,7 @@ public class Voo implements Descontavel, Serializable {
     }
 
     public void setDataPartida(Data dataPartida) {
-        this.dataPartida = dataPartida;
+        this.dataPartida.setData(dataPartida.getAno(), dataPartida.getMes(), dataPartida.getDia());
     }
 
     public void setHoraPartida(LocalTime horaPartida) {
@@ -155,11 +172,7 @@ public class Voo implements Descontavel, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Voo voo = (Voo) o;
-        return qntLugares == voo.qntLugares && qntLugaresDisponiveis == voo.qntLugaresDisponiveis && distanciaKmAeroporto == voo.distanciaKmAeroporto && Double.compare(precoBilhete, voo.precoBilhete) == 0 && Objects.equals(codigoVoo, voo.codigoVoo) && companhiaAerea == voo.companhiaAerea && Objects.equals(aeroportoSaida, voo.aeroportoSaida) && Objects.equals(aeroportoChegada, voo.aeroportoChegada) && Objects.equals(dataPartida, voo.dataPartida) && Objects.equals(horaPartida, voo.horaPartida);
-    }
-
-    public static double getDescontoVoo() {
-        return descontoVoo;
+        return qntLugares == voo.qntLugares && distanciaKmAeroporto == voo.distanciaKmAeroporto && Double.compare(precoBilhete, voo.precoBilhete) == 0 && Objects.equals(codigoVoo, voo.codigoVoo) && companhiaAerea == voo.companhiaAerea && Objects.equals(aeroportoSaida, voo.aeroportoSaida) && Objects.equals(aeroportoChegada, voo.aeroportoChegada) && Objects.equals(dataPartida, voo.dataPartida) && Objects.equals(horaPartida, voo.horaPartida);
     }
 
     @Override
@@ -192,7 +205,7 @@ public class Voo implements Descontavel, Serializable {
         double valorDescontoTemporada = precoBilhete * descontoVoo;
         boolean estaNaPromocao = isPromocao(formatarData(dataPartida));
         // Desconto da Kms
-        double blocosDe1000km = distanciaKmAeroporto / KMS_PARA_DAR_DESCONTO;
+        int blocosDe1000km = (int)distanciaKmAeroporto / KMS_PARA_DAR_DESCONTO;
         double descontoKms = blocosDe1000km * TAXA_DESCONTO_VOO_REGRESSO;
         double valorDescontoKms = descontoKms * precoBilhete;
 
@@ -200,5 +213,9 @@ public class Voo implements Descontavel, Serializable {
             return precoBilhete - (valorDescontoTemporada + valorDescontoKms);
         }
         return precoBilhete - (valorDescontoTemporada);
+    }
+
+    public static double getDescontoVoo() {
+        return descontoVoo;
     }
 }

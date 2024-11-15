@@ -1,5 +1,7 @@
 package enums;
 
+import utilidades.Data;
+
 public enum GerarAutomaticoCliente {
     CLIENTE_1("João Silva", new Data(1980, 1, 15), Genero.MASCULINO, 123456789, "P123456", "joao.silva@email.com", 5.0),
     CLIENTE_2("Maria Oliveira", new Data(1990, 2, 20), Genero.FEMENINO, 987654321, "P987654", "maria.oliveira@email.com", 10.0),

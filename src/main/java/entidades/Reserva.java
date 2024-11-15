@@ -44,12 +44,21 @@ public abstract class Reserva implements Identificacavel, Comparable<Reserva>, S
         ++reservaCount;
     }
 
+    public Reserva(Reserva outra) {
+        this.codigoReserva = outra.codigoReserva;
+        this.dataReserva = new Data (outra.dataReserva);
+        this.qntPessoas = outra.qntPessoas;
+        this.cliente = new Cliente (outra.cliente);
+        this.isConcretizada = outra.isConcretizada;
+        isAtributoSet = outra.isAtributoSet;
+    }
+
     public String getCodigoReserva() {
         return codigoReserva;
     }
 
     public Data getDataReserva() {
-        return dataReserva;
+        return new Data(dataReserva);
     }
 
     public int getQntPessoas() {
@@ -60,6 +69,7 @@ public abstract class Reserva implements Identificacavel, Comparable<Reserva>, S
         return cliente;
     }
 
+
     public boolean isConcretizada() {
         return isConcretizada;
     }
@@ -69,7 +79,7 @@ public abstract class Reserva implements Identificacavel, Comparable<Reserva>, S
     }
 
     public void setDataReserva(Data dataReserva) {
-        this.dataReserva = dataReserva;
+        this.dataReserva.setData(dataReserva.getAno(), dataReserva.getMes(), dataReserva.getDia());
     }
 
     public void setQntPessoas(int qntPessoas) {
@@ -98,14 +108,32 @@ public abstract class Reserva implements Identificacavel, Comparable<Reserva>, S
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Reserva reserva = (Reserva) o;
-        return getQntPessoas() == reserva.getQntPessoas() &&
-                isConcretizada() == reserva.isConcretizada() &&
-                Objects.equals(getDataReserva(), reserva.getDataReserva()) &&
-                Objects.equals(getCliente(), reserva.getCliente());
+        return qntPessoas == reserva.qntPessoas && isConcretizada == reserva.isConcretizada && isAtributoSet == reserva.isAtributoSet && Objects.equals(dataReserva, reserva.dataReserva) && Objects.equals(cliente, reserva.cliente);
     }
+
+
+    @Override
+    public abstract String gerarIdentificador();
+
+    // Implementa Comparable (ordenar por ordem crescente de Data)
+
+    @Override
+    public int compareTo(Reserva outraReserva) {
+        if (dataReserva.isMaior(outraReserva.dataReserva)) {
+            return -1;
+        } else if (!dataReserva.isMaior(outraReserva.dataReserva)) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    public boolean saoReservasMultiplasDe5() {
+        return getCliente().getNumReservasConcretizadas() != 0 && getCliente().getNumReservasConcretizadas() % getNumMultiploDeX() == 0;
+    }
+
+    public abstract double calcularCustoReserva();
 
     public static int getReservaCount() {
         return reservaCount;
@@ -126,26 +154,4 @@ public abstract class Reserva implements Identificacavel, Comparable<Reserva>, S
     public static void setNumMultiploDeX(int numMultiploDeX) {
         Reserva.numMultiploDeX = numMultiploDeX;
     }
-
-
-    @Override
-    public abstract String gerarIdentificador();
-
-    // Implementa Comparable (ordenar por ordem crescente de Data)
-    @Override
-    public int compareTo(Reserva outraReserva) {
-        if (dataReserva.isMaior(outraReserva.dataReserva)) {
-            return -1;
-        } else if (!dataReserva.isMaior(outraReserva.dataReserva)) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    public boolean saoReservasMultiplasDe5() {
-        return getCliente().getNumReservasConcretizadas() != 0 && getCliente().getNumReservasConcretizadas() % getNumMultiploDeX() == 0;
-    }
-
-    public abstract double calcularCustoReserva();
 }

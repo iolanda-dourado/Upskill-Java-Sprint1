@@ -1,5 +1,7 @@
 package enums;
 
+import utilidades.Data;
+
 import java.time.LocalTime;
 
 public enum GerarAutomaticoVoo {

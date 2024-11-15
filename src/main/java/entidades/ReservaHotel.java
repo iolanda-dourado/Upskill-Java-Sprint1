@@ -34,12 +34,19 @@ public class ReservaHotel extends Reserva implements Descontavel {
         this.numNoitesEstadia = NUM_NOITES_ESTADIA_OMISSAO;
     }
 
+    public ReservaHotel(ReservaHotel outra) {
+        super(outra);
+        this.hotel = new Hotel(outra.hotel);
+        this.dataChegada = new Data(outra.dataChegada);
+        this.numNoitesEstadia = outra.numNoitesEstadia;
+    }
+
     public Hotel getHotel() {
         return hotel;
     }
 
     public Data getDataChegada() {
-        return dataChegada;
+        return new Data(dataChegada);
     }
 
     public int getNumNoitesEstadia() {
@@ -51,7 +58,7 @@ public class ReservaHotel extends Reserva implements Descontavel {
     }
 
     public void setDataChegada(Data dataChegada) {
-        this.dataChegada = dataChegada;
+        this.dataChegada.setData(dataChegada.getAno(), dataChegada.getMes(), dataChegada.getDia());
     }
 
     public void setNumNoitesEstadia(int numNoitesEstadia) {
@@ -72,7 +79,6 @@ public class ReservaHotel extends Reserva implements Descontavel {
         );
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -80,26 +86,6 @@ public class ReservaHotel extends Reserva implements Descontavel {
         if (!super.equals(o)) return false;
         ReservaHotel that = (ReservaHotel) o;
         return numNoitesEstadia == that.numNoitesEstadia && Objects.equals(hotel, that.hotel) && Objects.equals(dataChegada, that.dataChegada);
-    }
-
-    public static int getReservaHotelCount() {
-        return reservaHotelCount;
-    }
-
-    public static int getCapacidadeMax() {
-        return capacidadeMax;
-    }
-
-    public static double getDescontoDiaria() {
-        return descontoDiaria;
-    }
-
-    public static void setCapacidadeMax(int capacidadeMax) {
-        ReservaHotel.capacidadeMax = capacidadeMax;
-    }
-
-    public static void setDescontoDiaria(double descontoDiaria) {
-        ReservaHotel.descontoDiaria = descontoDiaria;
     }
 
     public int verificaDiariasPromocao() {
@@ -121,11 +107,10 @@ public class ReservaHotel extends Reserva implements Descontavel {
         for (int i = 0; i < numNoitesEstadia; i++) {
             if (countTemp > 0) {
                 dataTemp += 1;
-                diaTemp+=1;
+                diaTemp += 1;
             }
             if (diasParametro < diaTemp) {
                 if (mesTemp == 12) {
-//                    anoTemp += 1;
                     mesTemp = 0;
                 }
                 mesTemp += 1;
@@ -139,6 +124,9 @@ public class ReservaHotel extends Reserva implements Descontavel {
                 count++;
             }
             countTemp++;
+        }
+        if (count == numNoitesEstadia) {
+            return numNoitesEstadia;
         }
         return count;
     }
@@ -159,10 +147,9 @@ public class ReservaHotel extends Reserva implements Descontavel {
 
     @Override
     public int formatarData(Data umaData) {
-        String st = String.format("%d%d",umaData.getMes(), umaData.getDia());
+        String st = String.format("%d%d", umaData.getMes(), umaData.getDia());
         return Integer.parseInt(st);
     }
-
 
     @Override
     public boolean isPromocao(int dataFormatada) {
@@ -182,13 +169,41 @@ public class ReservaHotel extends Reserva implements Descontavel {
         double precoPromocao = precoQuarto - (precoQuarto * descontoDiaria);
         int quartos = verificaQuantidadeQuartos();
         int diariasPromocao = verificaDiariasPromocao();
+        double valorTotal = 0;
 
         if (numNoitesEstadia == diariasPromocao) {
-            return (quartos * precoPromocao * numNoitesEstadia) + getTaxaReserva();
+            valorTotal = (quartos * precoPromocao * numNoitesEstadia) + getTaxaReserva();
 
         } else {
             int diariasRestantes = numNoitesEstadia - diariasPromocao;
-            return (quartos * precoPromocao * diariasPromocao) + (quartos * precoQuarto * diariasRestantes) + getTaxaReserva();
+            valorTotal= (quartos * precoPromocao * diariasPromocao) + (quartos * precoQuarto * diariasRestantes) + getTaxaReserva();
         }
+
+        if (saoReservasMultiplasDe5()) {
+            double desconto = valorTotal * (getCliente().getPercentagemDesconto()/100);
+            return valorTotal - desconto;
+        } else{
+            return valorTotal ;
+        }
+    }
+
+    public static int getReservaHotelCount() {
+        return reservaHotelCount;
+    }
+
+    public static int getCapacidadeMax() {
+        return capacidadeMax;
+    }
+
+    public static double getDescontoDiaria() {
+        return descontoDiaria;
+    }
+
+    public static void setCapacidadeMax(int capacidadeMax) {
+        ReservaHotel.capacidadeMax = capacidadeMax;
+    }
+
+    public static void setDescontoDiaria(double descontoDiaria) {
+        ReservaHotel.descontoDiaria = descontoDiaria;
     }
 }
