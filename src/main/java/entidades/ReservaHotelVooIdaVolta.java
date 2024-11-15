@@ -52,32 +52,31 @@ public class ReservaHotelVooIdaVolta extends ReservaHotelVoo {
 
     @Override
     public double calcularCustoReserva() {
-//        int quartos = verificaQuantidadeQuartos();
-//        double precoQuarto = getHotel().getPrecoPorQuarto();
-//        double precoPromocao = precoQuarto-(precoQuarto*getDescontoDiaria());
-//        int diariasPromocao = verificaDiariasPromocao();
-//        double reservaHotel = 0;
-//
-//        double precoIda = getVoo().calcularCustoBilheteIda();
-//        double precoVolta = vooRegresso.calcularCustoBilheteVolta();
-//        double custoReservaVoo = getQntPessoas()*(precoIda + precoVolta);
-//
-//        if(getNumNoitesEstadia() == diariasPromocao) {
-//            reservaHotel = quartos * precoPromocao *getNumNoitesEstadia();
-//
-//        } else {
-//            int diariasRestantes = getNumNoitesEstadia() - diariasPromocao;
-//            reservaHotel = (quartos * precoPromocao * diariasPromocao)+(quartos * precoQuarto * diariasRestantes);
-//        }
-//
-//        if (saoReservasMultiplasDe5()) {
-//            double reservaTotal = reservaHotel + custoReservaVoo+getTaxaReserva();
-//            double desconto = reservaTotal * (getCliente().getPercentagemDesconto()/100);
-//            return reservaTotal - desconto;
-//        } else{
-//            return reservaHotel + custoReservaVoo+getTaxaReserva();
-//        }
-        return 0;
+        int quartos = verificaQuantidadeQuartos();
+        double precoQuarto = getHotel().getPrecoPorQuarto();
+        double precoPromocao = precoQuarto-(precoQuarto*getDescontoDiaria());
+        int diariasPromocao = verificaDiariasPromocao();
+        double reservaHotel = 0;
+
+        double precoIda = getVoo().calcularCustoBilheteIda();
+        double precoVolta = vooRegresso.calcularCustoBilheteVolta();
+        double custoReservaVoo = getQntPessoas()*(precoIda + precoVolta);
+
+        if(getNumNoitesEstadia() == diariasPromocao) {
+            reservaHotel = quartos * precoPromocao *getNumNoitesEstadia();
+
+        } else {
+            int diariasRestantes = getNumNoitesEstadia() - diariasPromocao;
+            reservaHotel = (quartos * precoPromocao * diariasPromocao)+(quartos * precoQuarto * diariasRestantes);
+        }
+
+        if (saoReservasMultiplasDe5()) {
+            double reservaTotal = reservaHotel + custoReservaVoo+getTaxaReserva();
+            double desconto = reservaTotal * (getCliente().getPercentagemDesconto()/100);
+            return reservaTotal - desconto;
+        } else{
+            return reservaHotel + custoReservaVoo+getTaxaReserva();
+        }
     }
 
     @Override

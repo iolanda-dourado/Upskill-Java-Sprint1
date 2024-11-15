@@ -59,17 +59,16 @@ public class ReservaVooIdaVolta extends ReservaVoo {
 
     @Override
     public double calcularCustoReserva() {
-//        double custoBilheteIda = getVoo().calcularCustoBilheteIda();
-//        double custoBilheteVolta = vooRegresso.calcularCustoBilheteVolta();
-//        double custoReservaIda = getQntPessoas() * custoBilheteIda;
-//        double custoReservaVolta = getQntPessoas() * custoBilheteVolta;
-//        double percentagemDesconto = (getCliente().getPercentagemDesconto() / 100);
-//        double custoReservaTotal = custoReservaIda + custoReservaVolta + getTaxaReserva();
-//
-//        if (saoReservasMultiplasDe5()) {
-//            return custoReservaTotal - (custoReservaTotal * percentagemDesconto);
-//        }
-//        return custoReservaTotal;
-        return 0;
+        double custoBilheteIda = getVoo().calcularCustoBilheteIda();
+        double custoBilheteVolta = vooRegresso.calcularCustoBilheteVolta();
+        double custoReservaIda = getQntPessoas() * custoBilheteIda;
+        double custoReservaVolta = getQntPessoas() * custoBilheteVolta;
+        double percentagemDesconto = (getCliente().getPercentagemDesconto() / 100);
+        double custoReservaTotal = custoReservaIda + custoReservaVolta + getTaxaReserva();
+
+        if (saoReservasMultiplasDe5()) {
+            return custoReservaTotal - (custoReservaTotal * percentagemDesconto);
+        }
+        return custoReservaTotal;
     }
 }

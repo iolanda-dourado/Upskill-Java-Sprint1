@@ -11,5 +11,5 @@ public interface Descontavel {
     int FINAL_TEMP3= 1130;
 
     int formatarData(Data data);
-    boolean isPromocao(int a, Data umaData);
+    boolean isPromocao(int a);
 }
