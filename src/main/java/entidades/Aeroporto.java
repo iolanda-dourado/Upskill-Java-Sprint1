@@ -25,6 +25,12 @@ public class Aeroporto implements Serializable {
         this.codigoAeroporto = CODIGO_AEROPORTO_OMISSAO;
     }
 
+    public Aeroporto (Aeroporto outro) {
+        this.endereco = outro.endereco;
+        this.paginaWeb = outro.paginaWeb;
+        this.codigoAeroporto = outro.codigoAeroporto;
+    }
+
     public String getEndereco() {
         return endereco;
     }

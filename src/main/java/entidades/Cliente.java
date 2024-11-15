@@ -51,6 +51,18 @@ public class Cliente implements Identificacavel, Serializable {
         this.percentagemDesconto = PERCENTAGEM_DESCONTO_POR_OMISSAO;
     }
 
+    public Cliente(Cliente outro) {
+        this.codigoCliente = gerarIdentificador();
+        setNomeCliente(outro.nomeCliente);
+        this.dataNascimento = new Data(outro.dataNascimento);
+        this.genero = outro.genero;
+        setNif(outro.nif);
+        this.numPassaporte = outro.numPassaporte;
+        this.email = outro.email;
+        this.percentagemDesconto = outro.percentagemDesconto;
+        this.numReservasConcretizadas = outro.numReservasConcretizadas;
+    }
+
     public String getCodigoCliente() {
         return codigoCliente;
     }
@@ -60,7 +72,7 @@ public class Cliente implements Identificacavel, Serializable {
     }
 
     public Data getDataNascimento() {
-        return dataNascimento;
+        return new Data(dataNascimento);
     }
 
     public Genero getGenero() {
@@ -99,7 +111,7 @@ public class Cliente implements Identificacavel, Serializable {
     }
 
     public void setDataNascimento(Data dataNascimento) {
-        this.dataNascimento = dataNascimento;
+        this.dataNascimento = new Data(dataNascimento.getAno(), dataNascimento.getMes(), dataNascimento.getDia());
     }
 
     public void setGenero(Genero genero) {

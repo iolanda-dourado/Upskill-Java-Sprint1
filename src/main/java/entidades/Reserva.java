@@ -1,6 +1,5 @@
 package entidades;
 
-import interfaces.Descontavel;
 import interfaces.Identificacavel;
 import utilidades.Data;
 

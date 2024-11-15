@@ -8,8 +8,6 @@ import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Objects;
 
-import static entidades.Reserva.getTaxaReserva;
-
 public class Voo implements Descontavel, Serializable {
     private String codigoVoo;
     private CompanhiaAerea companhiaAerea;
