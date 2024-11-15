@@ -40,6 +40,7 @@ public class ReservaHotelTest {
 
     private Empresa empresa = new Empresa("Casinha verde", "Rua do Mangue", clientes, hoteis, aeroportos, voos, reservas);
 
+//    boolean teste = empresa.adicionarCliente(client);
 
     @Test
     public void calcularCustoReserva_dataForaEDentroPromocao() {
@@ -76,6 +77,7 @@ public class ReservaHotelTest {
         empresa.atualizarReservasConcretizadas(reserva3);
         empresa.atualizarReservasConcretizadas(reserva4);
         empresa.atualizarReservasConcretizadas(reserva5);
+
         double resultado = reserva6.calcularCustoReserva();
         double resultadoEsperado = 3410.50;
         assertEquals(resultadoEsperado, resultado, 0.01);

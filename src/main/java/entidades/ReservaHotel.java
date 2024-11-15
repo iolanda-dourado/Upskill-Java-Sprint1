@@ -147,7 +147,7 @@ public class ReservaHotel extends Reserva implements Descontavel {
 
     @Override
     public int formatarData(Data umaData) {
-        String st = String.format("%d%d", umaData.getMes(), umaData.getDia());
+        String st = String.format("%02d%02d", umaData.getMes(), umaData.getDia());
         return Integer.parseInt(st);
     }
 

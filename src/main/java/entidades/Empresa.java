@@ -103,10 +103,6 @@ public class Empresa implements Serializable {
         return Objects.equals(nomeEmpresa, empresa.nomeEmpresa) && Objects.equals(morada, empresa.morada) && Objects.equals(listaClientes, empresa.listaClientes) && Objects.equals(listaHoteis, empresa.listaHoteis) && Objects.equals(listaAeroportos, empresa.listaAeroportos) && Objects.equals(listaVoos, empresa.listaVoos) && Objects.equals(listaReservas, empresa.listaReservas);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(nomeEmpresa, morada, listaClientes, listaHoteis, listaAeroportos, listaVoos, listaReservas);
-    }
 
     public boolean adicionarCliente(Cliente novoCliente) {
         if (listaClientes.contains(novoCliente)) return false;
@@ -145,7 +141,7 @@ public class Empresa implements Serializable {
     }
 
     public boolean adicionarReserva(ReservaHotel novaReserva) {
-        if (listaReservas.contains(novaReserva)) return false;
+        if (listaReservas.contains((novaReserva))) return false;
         listaReservas.add(new ReservaHotel(novaReserva));
         return true;
     }
@@ -341,10 +337,13 @@ public class Empresa implements Serializable {
         return null;
     }
 
+
     public boolean atualizarReservasConcretizadas(Reserva reserva) {
         if (listaReservas.contains(reserva)) {
             reserva.setConcretizada(true);
-            reserva.getCliente().setNumReservasConcretizadas(reserva.getCliente().getNumReservasConcretizadas() + 1);
+            int temp = reserva.getCliente().getNumReservasConcretizadas();
+            temp++;
+            reserva.getCliente().setNumReservasConcretizadas(temp);
             return true;
         }
         return false;

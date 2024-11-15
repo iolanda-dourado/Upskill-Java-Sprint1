@@ -66,7 +66,7 @@ public class Voo implements Descontavel, Serializable {
         this.companhiaAerea = outro.companhiaAerea;
         this.qntLugares = outro.qntLugares;
         this.qntLugaresDisponiveis = outro.qntLugaresDisponiveis;
-        this.aeroportoSaida = new Aeroporto(outro.aeroportoChegada);
+        this.aeroportoSaida = new Aeroporto(outro.aeroportoSaida);
         this.aeroportoChegada = new Aeroporto(outro.aeroportoChegada);
         this.distanciaKmAeroporto = outro.distanciaKmAeroporto;
         this.precoBilhete = outro.precoBilhete;
@@ -177,7 +177,7 @@ public class Voo implements Descontavel, Serializable {
 
     @Override
     public int formatarData(Data umaData) {
-         String st = String.format("%d%d",umaData.getMes(), umaData.getDia());
+         String st = String.format("%02d%02d",umaData.getMes(), umaData.getDia());
         return Integer.parseInt(st);
     }
 
@@ -212,7 +212,7 @@ public class Voo implements Descontavel, Serializable {
         if (estaNaPromocao) {
             return precoBilhete - (valorDescontoTemporada + valorDescontoKms);
         }
-        return precoBilhete - (valorDescontoTemporada);
+        return precoBilhete - (valorDescontoKms);
     }
 
     public static double getDescontoVoo() {

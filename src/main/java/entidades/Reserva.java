@@ -53,6 +53,7 @@ public abstract class Reserva implements Identificacavel, Comparable<Reserva>, S
         isAtributoSet = outra.isAtributoSet;
     }
 
+
     public String getCodigoReserva() {
         return codigoReserva;
     }

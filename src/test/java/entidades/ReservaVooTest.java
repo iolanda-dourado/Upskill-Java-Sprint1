@@ -64,12 +64,19 @@ public class ReservaVooTest {
     @Test
     public void calcularCustoReservaVooSemPromocaoEComMultiplo5() {
         Data data1 = new Data(2024, 12, 10);
-        Voo voo1 = new Voo("VOO-250", CompanhiaAerea.EASYJET, 100, aero1, aero3, 14000, 250, data1, horario);
+        Voo voo1 = new Voo("VOO-450", CompanhiaAerea.EASYJET, 100, aero1, aero3, 14000, 250, data1, horario);
+        empresa.adicionarReserva(reserva1);
+        empresa.adicionarReserva(reserva2);
+        empresa.adicionarReserva(reserva3);
+        empresa.adicionarReserva(reserva4);
+        empresa.adicionarReserva(reserva5);
+
         empresa.atualizarReservasConcretizadas(reserva1);
         empresa.atualizarReservasConcretizadas(reserva2);
         empresa.atualizarReservasConcretizadas(reserva3);
         empresa.atualizarReservasConcretizadas(reserva4);
         empresa.atualizarReservasConcretizadas(reserva5);
+
 
         ReservaVoo reserva10 = new ReservaVoo(data1, 2, client, voo1);
 
@@ -81,8 +88,14 @@ public class ReservaVooTest {
 
     @Test
     public void calcularCustoReservaVooComPromocaoEComMultiplo5() {
-        Data data1 = new Data(2024, 2, 10);
-        Voo voo1 = new Voo("VOO-250", CompanhiaAerea.EASYJET, 100, aero1, aero3, 14000, 250, data1, horario);
+        Data data2 = new Data(2024, 2, 10);
+        Voo voo1 = new Voo("VOO-250", CompanhiaAerea.EASYJET, 100, aero1, aero3, 14000, 250, data2, horario);
+        empresa.adicionarReserva(reserva1);
+        empresa.adicionarReserva(reserva2);
+        empresa.adicionarReserva(reserva3);
+        empresa.adicionarReserva(reserva4);
+        empresa.adicionarReserva(reserva5);
+
         empresa.atualizarReservasConcretizadas(reserva1);
         empresa.atualizarReservasConcretizadas(reserva2);
         empresa.atualizarReservasConcretizadas(reserva3);
@@ -96,4 +109,5 @@ public class ReservaVooTest {
 
         Assertions.assertEquals(resultadoEsperado, resultado, 0.01);
     }
+
 }

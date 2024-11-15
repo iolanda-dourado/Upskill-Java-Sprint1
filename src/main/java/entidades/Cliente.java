@@ -52,7 +52,7 @@ public class Cliente implements Identificacavel, Serializable {
     }
 
     public Cliente(Cliente outro) {
-        this.codigoCliente = gerarIdentificador();
+        this.codigoCliente = outro.getCodigoCliente();
         setNomeCliente(outro.nomeCliente);
         this.dataNascimento = new Data(outro.dataNascimento);
         this.genero = outro.genero;
@@ -151,7 +151,7 @@ public class Cliente implements Identificacavel, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cliente cliente = (Cliente) o;
-        return Double.compare(percentagemDesconto, cliente.percentagemDesconto) == 0 && numReservasConcretizadas == cliente.numReservasConcretizadas && Objects.equals(nomeCliente, cliente.nomeCliente) && Objects.equals(dataNascimento, cliente.dataNascimento) && Objects.equals(genero, cliente.genero) && Objects.equals(nif, cliente.nif) && Objects.equals(numPassaporte, cliente.numPassaporte) && Objects.equals(email, cliente.email);
+        return Double.compare(percentagemDesconto, cliente.percentagemDesconto) == 0 && Objects.equals(nomeCliente, cliente.nomeCliente) && Objects.equals(dataNascimento, cliente.dataNascimento) && Objects.equals(genero, cliente.genero) && Objects.equals(nif, cliente.nif) && Objects.equals(numPassaporte, cliente.numPassaporte) && Objects.equals(email, cliente.email);
     }
 
     @Override
