@@ -23,6 +23,11 @@ public class ReservaHotelVooIdaVolta extends ReservaHotelVoo {
         this.vooRegresso = new Voo();
     }
 
+    public ReservaHotelVooIdaVolta(ReservaHotelVooIdaVolta outra) {
+        super(outra);
+        this.vooRegresso = new Voo(outra.vooRegresso);
+    }
+
     public Voo getVooRegresso() {
         return vooRegresso;
     }
@@ -44,11 +49,6 @@ public class ReservaHotelVooIdaVolta extends ReservaHotelVoo {
         ReservaHotelVooIdaVolta that = (ReservaHotelVooIdaVolta) o;
         return Objects.equals(vooRegresso, that.vooRegresso);
     }
-
-    public static int getReservaHotelVooIdaVoltaCount() {
-        return reservaHotelVooIdaVoltaCount;
-    }
-
 
     @Override
     public double calcularCustoReserva() {
@@ -82,5 +82,9 @@ public class ReservaHotelVooIdaVolta extends ReservaHotelVoo {
     @Override
     public String gerarIdentificador() {
         return String.format("%s%s", PREFIXO_RESERVA_HOTEL_VOO_IV, reservaHotelVooIdaVoltaCount);
+    }
+
+    public static int getReservaHotelVooIdaVoltaCount() {
+        return reservaHotelVooIdaVoltaCount;
     }
 }

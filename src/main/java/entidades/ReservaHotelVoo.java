@@ -22,6 +22,11 @@ public class ReservaHotelVoo extends ReservaHotel {
         this.voo = new Voo();
     }
 
+    public ReservaHotelVoo(ReservaHotelVoo outro) {
+        super(outro);
+        this.voo = new Voo(outro.voo);
+    }
+
     public Voo getVoo() {
         return voo;
     }
@@ -42,10 +47,6 @@ public class ReservaHotelVoo extends ReservaHotel {
         if (!super.equals(o)) return false;
         ReservaHotelVoo that = (ReservaHotelVoo) o;
         return Objects.equals(voo, that.voo);
-    }
-
-    public static int getReservaHotelVooCount() {
-        return reservaHotelVooCount;
     }
 
     @Override
@@ -79,5 +80,9 @@ public class ReservaHotelVoo extends ReservaHotel {
         } else{
             return reservaHotel + custoReservaVoo+getTaxaReserva();
         }
+    }
+
+    public static int getReservaHotelVooCount() {
+        return reservaHotelVooCount;
     }
 }

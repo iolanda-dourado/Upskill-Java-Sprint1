@@ -1,21 +1,33 @@
-package entidades;
-
+import entidades.*;
 import enums.CategoriaHotel;
 import enums.CompanhiaAerea;
 import enums.Genero;
 import utilidades.Data;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Empresa novaEmpresa = new Empresa("Casinha verde", "Rua do Mangue");
+//        private List<Cliente> listaClientes;
+//    private List<Hotel> listaHoteis;
+//    private List<Aeroporto> listaAeroportos;
+//    private List<Voo> listaVoos;
+//    private List<Reserva> listaReservas;
+        List<Cliente> clientes = new ArrayList<>();
+        List<Aeroporto> aeroportos = new ArrayList<>();
+        List<Voo> voos = new ArrayList<>();
+        List<Hotel> hoteis = new ArrayList<>();
+        List<Reserva> reservas = new ArrayList<>();
+
+        Empresa novaEmpresa = new Empresa("Casinha verde", "Rua do Mangue", clientes, hoteis, aeroportos, voos, reservas);
         Aeroporto aero1 = new Aeroporto("lalala","www.gru.com.br", "GRU" );
         Aeroporto aero2 = new Aeroporto("lalala","www.ssa.com.br", "SSA" );
         Aeroporto aero3 = new Aeroporto("lalala","www.opo.com.br", "OPO" );
 
         Data data = new Data(1997, 3, 20);
-        Data data1 = new Data(1997, 12, 25);
+        Data data1 = new Data(1997, 2, 20);
         Data data3 = new Data(1997, 3, 10);
         Data data4 = new Data(1980, 5, 10);
         Data data2 = Data.dataAtual();
@@ -33,11 +45,12 @@ public class Main {
 
         Hotel hotel1 = new Hotel("Hotel 1", CategoriaHotel.UMA_ESTRELA, "Fim", true, 200);
         Hotel hotel2 = new Hotel("Hotel 2", CategoriaHotel.DUAS_ESTRELAS, "Fim", true, 150);
-        Voo v1 = new Voo("VOO-250", CompanhiaAerea.EASYJET, 100, aero1, aero3, 14000, 250, data7, horario );
+        Voo v1 = new Voo("VOO-250", CompanhiaAerea.EASYJET, 100, aero1, aero3, 14000, 250, data, horario );
         Voo v2 = new Voo("VOO-350", CompanhiaAerea.EASYJET, 100, aero3, aero1, 14000, 250, data8, horario );
         // (Data dataReserva, int qntPessoas, Cliente cliente, Hotel hotel, Data dataChegada, int numNoitesEstadia)
+        // (Data dataReserva, int qntPessoas, Cliente cliente, Hotel hotel, Data dataChegada, int numNoitesEstadia)
 //        System.out.println(client);
-        ReservaHotel reserva1 = new ReservaHotel(data, 2, client, hotel2, data1, 25);
+        ReservaHotel reserva1 = new ReservaHotel(data, 1, client, hotel2, data1, 25);
 //        ReservaHotel reserva2 = new ReservaHotel(data2, 4, client, hotel1, data7, 10);
 //        ReservaHotelVoo reserva3 = new ReservaHotelVoo (data2, 4, client, hotel2, data7, 10, v1);
         ReservaHotelVooIdaVolta reserva4 = new ReservaHotelVooIdaVolta (data2, 4, client, hotel2, data7, 10, v1, v2);
@@ -52,11 +65,10 @@ public class Main {
         System.out.println("O valor da reserva Voo é igual a " + reserva5.calcularCustoReserva()+"euros");
         //System.out.println(v1.calcularCustoBilheteIda());
 
-        Empresa empresa1 = new Empresa("Empresa 1", "Rua Sem Nome");
-        empresa1.adicionarReserva(reserva1);
-       // GeradorAutomatico.gerarVooAuto(empresa1);
-        empresa1.listarAeroportos();
-        empresa1.listarVoos();
+//        Empresa empresa1 = new Empresa("Empresa 1", "Rua Sem Nome");
+//       // GeradorAutomatico.gerarVooAuto(empresa1);
+//        empresa1.listarAeroportos();
+//        empresa1.listarVoos();
 
         System.out.println("\n");
         System.out.println("\n");
@@ -87,5 +99,14 @@ public class Main {
 ////      Data dataReserva, int qntPessoas, Cliente cliente, Voo voo
 //        ReservaVoo reservaVoo1 = new ReservaVoo(data1, 10, client1, voo1);
 //        System.out.println(voo1);
+
+        Voo v3 = new Voo("VOO-250", CompanhiaAerea.EASYJET, 100, aero1, aero3, 14000, 250, data1, horario);
+        ReservaVoo reserva8 = new ReservaVoo(data2, 1, client, v3);
+        System.out.println("RESERVA TESTE: " + reserva8.calcularCustoReserva());
+
+        novaEmpresa.adicionarReserva(reserva1);
+        boolean retorno = novaEmpresa.atualizarReservasConcretizadas(reserva1);
+        System.out.print(retorno);
+
     }
 }

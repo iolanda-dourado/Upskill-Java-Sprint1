@@ -1,12 +1,16 @@
 package utilidades;
+
 import entidades.Empresa;
 import entidades.Aeroporto;
 import entidades.Voo;
 import entidades.Hotel;
 import entidades.Cliente;
 import enums.*;
+
 import java.util.List;
 import java.util.Random;
+
+import utilidades.Data;
 
 public class GeradorAutomatico {
     private static final int NUM_AEROPORTOS = 4;
@@ -52,7 +56,7 @@ public class GeradorAutomatico {
             voo.setAeroportoChegada(aeroportoChegada);
             voo.setDistanciaKmAeroporto(infoVoo.getDistanciaKmAeroporto());
             voo.setPrecoBilhete(infoVoo.getPrecoBilhete());
-            voo.setDataPartida(infoVoo.getDataPartida());
+//            voo.setDataPartida(infoVoo.getDataPartida());
             voo.setHoraPartida(infoVoo.getHoraPartida());
             cont++;
 
@@ -83,7 +87,7 @@ public class GeradorAutomatico {
         GerarAutomaticoCliente infoCliente = GerarAutomaticoCliente.values()[gerador.nextInt(GerarAutomaticoCliente.values().length)];
 
         return new Cliente(infoCliente.getNomeCliente(), infoCliente.getDataNascimento(),
-                infoCliente.getGenero(),infoCliente.getNif(), infoCliente.getNumPassaporte(),
+                infoCliente.getGenero(), infoCliente.getNif(), infoCliente.getNumPassaporte(),
                 infoCliente.getEmail(), infoCliente.getPercentagemDesconto());
     }
 

@@ -111,7 +111,7 @@ public class Cliente implements Identificacavel, Serializable {
     }
 
     public void setDataNascimento(Data dataNascimento) {
-        this.dataNascimento = new Data(dataNascimento.getAno(), dataNascimento.getMes(), dataNascimento.getDia());
+        this.dataNascimento.setData(dataNascimento.getAno(), dataNascimento.getMes(), dataNascimento.getDia());
     }
 
     public void setGenero(Genero genero) {
@@ -151,7 +151,7 @@ public class Cliente implements Identificacavel, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cliente cliente = (Cliente) o;
-        return Objects.equals(codigoCliente, cliente.codigoCliente) && Double.compare(percentagemDesconto, cliente.percentagemDesconto) == 0 && numReservasConcretizadas == cliente.numReservasConcretizadas && Objects.equals(nomeCliente, cliente.nomeCliente) && Objects.equals(dataNascimento, cliente.dataNascimento) && Objects.equals(genero, cliente.genero) && Objects.equals(nif, cliente.nif) && Objects.equals(numPassaporte, cliente.numPassaporte) && Objects.equals(email, cliente.email);
+        return Double.compare(percentagemDesconto, cliente.percentagemDesconto) == 0 && numReservasConcretizadas == cliente.numReservasConcretizadas && Objects.equals(nomeCliente, cliente.nomeCliente) && Objects.equals(dataNascimento, cliente.dataNascimento) && Objects.equals(genero, cliente.genero) && Objects.equals(nif, cliente.nif) && Objects.equals(numPassaporte, cliente.numPassaporte) && Objects.equals(email, cliente.email);
     }
 
     @Override
