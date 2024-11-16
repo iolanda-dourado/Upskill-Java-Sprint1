@@ -22,7 +22,8 @@ public class GeradorAutomatico {
         Random gerador = new Random();
 
         do {
-            GerarAutomaticoAeroporto infoAero = GerarAutomaticoAeroporto.values()[gerador.nextInt(GerarAutomaticoAeroporto.values().length)];
+//            GerarAutomaticoAeroporto infoAero = GerarAutomaticoAeroporto.values()[gerador.nextInt(GerarAutomaticoAeroporto.values().length)];
+            GerarAutomaticoAeroporto infoAero = GerarAutomaticoAeroporto.values()[cont];
             Aeroporto aeroporto = new Aeroporto(infoAero.getEndereco(), infoAero.getPaginaWeb(), infoAero.getCodigoAeroporto());
             if (empresa.adicionarAeroporto(aeroporto)) {
                 cont++;
@@ -36,7 +37,8 @@ public class GeradorAutomatico {
 
         do {
             Voo voo = new Voo();
-            GerarAutomaticoVoo infoVoo = GerarAutomaticoVoo.values()[gerador.nextInt(GerarAutomaticoVoo.values().length)];
+//            GerarAutomaticoVoo infoVoo = GerarAutomaticoVoo.values()[gerador.nextInt(GerarAutomaticoVoo.values().length)];
+            GerarAutomaticoVoo infoVoo = GerarAutomaticoVoo.values()[cont];
             List<Aeroporto> listaAeroportos = empresa.getListaAeroportos();
 
             voo.setCodigoVoo(infoVoo.getCodigoVoo());
@@ -69,7 +71,8 @@ public class GeradorAutomatico {
         Random gerador = new Random();
 
         do {
-            GerarAutomaticoHotel infoHotel = GerarAutomaticoHotel.values()[gerador.nextInt(GerarAutomaticoHotel.values().length)];
+//            GerarAutomaticoHotel infoHotel = GerarAutomaticoHotel.values()[gerador.nextInt(GerarAutomaticoHotel.values().length)];
+            GerarAutomaticoHotel infoHotel = GerarAutomaticoHotel.values()[cont];
             Hotel hotel = new Hotel(infoHotel.getNomeHotel(),
                     infoHotel.getCategoria(), infoHotel.getLocalidade(), infoHotel.getTransfer(),
                     infoHotel.getPrecoPorQuarto());
@@ -86,7 +89,8 @@ public class GeradorAutomatico {
         List<Cliente> clientes = new ArrayList<>();
 
         do {
-            GerarAutomaticoCliente infoCliente = GerarAutomaticoCliente.values()[gerador.nextInt(GerarAutomaticoCliente.values().length)];
+//            GerarAutomaticoCliente infoCliente = GerarAutomaticoCliente.values()[gerador.nextInt(GerarAutomaticoCliente.values().length)];
+            GerarAutomaticoCliente infoCliente = GerarAutomaticoCliente.values()[cont];
             Cliente cliente = new Cliente(infoCliente.getNomeCliente(),
                     infoCliente.getDataNascimento(),
                     infoCliente.getGenero(),
@@ -108,7 +112,6 @@ public class GeradorAutomatico {
         gerarHoteisAuto(empresa);
         gerarClientesAuto(empresa);
         List<Cliente> clientes = empresa.getListaClientes();
-        List<Aeroporto> aeroportos = empresa.getListaAeroportos();
         List<Hotel> hoteis = empresa.getListaHoteis();
         List<Voo> voos = empresa.getListaVoos();
 
@@ -129,5 +132,13 @@ public class GeradorAutomatico {
 
         empresa.adicionarReserva(resHotel1);
         empresa.adicionarReserva(resHotel2);
+        empresa.adicionarReserva(resHotelVoo1);
+        empresa.adicionarReserva(resHotelVoo2);
+        empresa.adicionarReserva(resHotVooIV1);
+        empresa.adicionarReserva(resHotVooIV2);
+        empresa.adicionarReserva(resVoo1);
+        empresa.adicionarReserva(resVoo2);
+        empresa.adicionarReserva(resVooIV1);
+        empresa.adicionarReserva(resVooIV1);
     }
 }
