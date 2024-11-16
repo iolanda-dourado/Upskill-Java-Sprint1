@@ -3,6 +3,7 @@ import enums.CategoriaHotel;
 import enums.CompanhiaAerea;
 import enums.Genero;
 import utilidades.Data;
+import utilidades.InteracaoEmpresaUtilizador;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -107,6 +108,12 @@ public class Main {
 //        novaEmpresa.adicionarReserva(reserva1);
 //        boolean retorno = novaEmpresa.atualizarReservasConcretizadas(reserva1);
 //        System.out.print(retorno);
+
+        Empresa empresa = new Empresa("Travel Plus", "Rua do Mangue", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        InteracaoEmpresaUtilizador interacao = new InteracaoEmpresaUtilizador(empresa);
+        interacao.gerenciarResposta();
+        System.out.println(empresa.listarReservas());
+
 
     }
 }

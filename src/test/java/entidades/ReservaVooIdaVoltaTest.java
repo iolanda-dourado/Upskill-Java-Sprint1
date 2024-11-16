@@ -15,7 +15,6 @@ import static org.junit.Assert.*;
 public class ReservaVooIdaVoltaTest {
     private Data data1 = new Data(2025, 1, 5);
     private Data data2 = new Data(2024, 12, 25);
-    private Data data3 = new Data(2024, 4, 8);
     private Data data4 = new Data(2024, 3, 9);
     private Data data5 = new Data(2024, 11, 15);
     private LocalTime horario = LocalTime.of(22, 30);
@@ -25,17 +24,16 @@ public class ReservaVooIdaVoltaTest {
     private Aeroporto aero1 = new Aeroporto("lalala", "www.gru.com.br", "GRU");
     private Aeroporto aero3 = new Aeroporto("lalala", "www.opo.com.br", "OPO");
 
-
     private Voo v2 = new Voo("VOO-350", CompanhiaAerea.EASYJET, 100, aero3, aero1, 14000, 200, data4, horario);
     private Voo v3 = new Voo("VOO-250", CompanhiaAerea.EASYJET, 100, aero1, aero3, 10000, 100, data5, horario);
     private Voo v4 = new Voo("VOO-120", CompanhiaAerea.LATAM, 150, aero3, aero1, 14000, 100, data2, horario);
     private Voo v5 = new Voo("VOO-280", CompanhiaAerea.AZUL, 120, aero1, aero3, 10000, 100, data1, horario);
 
-    ReservaVooIdaVolta reserva1 = new ReservaVooIdaVolta(data4, 2, client, v2, v3);
-    ReservaVooIdaVolta reserva2 = new ReservaVooIdaVolta(data2, 1, client, v4, v5);
-    ReservaVooIdaVolta reserva3 = new ReservaVooIdaVolta(data2, 2, client, v2, v4);
-    ReservaVooIdaVolta reserva4 = new ReservaVooIdaVolta(data2, 2, client, v2, v2);
-    ReservaVooIdaVolta reserva5 = new ReservaVooIdaVolta(data2, 1, client, v2, v2);
+    private ReservaVooIdaVolta reserva1 = new ReservaVooIdaVolta(data4, 2, client, v2, v3);
+    private ReservaVooIdaVolta reserva2 = new ReservaVooIdaVolta(data2, 1, client, v4, v5);
+    private ReservaVooIdaVolta reserva3 = new ReservaVooIdaVolta(data2, 2, client, v2, v4);
+    private ReservaVooIdaVolta reserva4 = new ReservaVooIdaVolta(data2, 2, client, v2, v2);
+    private ReservaVooIdaVolta reserva5 = new ReservaVooIdaVolta(data2, 1, client, v2, v2);
 
     private List<Cliente> clientes = new ArrayList<>();
     private List<Aeroporto> aeroportos = new ArrayList<>();

@@ -1,16 +1,11 @@
 package utilidades;
 
-import entidades.Empresa;
-import entidades.Aeroporto;
-import entidades.Voo;
-import entidades.Hotel;
-import entidades.Cliente;
+import entidades.*;
 import enums.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import utilidades.Data;
 
 public class GeradorAutomatico {
     private static final int NUM_AEROPORTOS = 4;
@@ -19,7 +14,10 @@ public class GeradorAutomatico {
     private static final int NUM_CLIENTES = 3;
     private static final int NUM_RESERVAS = 2;
 
-    public static void gerarAeroportoAuto(Empresa empresa) {
+    public GeradorAutomatico() {
+    }
+
+    public void gerarAeroportosAuto(Empresa empresa) {
         int cont = 0;
         Random gerador = new Random();
 
@@ -32,7 +30,7 @@ public class GeradorAutomatico {
         } while (cont != NUM_AEROPORTOS);
     }
 
-    public static void gerarVooAuto(Empresa empresa) {
+    public void gerarVoosAuto(Empresa empresa) {
         int cont = 0;
         Random gerador = new Random();
 
@@ -56,7 +54,7 @@ public class GeradorAutomatico {
             voo.setAeroportoChegada(aeroportoChegada);
             voo.setDistanciaKmAeroporto(infoVoo.getDistanciaKmAeroporto());
             voo.setPrecoBilhete(infoVoo.getPrecoBilhete());
-//            voo.setDataPartida(infoVoo.getDataPartida());
+            voo.setDataPartida(infoVoo.getDataPartida());
             voo.setHoraPartida(infoVoo.getHoraPartida());
             cont++;
 
@@ -66,7 +64,7 @@ public class GeradorAutomatico {
         } while (cont != NUM_VOOS);
     }
 
-    public static void gerarHoteisAuto(Empresa empresa) {
+    public void gerarHoteisAuto(Empresa empresa) {
         int cont = 0;
         Random gerador = new Random();
 
@@ -82,24 +80,54 @@ public class GeradorAutomatico {
         } while (cont != NUM_HOTEIS);
     }
 
-    public static Cliente gerarUmClienteAuto(Empresa empresa) {
-        Random gerador = new Random();
-        GerarAutomaticoCliente infoCliente = GerarAutomaticoCliente.values()[gerador.nextInt(GerarAutomaticoCliente.values().length)];
-
-        return new Cliente(infoCliente.getNomeCliente(), infoCliente.getDataNascimento(),
-                infoCliente.getGenero(), infoCliente.getNif(), infoCliente.getNumPassaporte(),
-                infoCliente.getEmail(), infoCliente.getPercentagemDesconto());
-    }
-
-    public static void gerarClientesAuto(Empresa empresa) {
+    public void gerarClientesAuto(Empresa empresa) {
         int cont = 0;
         Random gerador = new Random();
+        List<Cliente> clientes = new ArrayList<>();
 
         do {
-            Cliente cliente = gerarUmClienteAuto(empresa);
+            GerarAutomaticoCliente infoCliente = GerarAutomaticoCliente.values()[gerador.nextInt(GerarAutomaticoCliente.values().length)];
+            Cliente cliente = new Cliente(infoCliente.getNomeCliente(),
+                    infoCliente.getDataNascimento(),
+                    infoCliente.getGenero(),
+                    infoCliente.getNif(),
+                    infoCliente.getNumPassaporte(),
+                    infoCliente.getEmail(),
+                    infoCliente.getPercentagemDesconto());
+
             if (empresa.adicionarCliente(cliente)) {
                 cont++;
             }
         } while (cont != NUM_CLIENTES);
+    }
+
+    public void gerarReservas(Empresa empresa) {
+        Data dataAtual = Data.dataAtual();
+        gerarAeroportosAuto(empresa);
+        gerarVoosAuto(empresa);
+        gerarHoteisAuto(empresa);
+        gerarClientesAuto(empresa);
+        List<Cliente> clientes = empresa.getListaClientes();
+        List<Aeroporto> aeroportos = empresa.getListaAeroportos();
+        List<Hotel> hoteis = empresa.getListaHoteis();
+        List<Voo> voos = empresa.getListaVoos();
+
+        ReservaHotel resHotel1 = new ReservaHotel(dataAtual, 1, clientes.getFirst(), hoteis.getFirst(), DatasReserva.DATA1.getData(), 25);
+        ReservaHotel resHotel2 = new ReservaHotel(dataAtual, 1, clientes.get(1), hoteis.get(1), DatasReserva.DATA2.getData(), 5);
+
+        ReservaHotelVoo resHotelVoo1 = new ReservaHotelVoo(dataAtual, 4, clientes.get(2), hoteis.get(2), DatasReserva.DATA2.getData(), 6, voos.getFirst());
+        ReservaHotelVoo resHotelVoo2 = new ReservaHotelVoo(dataAtual, 7, clientes.get(2), hoteis.get(3), DatasReserva.DATA3.getData(), 7, voos.get(1));
+
+        ReservaHotelVooIdaVolta resHotVooIV1 = new ReservaHotelVooIdaVolta(dataAtual, 4, clientes.get(2), hoteis.get(2), DatasReserva.DATA3.getData(), 6, voos.getFirst(), voos.get(1));
+        ReservaHotelVooIdaVolta resHotVooIV2 = new ReservaHotelVooIdaVolta(dataAtual, 1, clientes.getFirst(), hoteis.get(3), DatasReserva.DATA4.getData(), 6, voos.getFirst(), voos.get(1));
+
+        ReservaVoo resVoo1 = new ReservaVoo(DatasReserva.DATA5.getData(), 8, clientes.getFirst(), voos.getFirst());
+        ReservaVoo resVoo2 = new ReservaVoo(DatasReserva.DATA6.getData(), 2, clientes.get(1), voos.get(1));
+
+        ReservaVooIdaVolta resVooIV1 = new ReservaVooIdaVolta(dataAtual, 3, clientes.get(1), voos.getFirst(), voos.get(1));
+        ReservaVooIdaVolta resVooIV2 = new ReservaVooIdaVolta(dataAtual, 4, clientes.get(2), voos.get(1), voos.get(2));
+
+        empresa.adicionarReserva(resHotel1);
+        empresa.adicionarReserva(resHotel2);
     }
 }

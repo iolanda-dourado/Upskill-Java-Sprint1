@@ -15,9 +15,8 @@ import static org.junit.Assert.*;
 public class ReservaVooTest {
     private Data data1 = new Data(1997, 2, 20);
     private Data data2 = new Data(1997, 12, 25);
-    private Data data3 = new Data(2024, 4, 8);
     private Data data4 = new Data(2024, 4, 9);
-    private Data data5 = new Data(2024, 11, 15);
+
     private LocalTime horario = LocalTime.of(22, 30);
 
     private Cliente client = new Cliente("Maira", data2, Genero.FEMENINO, 322259339, "GF815694", "xxx@gmail.com", 5);
@@ -25,15 +24,14 @@ public class ReservaVooTest {
     private Aeroporto aero1 = new Aeroporto("lalala", "www.gru.com.br", "GRU");
     private Aeroporto aero3 = new Aeroporto("lalala", "www.opo.com.br", "OPO");
 
-
     private Voo v1 = new Voo("VOO-250", CompanhiaAerea.EASYJET, 100, aero1, aero3, 14000, 250, data1, horario);
     private Voo v2 = new Voo("VOO-350", CompanhiaAerea.EASYJET, 100, aero3, aero1, 14000, 250, data4, horario);
 
-    ReservaVoo reserva1 = new ReservaVoo(data2, 1, client, v1);
-    ReservaVoo reserva2 = new ReservaVoo(data2, 2, client, v1);
-    ReservaVoo reserva3 = new ReservaVoo(data2, 4, client, v2);
-    ReservaVoo reserva4 = new ReservaVoo(data2, 2, client, v2);
-    ReservaVoo reserva5 = new ReservaVoo(data2, 1, client, v2);
+    private ReservaVoo reserva1 = new ReservaVoo(data2, 1, client, v1);
+    private ReservaVoo reserva2 = new ReservaVoo(data2, 2, client, v1);
+    private ReservaVoo reserva3 = new ReservaVoo(data2, 4, client, v2);
+    private ReservaVoo reserva4 = new ReservaVoo(data2, 2, client, v2);
+    private ReservaVoo reserva5 = new ReservaVoo(data2, 1, client, v2);
 
     private List<Cliente> clientes = new ArrayList<>();
     private List<Aeroporto> aeroportos = new ArrayList<>();

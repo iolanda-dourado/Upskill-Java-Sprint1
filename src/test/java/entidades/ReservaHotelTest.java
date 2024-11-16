@@ -20,7 +20,6 @@ public class ReservaHotelTest {
     private Data data5 = new Data(2024, 11, 15);
 
     private Cliente client = new Cliente("Maira", data2, Genero.FEMENINO, 322259339, "GF815694", "xxx@gmail.com", 5);
-    private Cliente cliente1 = new Cliente();
 
     private Hotel hotel1 = new Hotel("Hotel Luxo", CategoriaHotel.CINCO_ESTRELAS, "Rio de Janeiro", true, 200.00);
     private Hotel hotel2 = new Hotel("Hotel 2", CategoriaHotel.DUAS_ESTRELAS, "Fim", true, 150);
@@ -40,7 +39,6 @@ public class ReservaHotelTest {
 
     private Empresa empresa = new Empresa("Casinha verde", "Rua do Mangue", clientes, hoteis, aeroportos, voos, reservas);
 
-//    boolean teste = empresa.adicionarCliente(client);
 
     @Test
     public void calcularCustoReserva_dataForaEDentroPromocao() {

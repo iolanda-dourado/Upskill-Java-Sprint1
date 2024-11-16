@@ -20,13 +20,12 @@ public class ReservaHotelVooTest {
     private Data data4 = new Data(2024, 4, 9);
     private Data data5 = new Data(2024, 11, 15);
 
-    LocalTime horario = LocalTime.of(22,30);
+    private LocalTime horario = LocalTime.of(22,30);
 
     private Aeroporto aero1 = new Aeroporto("lalala", "www.gru.com.br", "GRU");
     private Aeroporto aero3 = new Aeroporto("lalala", "www.opo.com.br", "OPO");
 
     private Cliente client = new Cliente("Maira", data2, Genero.FEMENINO, 322259339, "GF815694", "xxx@gmail.com", 5);
-    private Cliente cliente1 = new Cliente();
 
     private Voo v1 = new Voo("VOO-250", CompanhiaAerea.EASYJET, 100, aero1, aero3, 14000, 250, data2, horario);
     private Voo v2 = new Voo("VOO-350", CompanhiaAerea.EASYJET, 100, aero3, aero1, 14000, 100, data5, horario);
