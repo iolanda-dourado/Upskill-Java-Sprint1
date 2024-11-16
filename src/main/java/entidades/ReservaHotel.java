@@ -159,12 +159,12 @@ public class ReservaHotel extends Reserva implements Descontavel {
     public String toString() {
         return String.format(
                 """     
-                        %s--- Reserva de Hotel ---
-                        Identificador da Reserva: %s
-                        %s
-                        Data de Chegada: %s
+                        Reserva Hotel
+                        %sIdentificador da Reserva: %s
+                        %sData de Chegada: %s
                         Número de Noites de Estadia: %d
-                        Capacidade Máxima: %d""",
+                        Capacidade Máxima: %d
+                        """,
                 super.toString(), getCodigoReserva(), hotel, dataChegada, numNoitesEstadia, capacidadeMax
         );
     }
@@ -266,7 +266,7 @@ public class ReservaHotel extends Reserva implements Descontavel {
      */
     @Override
     public String gerarIdentificador() {
-        return String.format("%s%s", PREFIXO_RESERVA_HOTEL, reservaHotelCount);
+        return String.format("%s%s", PREFIXO_RESERVA_HOTEL, getReservaCount());
     }
 
     /**

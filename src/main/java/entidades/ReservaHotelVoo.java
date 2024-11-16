@@ -23,7 +23,7 @@ public class ReservaHotelVoo extends ReservaHotel {
     /**
      * Contador estático para identificar o número total de reservas combinadas de hotel e voo.
      */
-    private static int reservaHotelVooCount = 0;
+    private static int reservaHotelVooCount = 1;
 
     /**
      * Constrói uma nova reserva de hotel com voo de ida.
@@ -87,7 +87,14 @@ public class ReservaHotelVoo extends ReservaHotel {
      */
     @Override
     public String toString() {
-        return String.format("--- Reserva Hotel Voo ---\n%s\nVoo: %s", super.toString(), voo);
+        return String.format(
+                """
+                Reserva Hotel e Voo
+                %s
+                %s
+                """,
+                super.toString(), voo
+        );
     }
 
     /**
@@ -112,7 +119,7 @@ public class ReservaHotelVoo extends ReservaHotel {
      */
     @Override
     public String gerarIdentificador() {
-        return String.format("%s%s", PREFIXO_RESERVA_HOTEL_VOO, reservaHotelVooCount);
+        return String.format("%s%s", PREFIXO_RESERVA_HOTEL_VOO, getReservaCount());
     }
 
     /**

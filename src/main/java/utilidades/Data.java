@@ -3,6 +3,7 @@ package utilidades;
 import excecoes.DiaInvalidoException;
 import excecoes.MesInvalidoException;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Calendar;
  *
  * @author ISEP-DEI-PPROG
  */
-public class Data implements Comparable<Data> {
+public class Data implements Comparable<Data>, Serializable {
 
     /**
      * O ano da data.

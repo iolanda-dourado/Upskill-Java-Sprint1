@@ -230,9 +230,16 @@ public abstract class Reserva implements Identificacavel, Comparable<Reserva>, S
     @Override
     public String toString() {
         String resposta = isConcretizada ? "Sim" : "Não";
-        return String.format("--- Informações da reserva ---\nData da reserva: %s\nCliente: %s\nQuantidade de pessoas: " +
-                "%d\nReserva concretizada? %s\n", dataReserva, cliente.getNomeCliente(), qntPessoas, resposta);
-
+        return String.format(
+                """
+                Data da Reserva: %s
+                Cliente: %s
+                Quantidade de Pessoas: %d
+                Reserva Concretizada? %s
+                Custo da reserva: %.2f
+                """,
+                dataReserva, cliente.getNomeCliente(), qntPessoas, resposta, calcularCustoReserva()
+        );
     }
 
     /**

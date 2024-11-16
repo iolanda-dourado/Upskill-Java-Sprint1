@@ -9,10 +9,11 @@ import excecoes.MesInvalidoException;
 import excecoes.NifInvalidoException;
 import serializacao.FicheiroEmpresa;
 
+import java.io.Serializable;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class InteracaoEmpresaUtilizador {
+public class InteracaoEmpresaUtilizador implements Serializable {
     private Scanner teclado = new Scanner(System.in);
     private GeradorAutomatico gerador = new GeradorAutomatico();
     private Empresa empresa;
@@ -20,39 +21,38 @@ public class InteracaoEmpresaUtilizador {
     private static final int QNT_MIN = 1;
     private static final int QNT_MAX_PESSOAS = 50;
     private static final int QNT_MAX = 400;
+    private static final int QNT_MIN_MENU = 0;
+    private static final int QNT_MAX_MENU = 10;
+    private static final int QNT_MAX_MENU_RESERVAS = 7;
+
 
     public InteracaoEmpresaUtilizador(Empresa empresa) {
         this.empresa = empresa;
     }
 
     public void gerenciarResposta() {
-        boolean invalido;
+        boolean invalido = true;
         int resposta = 0;
 
         gerador.gerarReservas(empresa);
 
         do {
-            do {
+            while (invalido) {
                 try {
                     mostrarMenu();
-                    resposta = obterOpcao("Insira a opção desejada: ", QNT_MIN, 15);
+                    resposta = obterOpcao("Insira a opção desejada:", QNT_MIN_MENU, QNT_MAX_MENU);
                     invalido = false;
-                } catch (InputMismatchException e) {
-                    System.out.println("Erro: Entrada inválida. Insira um número.");
-                    teclado.nextLine();
-                    invalido = true;
-                } catch (IllegalArgumentException e) {
+                } catch (InputMismatchException | IllegalArgumentException e) {
                     System.out.println(e.getMessage());
-                    invalido = true;
                 }
-            } while (invalido);
+            }
 
             switch (resposta) {
                 case 1:
                     gerenciarReservas();
                     break;
                 case 2:
-                    System.out.println(listarHoteisPorCategoria());
+                    listarHoteisPorCategoria();
                     break;
                 case 3:
                     inserirNovoCliente();
@@ -63,86 +63,98 @@ public class InteracaoEmpresaUtilizador {
                 case 5:
                     mostrarCustoTotalReservasHotelEVooIdaVolta();
                     break;
-                case 6:
-                    break;
                 case 0:
                     perguntaFinal();
                     break;
                 default:
                     System.out.println("Opção não implementada.");
-                    break;
             }
+
+            invalido = true;
+
         } while (resposta != 0);
     }
 
+
     public void gerenciarReservas() {
-        int opcao = obterOpcao("""
-                Insira o tipo de reserva a ser criada:
-                1 - Reserva Hotel
-                2 - Reserva Hotel e Voo
-                3 - Reserva Hotel e Voo Ida e Volta
-                4 - Reserva Voo
-                5 - Reserva Voo Ida e Volta
-                6 - Eliminar reserva
-                7 - Listar todas as reservas""", 1, 7);
+        int opcao = -1;
+        boolean invalido = true;
+
+        while (invalido) {
+            try {
+                opcao = obterOpcao(menuReservas(), QNT_MIN_MENU, QNT_MAX_MENU_RESERVAS);
+                invalido = false;
+            } catch (IllegalArgumentException | InputMismatchException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        if (opcao == 0) {
+            System.out.println("Voltando ao menu principal...");
+            return;
+        }
 
         Data dataAtual = Data.dataAtual();
         Cliente cliente = new Cliente();
         int qntPessoas = 0;
-        try {
-            System.out.println(empresa.listarClientes());
-            String codigoCliente = obterString("Insira o código do cliente pretendido: ");
-            cliente = obterCliente(codigoCliente);
-            qntPessoas = obterOpcao("Insira a quantidade de pessoas:", QNT_MIN, QNT_MAX_PESSOAS);
 
-        } catch (IllegalArgumentException | InputMismatchException e) {
-            System.out.println(e.getMessage());
-        }
+        if (opcao == 6) {
+            eliminarReserva();
+        } else if (opcao == 7) {
+            System.out.println(empresa.listarReservas());
+        } else {
+            try {
+                System.out.println(empresa.listarClientes());
+                String codigoCliente = obterString("Insira o código do cliente pretendido:");
+                cliente = obterCliente(codigoCliente);
+                qntPessoas = obterOpcao("Insira a quantidade de pessoas:", QNT_MIN, QNT_MAX_PESSOAS);
+            } catch (IllegalArgumentException | InputMismatchException e) {
+                System.out.println(e.getMessage());
+            }
 
-        switch (opcao) {
-            case 1:
-                carregarNovaReservaHotel(dataAtual, qntPessoas, cliente);
-                break;
-            case 2:
-                carregarNovaReservaHotelVoo(dataAtual, qntPessoas, cliente);
-                break;
-            case 3:
-                carregarNovaReservaHotelVooIdaVolta(dataAtual, qntPessoas, cliente);
-                break;
-            case 4:
-                carregarNovaReservaVoo(dataAtual, qntPessoas, cliente);
-                break;
-            case 5:
-                carregarNovaReservaVooIdaVolta(dataAtual, qntPessoas, cliente);
-                break;
-            case 6:
-                eliminarReserva();
-                break;
-            case 7:
-                empresa.listarReservas();
-                break;
+            switch (opcao) {
+                case 1:
+                    carregarNovaReservaHotel(dataAtual, qntPessoas, cliente);
+                    break;
+                case 2:
+                    carregarNovaReservaHotelVoo(dataAtual, qntPessoas, cliente);
+                    break;
+                case 3:
+                    carregarNovaReservaHotelVooIdaVolta(dataAtual, qntPessoas, cliente);
+                    break;
+                case 4:
+                    carregarNovaReservaVoo(dataAtual, qntPessoas, cliente);
+                    break;
+                case 5:
+                    carregarNovaReservaVooIdaVolta(dataAtual, qntPessoas, cliente);
+                    break;
+                default:
+                    System.out.println("Opção inválida.");
+            }
         }
     }
 
-
     public void carregarNovaReservaHotel(Data dataAtual, int qntPessoas, Cliente cliente) {
         Data dataChegada;
+        boolean invalido = true;
 
-        try {
-            System.out.println(empresa.listarHoteis());
-            String codigoHotel = obterString("Insira o código do hotel pretendido: ");
-            Hotel hotel = obterHotel(codigoHotel);
+        while (invalido) {
+            try {
+                System.out.println(empresa.listarHoteis());
+                String codigoHotel = obterString("Insira o código do hotel pretendido:");
+                Hotel hotel = obterHotel(codigoHotel);
 
-            dataChegada = obterData("Insira a data de chegada ao hotel (YYYY/MM/DD): ");
+                dataChegada = obterData("Insira a data de chegada ao hotel (YYYY/MM/DD):");
 
-            int numNoites = obterOpcao("Insira o número de noites de estadia: ", QNT_MIN, QNT_MAX);
+                int numNoites = obterOpcao("Insira o número de noites de estadia:", QNT_MIN, QNT_MAX);
 
-            ReservaHotel reservaHotel = new ReservaHotel(dataAtual, qntPessoas, cliente, hotel, dataChegada, numNoites);
-            empresa.adicionarReserva(reservaHotel);
-            System.out.println("Reserva de hotel com voo de ida e volta criada com sucesso!");
-
-        } catch (IllegalArgumentException | InputMismatchException | FormatoInvalidoException e) {
-            System.out.println(e.getMessage());
+                ReservaHotel reservaHotel = new ReservaHotel(dataAtual, qntPessoas, cliente, hotel, dataChegada, numNoites);
+                empresa.adicionarReserva(reservaHotel);
+                System.out.println("Reserva de hotel criada com sucesso!");
+                invalido = false;
+            } catch (IllegalArgumentException | InputMismatchException | FormatoInvalidoException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -157,7 +169,7 @@ public class InteracaoEmpresaUtilizador {
 
             Data dataChegada = obterData("Insira a data de chegada ao hotel (YYYY/MM/DD): ");
 
-            int numNoites = obterOpcao("Insira o número de noites de estadia: ", QNT_MIN, QNT_MAX);
+            int numNoites = obterOpcao("Insira o número de noites de estadia:", QNT_MIN, QNT_MAX);
 
             System.out.println(empresa.listarVoos());
             String codigoVoo = obterString("Insira o código do voo pretendido: ");
@@ -184,7 +196,7 @@ public class InteracaoEmpresaUtilizador {
 
             Data dataChegada = obterData("Insira a data de chegada ao hotel (YYYY/MM/DD): ");
 
-            int numNoites = obterOpcao("Insira o número de noites de estadia: ", QNT_MIN, QNT_MAX);
+            int numNoites = obterOpcao("Insira o número de noites de estadia:", QNT_MIN, QNT_MAX);
 
             System.out.println(empresa.listarVoos());
             String codigoVoo = obterString("Insira o código do voo pretendido: ");
@@ -255,27 +267,22 @@ public class InteracaoEmpresaUtilizador {
         return false;
     }
 
-    public String listarHoteisPorCategoria() {
+    public void listarHoteisPorCategoria() {
         CategoriaHotel categoria = obterCategoriaHotel();
         StringBuilder strB = new StringBuilder();
-        boolean respostaInvalida = true;
 
-        do {
-            try {
-                for (Hotel hotel : empresa.getListaHoteis()) {
-                    if (hotel.getCategoria().equals(categoria)) {
-                        strB.append(hotel);
-                        strB.append("\n");
-                    }
-                }
-                respostaInvalida = false;
-            } catch (IllegalArgumentException e) {
-                System.out.printf(e.getMessage());
+        for (Hotel hotel : empresa.getListaHoteis()) {
+            if (hotel.getCategoria().equals(categoria)) {
+                strB.append(hotel);
+                strB.append("\n");
             }
-        } while (respostaInvalida);
+        }
 
+        if (strB.isEmpty()) {
+            strB.append("Nenhum hotel encontrado para a categoria: ").append(categoria.toString());
+        }
 
-        return strB.toString();
+        System.out.println(strB.toString());
     }
 
     private void inserirNovoCliente() {
@@ -336,6 +343,7 @@ public class InteracaoEmpresaUtilizador {
             try {
                 System.out.println("Insira a percentagem de desconto acordada com a empresa:");
                 double percDesconto = teclado.nextDouble();
+                teclado.nextLine();
                 cliente.setPercentagemDesconto(percDesconto);
                 descontoInvalido = false;
             } catch (IllegalArgumentException e) {
@@ -344,6 +352,7 @@ public class InteracaoEmpresaUtilizador {
         } while (descontoInvalido);
 
         empresa.adicionarCliente(cliente);
+        System.out.println("Novo cliente adicionado com sucesso.");
     }
 
     private void inserirNovoHotel() {
@@ -389,7 +398,7 @@ public class InteracaoEmpresaUtilizador {
         boolean selecaoInvalida = true;
         int resposta;
         do {
-            resposta = obterOpcao("O hotel possui serviço de transfer? 1- SIM / 2- NÃO", 1, 2);
+            resposta = obterOpcao("O hotel possui serviço de transfer? (1 - SIM/2 - NÃO):", 1, 2);
             if (resposta == 1) {
                 hasTransfer = true;
                 novoHotel.setTransfer(hasTransfer);
@@ -419,9 +428,9 @@ public class InteracaoEmpresaUtilizador {
     private void mostrarCustoTotalReservasHotelEVooIdaVolta() {
         double custoRHotel = empresa.retornarCustoTodasReservasHoteis();
         double custoRVooIV = empresa.retornarCustoTodasReservasVooIV();
-        System.out.printf("Custo total das reservas de hotel: %.2f", custoRHotel);
-        System.out.printf("Custo total das reservas de voo ida e volta: %.2f", custoRVooIV);
-        System.out.printf("Custo total dos dois tipos de reservas: %.2f", custoRHotel + custoRVooIV);
+        System.out.printf("Custo total das reservas de hotel: %.2f\n", custoRHotel);
+        System.out.printf("Custo total das reservas de voo ida e volta: %.2f\n", custoRVooIV);
+        System.out.printf("Custo total dos dois tipos de reservas: %.2f\n", custoRHotel + custoRVooIV);
     }
 
     public Cliente obterCliente(String codigo) {
@@ -445,7 +454,7 @@ public class InteracaoEmpresaUtilizador {
             }
         }
         if (hotel == null) {
-            throw new IllegalArgumentException("* Hotel não encontrado.");
+            throw new IllegalArgumentException("Hotel não encontrado.");
         }
         return hotel;
     }
@@ -458,7 +467,7 @@ public class InteracaoEmpresaUtilizador {
             }
         }
         if (voo == null) {
-            throw new IllegalArgumentException("* Hotel não encontrado.");
+            throw new IllegalArgumentException("Voo não encontrado.");
         }
         return voo;
     }
@@ -482,16 +491,30 @@ public class InteracaoEmpresaUtilizador {
     }
 
     public CategoriaHotel obterCategoriaHotel() {
-        System.out.println("De seguida, escolha a categoria do hotel:");
-        String categ = obterString("- Uma Estrela\n- Duas Estrelas\n- Três Estrelas\n- Quatro Estrelas\n- Cinco estrelas\nInsira sua opção:").toUpperCase().trim();
-        String categReplace = categ.replace("", "_").replace("Ê", "E");
+        System.out.println("Escolha a categoria do hotel:");
+        String opcao = obterString("""
+            - 1 - Uma Estrela
+            - 2 - Duas Estrelas
+            - 3 - Três Estrelas
+            - 4 - Quatro Estrelas
+            - 5 - Cinco Estrelas
+            Insira o número da sua opção:
+            """);
 
-        for (CategoriaHotel categoria : CategoriaHotel.values()) {
-            if (categoria.name().equals(categReplace)) {
-                return categoria;
-            }
+        switch (opcao) {
+            case "1":
+                return CategoriaHotel.UMA_ESTRELA;
+            case "2":
+                return CategoriaHotel.DUAS_ESTRELAS;
+            case "3":
+                return CategoriaHotel.TRES_ESTRELAS;
+            case "4":
+                return CategoriaHotel.QUATRO_ESTRELAS;
+            case "5":
+                return CategoriaHotel.CINCO_ESTRELAS;
+            default:
+                throw new IllegalArgumentException("Categoria inválida.");
         }
-        throw new IllegalArgumentException("A categoria inserida está incorreta.");
     }
 
     public Genero obterGenero(String mensagem) {
@@ -502,7 +525,7 @@ public class InteracaoEmpresaUtilizador {
                 return genero;
             }
         }
-        throw new IllegalArgumentException("O gênero inserido está incorreto.");
+        throw new IllegalArgumentException("O gênero inserido está incorreto.\n");
     }
 
     public int obterNif(String mensagem) {
@@ -518,16 +541,16 @@ public class InteracaoEmpresaUtilizador {
 
     public int obterOpcao(String mensagem, int min, int max) {
         System.out.println(mensagem);
-        String entrada = teclado.nextLine();
+        String entrada = teclado.nextLine().trim();
 
         int numero;
         try {
             numero = Integer.parseInt(entrada);
         } catch (NumberFormatException e) {
-            throw new InputMismatchException("Entrada inválida. Insira apenas números.");
+            throw new InputMismatchException("Entrada inválida.");
         }
 
-        if (numero < min || numero > max) {
+        if (numero < min || numero > max || entrada.isEmpty()) {
             throw new IllegalArgumentException("Erro: Opção fora do intervalo permitido.");
         }
         return numero;
@@ -539,8 +562,7 @@ public class InteracaoEmpresaUtilizador {
     }
 
     public void perguntaFinal() {
-        int resposta = obterOpcao("Deseja salvar as informações da empresa em um ficheiro binário? 1- SIM / 2- NÃO", 1, 2);
-        teclado.nextLine();
+        int resposta = obterOpcao("Deseja salvar as informações da empresa em um ficheiro binário? (1- SIM / 2- NÃO):", 1, 2);
 
         if (resposta == 1) {
             serializarEmpresa();
@@ -558,20 +580,38 @@ public class InteracaoEmpresaUtilizador {
         } while (nome.isEmpty());
 
         if (ficheiro.serializar(nome, empresa)) {
-            System.out.println("Ficheiro binário criado com sucesso!%n");
+            System.out.println("Ficheiro binário criado com sucesso!\n");
         } else {
-            System.out.println("Falha na criação do ficheiro binário%n");
+            System.out.println("Falha na criação do ficheiro binário\n");
         }
     }
 
     public void mostrarMenu() {
-        System.out.println("------------------ MENU ------------------");
-        System.out.println("1 - Gerenciar reservas");
-        System.out.println("2 - Listar hotéis por categoria");
-        System.out.println("3 - Inserir novo cliente");
-        System.out.println("4 - Inserir novo hotel");
-        System.out.println("5 - Visualizar custo total das reservas de hotel e voos de ida e regresso");
-        System.out.println("0 - Sair do programa");
-        System.out.println("------------------------------------------");
+        System.out.println("""
+                
+                ------------------ MENU ------------------
+                1 - Gerenciar reservas
+                2 - Listar hotéis por categoria
+                3 - Inserir novo cliente
+                4 - Inserir novo hotel
+                5 - Visualizar custo total das reservas de hotel e voos de ida e regresso
+                0 - Sair do programa
+                ------------------------------------------
+                """);
+    }
+
+    public String menuReservas() {
+        return ("""
+                -----------------RESERVAS-----------------
+                1 - Criar Reserva de Hotel
+                2 - Criar Reserva de Hotel e Voo
+                3 - Criar Reserva Hotel e Voo Ida e Volta
+                4 - Criar Reserva Voo
+                5 - Criar Reserva Voo Ida e Volta
+                6 - Eliminar reserva
+                7 - Listar todas as reservas
+                0 - Voltar ao menu inicial
+                ------------------------------------------
+                Insira a opção desejada:""");
     }
 }

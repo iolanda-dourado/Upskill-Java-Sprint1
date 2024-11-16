@@ -231,7 +231,18 @@ public class Hotel implements Identificacavel, Serializable {
     @Override
     public String toString() {
         String resposta = transfer ? "Sim" : "Não";
-        return String.format("--- HOTEL ---\nCódigo do Hotel: %s\nNome do Hotel: %s\nCategoria do Hotel: %s\nLocalidade: %s\nTem transfer? %s\nPreço por quarto: %.2f", codigoHotel, nomeHotel, categoria, localidade, resposta, precoPorQuarto);
+        return String.format(
+                """
+                --- Hotel ---
+                Nome do Hotel: %s
+                Código do Hotel: %s
+                Categoria do Hotel: %s
+                Localidade: %s
+                Tem Transfer? %s
+                Preço por Quarto: %.2f
+                """,
+                nomeHotel, codigoHotel, categoria, localidade, resposta, precoPorQuarto
+        );
     }
 
     /**

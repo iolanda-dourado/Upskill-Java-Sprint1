@@ -199,8 +199,21 @@ public class Empresa implements Serializable {
      */
     @Override
     public String toString() {
-        return String.format("-- Empresa --\nNomeEmpresa: %s\nMorada: %s\nListaClientes: %s\nListaHoteis: %s\nListaAeroportos:%s\nListaVoos: %s\nListaReservas: %s", nomeEmpresa, morada, listarClientes(), listarHoteis(), listarAeroportos(), listarVoos(), listarReservas());
+        return String.format(
+                """
+                --- Empresa ---
+                Nome da Empresa: %s
+                Morada: %s
+                Lista de Clientes: %s
+                Lista de Hotéis: %s
+                Lista de Aeroportos: %s
+                Lista de Voos: %s
+                Lista de Reservas: %s
+                """,
+                nomeEmpresa, morada, listarClientes(), listarHoteis(), listarAeroportos(), listarVoos(), listarReservas()
+        );
     }
+
 
     /**
      * Compara este objeto com outro para verificar a igualdade.
@@ -333,13 +346,13 @@ public class Empresa implements Serializable {
      */
     public String listarClientes() {
         StringBuilder sb = new StringBuilder();
-        sb.append("** LISTA DE CLIENTES **\n");
+        sb.append("========== LISTA DE CLIENTES ==========\n");
         for (Cliente cliente : listaClientes) {
             sb.append(cliente);
-            sb.append("\n------------------------");
+            sb.append("------------------------------------------");
             sb.append("\n");
         }
-        sb.append(String.format("\nTotal de Clientes = %d", listaClientes.size()));
+        sb.append(String.format("Total de Clientes = %d", listaClientes.size()));
         return sb.toString();
     }
 
@@ -350,13 +363,13 @@ public class Empresa implements Serializable {
      */
     public String listarAeroportos() {
         StringBuilder sb = new StringBuilder();
-        sb.append("** LISTA DE AEROPORTOS **\n");
+        sb.append("========== LISTA DE AEROPORTOS ==========\n\n");
         for (Aeroporto aero : listaAeroportos) {
             sb.append(aero);
-            sb.append("\n------------------------");
+            sb.append("------------------------------------------");
             sb.append("\n");
         }
-        sb.append(String.format("\nTotal de Aeroportos = %d", listaAeroportos.size()));
+        sb.append(String.format("Total de Aeroportos = %d", listaAeroportos.size()));
         return sb.toString();
     }
 
@@ -367,13 +380,13 @@ public class Empresa implements Serializable {
      */
     public String listarHoteis() {
         StringBuilder sb = new StringBuilder();
-        sb.append("** LISTA DE HOTÉIS **\n");
+        sb.append("========== LISTA DE HOTÉIS ==========\n\n");
         for (Hotel htl : listaHoteis) {
             sb.append(htl);
-            sb.append("\n------------------------");
+            sb.append("------------------------------------------");
             sb.append("\n");
         }
-        sb.append(String.format("\nTotal de Hotéis = %d", listaHoteis.size()));
+        sb.append(String.format("Total de Hotéis = %d", listaHoteis.size()));
         return sb.toString();
     }
 
@@ -384,13 +397,13 @@ public class Empresa implements Serializable {
      */
     public String listarVoos() {
         StringBuilder sb = new StringBuilder();
-        sb.append("** LISTA DE VOOS **\n");
+        sb.append("========== LISTA DE VOOS ==========\n\n");
         for (Voo v : listaVoos) {
             sb.append(v);
-            sb.append("\n------------------------");
+            sb.append("------------------------------------------");
             sb.append("\n");
         }
-        sb.append(String.format("\nTotal de Voos = %d", listaVoos.size()));
+        sb.append(String.format("Total de Voos = %d", listaVoos.size()));
         return sb.toString();
     }
 
@@ -401,13 +414,13 @@ public class Empresa implements Serializable {
      */
     public String listarReservas() {
         StringBuilder sb = new StringBuilder();
-        sb.append("** LISTA DE RESERVAS **\n");
+        sb.append("\n========== LISTA DE RESERVAS ==========\n\n");
         for (Reserva res : listaReservas) {
             sb.append(res);
-            sb.append("\n------------------------");
+            sb.append("------------------------------------------");
             sb.append("\n");
         }
-        sb.append(String.format("\nTotal de Reservas = %d", listaReservas.size()));
+        sb.append(String.format("Total de Reservas = %d\n", listaReservas.size()));
         return sb.toString();
     }
 
@@ -422,11 +435,11 @@ public class Empresa implements Serializable {
         int countTemp = 0;
         for (Cliente cliente : listaClientes) {
             if (codigoCliente.equals(cliente.getCodigoCliente())) {
-                sb.append(String.format("** LISTA DE RESERVAS DO CLIENTE - %s **\n", cliente.getNomeCliente()));
+                sb.append(String.format("========== LISTA DE RESERVAS DO CLIENTE - %s ==========\n", cliente.getNomeCliente()));
                 for (Reserva res : listaReservas) {
                     if (res.getCliente() == cliente) {
                         sb.append(res);
-                        sb.append("\n------------------------");
+                        sb.append("------------------------------------------");
                         sb.append("\n");
                         countTemp++;
                     }
@@ -446,13 +459,13 @@ public class Empresa implements Serializable {
     public String listarHoteisComTransfer() {
         StringBuilder sb = new StringBuilder();
         int countTemp = 0;
-        sb.append("** LISTA DE HOTÉIS QUE FORNECEM O SERVIÇO DE TRANSFER **\n");
+        sb.append("--- LISTA DE HOTÉIS QUE FORNECEM O SERVIÇO DE TRANSFER ---\n");
         for (Hotel htl : listaHoteis) {
             if (htl.isTransfer()) {
                 sb.append(htl);
                 countTemp++;
             }
-            sb.append("\n------------------------");
+            sb.append("------------------------------------------");
             sb.append("\n");
         }
         sb.append(String.format("\nTotal de Hoteis com Transfer = %d", countTemp));

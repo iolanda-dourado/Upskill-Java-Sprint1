@@ -3,11 +3,12 @@ package utilidades;
 import entidades.*;
 import enums.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class GeradorAutomatico {
+public class GeradorAutomatico implements Serializable {
     private static final int NUM_AEROPORTOS = 4;
     private static final int NUM_VOOS = 6;
     private static final int NUM_HOTEIS = 4;
@@ -22,8 +23,8 @@ public class GeradorAutomatico {
         Random gerador = new Random();
 
         do {
-//            GerarAutomaticoAeroporto infoAero = GerarAutomaticoAeroporto.values()[gerador.nextInt(GerarAutomaticoAeroporto.values().length)];
-            GerarAutomaticoAeroporto infoAero = GerarAutomaticoAeroporto.values()[cont];
+            GerarAutomaticoAeroporto infoAero = GerarAutomaticoAeroporto.values()[gerador.nextInt(GerarAutomaticoAeroporto.values().length)];
+//            GerarAutomaticoAeroporto infoAero = GerarAutomaticoAeroporto.values()[cont];
             Aeroporto aeroporto = new Aeroporto(infoAero.getEndereco(), infoAero.getPaginaWeb(), infoAero.getCodigoAeroporto());
             if (empresa.adicionarAeroporto(aeroporto)) {
                 cont++;
@@ -37,8 +38,8 @@ public class GeradorAutomatico {
 
         do {
             Voo voo = new Voo();
-//            GerarAutomaticoVoo infoVoo = GerarAutomaticoVoo.values()[gerador.nextInt(GerarAutomaticoVoo.values().length)];
-            GerarAutomaticoVoo infoVoo = GerarAutomaticoVoo.values()[cont];
+            GerarAutomaticoVoo infoVoo = GerarAutomaticoVoo.values()[gerador.nextInt(GerarAutomaticoVoo.values().length)];
+//            GerarAutomaticoVoo infoVoo = GerarAutomaticoVoo.values()[cont];
             List<Aeroporto> listaAeroportos = empresa.getListaAeroportos();
 
             voo.setCodigoVoo(infoVoo.getCodigoVoo());
@@ -71,8 +72,8 @@ public class GeradorAutomatico {
         Random gerador = new Random();
 
         do {
-//            GerarAutomaticoHotel infoHotel = GerarAutomaticoHotel.values()[gerador.nextInt(GerarAutomaticoHotel.values().length)];
-            GerarAutomaticoHotel infoHotel = GerarAutomaticoHotel.values()[cont];
+            GerarAutomaticoHotel infoHotel = GerarAutomaticoHotel.values()[gerador.nextInt(GerarAutomaticoHotel.values().length)];
+//            GerarAutomaticoHotel infoHotel = GerarAutomaticoHotel.values()[cont];
             Hotel hotel = new Hotel(infoHotel.getNomeHotel(),
                     infoHotel.getCategoria(), infoHotel.getLocalidade(), infoHotel.getTransfer(),
                     infoHotel.getPrecoPorQuarto());
@@ -139,6 +140,6 @@ public class GeradorAutomatico {
         empresa.adicionarReserva(resVoo1);
         empresa.adicionarReserva(resVoo2);
         empresa.adicionarReserva(resVooIV1);
-        empresa.adicionarReserva(resVooIV1);
+        empresa.adicionarReserva(resVooIV2);
     }
 }

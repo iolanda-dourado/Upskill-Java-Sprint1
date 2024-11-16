@@ -13,7 +13,7 @@ public class ReservaVoo extends Reserva {
 
     private static final String PREFIXO_RESERVA_VOO = "R_VOO-";
 
-    private static int reservaVooCount = 0;
+    private int reservaVooCount = 0;
 
     /**
      * Constrói uma nova reserva de voo com os dados fornecidos.
@@ -76,7 +76,14 @@ public class ReservaVoo extends Reserva {
      */
     @Override
     public String toString() {
-        return String.format("--- Reserva Voo ---\n%s\n%s", super.toString(), voo);
+        return String.format(
+                """
+                Reserva de Voo
+                %sIdentificador da Reserva: %s
+                %s
+                """,
+                super.toString(), getCodigoReserva(), voo
+        );
     }
 
     /**

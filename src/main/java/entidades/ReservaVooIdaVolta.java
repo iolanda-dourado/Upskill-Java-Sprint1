@@ -95,8 +95,17 @@ public class ReservaVooIdaVolta extends ReservaVoo {
      */
     @Override
     public String toString() {
-        return String.format("--- Reserva Voo Ida e Volta ---\n%s\nVoo de Regresso: %s", super.toString(), vooRegresso);
+        return String.format(
+                """
+                Reserva Voo Ida e Volta
+                %s
+                Voo de Regresso:
+                %s
+                """,
+                super.toString(), vooRegresso
+        );
     }
+
 
     /**
      * Compara duas reservas de voo ida e volta para verificar se são iguais.
@@ -119,7 +128,7 @@ public class ReservaVooIdaVolta extends ReservaVoo {
      */
     @Override
     public String gerarIdentificador() {
-        return String.format("%s%s", PREFIXO_RESERVA_VOO_IDA_VOLTA, reservaVooIdaVoltaCount);
+        return String.format("%s%s", PREFIXO_RESERVA_VOO_IDA_VOLTA, getReservaCount());
     }
 
     /**

@@ -24,7 +24,7 @@ public class ReservaHotelVooIdaVolta extends ReservaHotelVoo {
     /**
      * Contador estático utilizado para gerar um identificador único para cada reserva de hotel com voo de ida e volta.
      */
-    private static int reservaHotelVooIdaVoltaCount = 0;
+    private static int reservaHotelVooIdaVoltaCount = 1;
 
 
     /**
@@ -98,15 +98,23 @@ public class ReservaHotelVooIdaVolta extends ReservaHotelVoo {
      */
     @Override
     public String toString() {
-        return String.format("-- Reserva de Hotel com Voo de Ida e Volta --\n%s\nVoo de Regresso: %s", super.toString(), vooRegresso);
+        return String.format(
+                """
+                Reserva Hotel e Voo Ida e Volta
+                %s
+                Voo de Regresso: %s
+                """,
+                super.toString(), vooRegresso
+        );
     }
+
 
     /**
      * Compara se dois objetos de reserva de hotel com voo de ida e volta são iguais.
      *
      * Este método compara os atributos da reserva de hotel com voo de ida e volta, incluindo o voo de regresso.
      *
-     * @param o O objeto a ser comparado com a instância atual.
+     * @param outraResHotelVooIV O objeto a ser comparado com a instância atual.
      * @return `true` se os objetos forem iguais, `false` caso contrário.
      */
     @Override
@@ -167,7 +175,7 @@ public class ReservaHotelVooIdaVolta extends ReservaHotelVoo {
      */
     @Override
     public String gerarIdentificador() {
-        return String.format("%s%s", PREFIXO_RESERVA_HOTEL_VOO_IV, reservaHotelVooIdaVoltaCount);
+        return String.format("%s%s", PREFIXO_RESERVA_HOTEL_VOO_IV, getReservaCount());
     }
 
     /**

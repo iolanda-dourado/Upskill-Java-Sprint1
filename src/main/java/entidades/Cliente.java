@@ -328,7 +328,21 @@ public class Cliente implements Identificacavel, Serializable {
      */
     @Override
     public String toString() {
-        return String.format("--- Cliente ---\nCódigo de Cliente: %s\nNome do Cliente: %s\nData de Nascimento: %s\nGênero: %s\nNIF: %s\nNúmero de Passaporte: %s\nEmail: %s\nPercentagem de Desconto: %.2f\nNúmero de Reservas Concretizadas: %d", codigoCliente, nomeCliente, dataNascimento, genero, nif, numPassaporte, email, percentagemDesconto, numReservasConcretizadas);
+        return String.format(
+                """
+                --- Cliente ---
+                Código de Cliente: %s
+                Nome do Cliente: %s
+                Data de Nascimento: %s
+                Gênero: %s
+                NIF: %s
+                Número de Passaporte: %s
+                Email: %s
+                Percentagem de Desconto: %.2f%%
+                Número de Reservas Concretizadas: %d
+                """,
+                codigoCliente, nomeCliente, dataNascimento, genero, nif, numPassaporte, email, percentagemDesconto, numReservasConcretizadas
+        );
     }
 
     /**

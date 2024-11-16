@@ -137,7 +137,15 @@ public class Aeroporto implements Serializable {
      */
     @Override
     public String toString() {
-        return String.format("--- Aeroporto ---\nCódigo do Aeroporto: %s\nEndereço: %s\nPágina Web: %s", codigoAeroporto, endereco, paginaWeb);
+        return String.format(
+                """
+                --- Aeroporto ---
+                Código do Aeroporto: %s
+                Endereço: %s
+                Página Web: %s
+                """,
+                codigoAeroporto, endereco, paginaWeb
+        );
     }
 
     /**

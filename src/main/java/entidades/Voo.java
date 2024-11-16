@@ -361,8 +361,26 @@ public class Voo implements Descontavel, Serializable {
      */
     @Override
     public String toString() {
-        return String.format("--- Voo ---\nCódigo do Voo: %s\nCompanhia Aérea: %s\nQuantidade de Lugares: %d\nQuantidade de Lugares Disponíveis: %d\nAeroporto de Saída: %s\nAeroporto de Chegada: %s\nDistância entre Aeroportos: %.2f km\nPreço do Bilhete: %.2f\nData de Partida: %s\nHora de Partida: %s", codigoVoo, companhiaAerea, qntLugares, qntLugaresDisponiveis, aeroportoSaida.getCodigoAeroporto(), aeroportoChegada.getCodigoAeroporto(), distanciaKmAeroporto, precoBilhete, dataPartida, horaPartida);
+        return String.format(
+                """
+                --- Voo ---
+                Código do Voo: %s
+                Companhia Aérea: %s
+                Quantidade de Lugares: %d
+                Quantidade de Lugares Disponíveis: %d
+                Aeroporto de Saída: %s
+                Aeroporto de Chegada: %s
+                Distância entre Aeroportos: %.2f km
+                Preço do Bilhete: %.2f
+                Data de Partida: %s
+                Hora de Partida: %s
+                """,
+                codigoVoo, companhiaAerea, qntLugares, qntLugaresDisponiveis,
+                aeroportoSaida.getCodigoAeroporto(), aeroportoChegada.getCodigoAeroporto(),
+                distanciaKmAeroporto, precoBilhete, dataPartida, horaPartida
+        );
     }
+
 
     /**
      * Verifica a igualdade entre dois objetos Voo.
