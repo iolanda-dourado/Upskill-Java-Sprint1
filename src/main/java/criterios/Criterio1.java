@@ -37,7 +37,5 @@ public class Criterio1 implements Comparator<Cliente> {
                 return (c1.getNomeCliente()).compareTo(c2.getNomeCliente());
             }
         }
-
     }
-
 }

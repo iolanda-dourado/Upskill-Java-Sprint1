@@ -1,7 +1,7 @@
 package entidades;
 
 import enums.CategoriaHotel;
-import interfaces.Identificacavel;
+import interfaces.Identificavel;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -12,7 +12,7 @@ import java.util.Objects;
  *
  * @Author Iolanda Dourado e Marianna Ramos
  */
-public class Hotel implements Identificacavel, Serializable {
+public class Hotel implements Identificavel, Serializable {
     /**
      * Código único de identificação do hotel.
      */

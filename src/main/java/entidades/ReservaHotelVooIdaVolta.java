@@ -24,7 +24,7 @@ public class ReservaHotelVooIdaVolta extends ReservaHotelVoo {
     /**
      * Contador estático utilizado para gerar um identificador único para cada reserva de hotel com voo de ida e volta.
      */
-    private static int reservaHotelVooIdaVoltaCount = 1;
+    private static int reservaHotelVooIdaVoltaCount = 0;
 
 
     /**

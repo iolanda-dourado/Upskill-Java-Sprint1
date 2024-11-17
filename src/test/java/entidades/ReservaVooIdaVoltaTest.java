@@ -10,8 +10,12 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
+/**
+ * Classe de teste para o cálculo de custos de reservas de voo de ida e volta.
+ * Esta classe contém vários testes que verificam o cálculo de custos para reservas de voo de ida e volta,
+ * levando em consideração promoções, múltiplos de 5 e outras condições específicas (desconto percentual a cada
+ * 1000kms entre os aeroportos, para todos os voos de volta).
+ */
 public class ReservaVooIdaVoltaTest {
     private Data data1 = new Data(2025, 1, 5);
     private Data data2 = new Data(2024, 12, 25);
@@ -19,7 +23,7 @@ public class ReservaVooIdaVoltaTest {
     private Data data5 = new Data(2024, 11, 15);
     private LocalTime horario = LocalTime.of(22, 30);
 
-    private Cliente client = new Cliente("Maira", data2, Genero.FEMENINO, 322259339, "GF815694", "xxx@gmail.com", 5);
+    private Cliente client = new Cliente("Maira", data2, Genero.FEMININO, 322259339, "GF815694", "xxx@gmail.com", 5);
 
     private Aeroporto aero1 = new Aeroporto("lalala", "www.gru.com.br", "GRU");
     private Aeroporto aero3 = new Aeroporto("lalala", "www.opo.com.br", "OPO");
@@ -43,6 +47,10 @@ public class ReservaVooIdaVoltaTest {
 
     private Empresa empresa = new Empresa("Casinha verde", "Rua do Mangue", clientes, hoteis, aeroportos, voos, reservas);
 
+    /**
+     * Testa o cálculo do custo de uma reserva de voo de ida e volta quando a reserva está dentro da promoção de 30% de desconto.
+     * O custo esperado é 420, dado que a reserva se qualifica para o desconto.
+     */
     @Test
     public void calcularCustoReservaVooIVDentroPromocao30() {
 
@@ -51,6 +59,10 @@ public class ReservaVooIdaVoltaTest {
         Assertions.assertEquals(resultadoEsperado, resultado, 0.01);
     }
 
+    /**
+     * Testa o cálculo do custo de uma reserva de voo de ida e volta quando a reserva está fora de uma promoção.
+     * O custo esperado é 210, dado que a reserva não se qualifica para o desconto.
+     */
     @Test
     public void calcularCustoReservaVooIVForaPromocao30() {
 
@@ -59,6 +71,10 @@ public class ReservaVooIdaVoltaTest {
         Assertions.assertEquals(resultadoEsperado, resultado, 0.01);
     }
 
+    /**
+     * Testa o cálculo do custo de uma reserva de voo de ida e volta quando uma parte da reserva está dentro da promoção
+     * e outra parte está fora da promoção. O custo esperado é 472.
+     */
     @Test
     public void calcularCustoReservaVooIVDentroEForaPromocao30() {
 
@@ -67,6 +83,10 @@ public class ReservaVooIdaVoltaTest {
         Assertions.assertEquals(resultadoEsperado, resultado, 0.01);
     }
 
+    /**
+     * Testa o cálculo do custo de uma reserva de voo de ida e volta dentro de uma promoção e com múltiplas reservas
+     * concretizadas, aplicando o desconto adicional para reservas múltiplas de 5. O custo esperado é 399.
+     */
     @Test
     public void calcularCustoReservaVooIVDentroPromocao30EReservasMultiplasDe5() {
         empresa.adicionarReserva(reserva1);

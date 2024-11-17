@@ -2,7 +2,7 @@ package entidades;
 
 import enums.Genero;
 import excecoes.NifInvalidoException;
-import interfaces.Identificacavel;
+import interfaces.Identificavel;
 import utilidades.Data;
 
 import java.io.Serializable;
@@ -14,7 +14,7 @@ import java.util.Objects;
  * @author Iolanda Dourado e Marianna Ramos
  */
 
-public class Cliente implements Identificacavel, Serializable {
+public class Cliente implements Identificavel, Serializable {
 
     /**
      * Código único do cliente.

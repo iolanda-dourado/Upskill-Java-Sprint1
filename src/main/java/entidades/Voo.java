@@ -16,7 +16,7 @@ import java.util.Objects;
  * @author  Iolanda Dourado e Marianna Ramos
  */
 
-public class Voo implements Descontavel, Serializable {
+public class Voo implements Descontavel, Serializable, Comparable<Voo> {
 
     /** Código do voo. */
     private String codigoVoo;
@@ -495,5 +495,18 @@ public class Voo implements Descontavel, Serializable {
      */
     public static double getDescontoVoo() {
         return descontoVoo;
+    }
+
+    /**
+     * Compara dois objetos do tipo {@link Voo} com base no código do voo.
+     * A comparação é feita de forma lexicográfica, ou seja, compara os códigos de voo como strings.
+     *
+     * @param outro O objeto {@link Voo} a ser comparado com o objeto atual.
+     * @return Um valor negativo, zero ou positivo, dependendo de o código do voo do objeto atual
+     *         ser respectivamente menor, igual ou maior que o código do voo do objeto {@code outro}.
+     */
+    @Override
+    public int compareTo(Voo outro) {
+        return this.codigoVoo.compareTo(outro.codigoVoo);
     }
 }

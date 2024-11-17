@@ -2,6 +2,7 @@ package entidades;
 
 import criterios.Criterio1;
 import criterios.Criterio2_ReservaCustoDecrescente;
+import criterios.Criterio3_CodigoID;
 
 import java.io.Serializable;
 import java.util.*;
@@ -62,15 +63,16 @@ public class Empresa implements Serializable {
     /**
      * Construtor que inicializa uma empresa com o nome, morada e listas de clientes, hotéis, aeroportos, voos e reservas.
      *
-     * @param nomeEmpresa O nome da empresa.
-     * @param morada A morada da empresa.
-     * @param listaClientes A lista de clientes associados à empresa.
-     * @param listaHoteis A lista de hotéis associados à empresa.
+     * @param nomeEmpresa     O nome da empresa.
+     * @param morada          A morada da empresa.
+     * @param listaClientes   A lista de clientes associados à empresa.
+     * @param listaHoteis     A lista de hotéis associados à empresa.
      * @param listaAeroportos A lista de aeroportos associados à empresa.
-     * @param listaVoos A lista de voos associados à empresa.
-     * @param reservas A lista de reservas associadas à empresa.
+     * @param listaVoos       A lista de voos associados à empresa.
+     * @param reservas        A lista de reservas associadas à empresa.
      */
-    public Empresa(String nomeEmpresa, String morada, List<Cliente> listaClientes, List<Hotel> listaHoteis, List<Aeroporto> listaAeroportos, List<Voo> listaVoos, List<Reserva> reservas) {
+    public Empresa(String nomeEmpresa, String morada, List<Cliente> listaClientes, List<Hotel> listaHoteis,
+                   List<Aeroporto> listaAeroportos, List<Voo> listaVoos, List<Reserva> reservas) {
         this.nomeEmpresa = nomeEmpresa;
         this.morada = morada;
         this.listaClientes = new ArrayList<>(listaClientes);
@@ -193,7 +195,8 @@ public class Empresa implements Serializable {
 
     /**
      * Retorna a representação textual da {@code Empresa}, incluindo informações
-     * sobre o {@code Nome}, {@code Morada}, e as listas de {@code Clientes}, {@code Hotéis}, {@code Aeroportos}, {@code Voos} e {@code Reservas}.
+     * sobre o {@code Nome}, {@code Morada}, e as listas de {@code Clientes}, {@code Hotéis}, {@code Aeroportos},
+     * {@code Voos} e {@code Reservas}.
      *
      * @return Uma string formatada contendo os detalhes da empresa.
      */
@@ -201,34 +204,72 @@ public class Empresa implements Serializable {
     public String toString() {
         return String.format(
                 """
-                --- Empresa ---
-                Nome da Empresa: %s
-                Morada: %s
-                Lista de Clientes: %s
-                Lista de Hotéis: %s
-                Lista de Aeroportos: %s
-                Lista de Voos: %s
-                Lista de Reservas: %s
-                """,
+                        --- Empresa ---
+                        Nome da Empresa: %s
+                        Morada: %s
+                        Lista de Clientes: %s
+                        Lista de Hotéis: %s
+                        Lista de Aeroportos: %s
+                        Lista de Voos: %s
+                        Lista de Reservas: %s
+                        """,
                 nomeEmpresa, morada, listarClientes(), listarHoteis(), listarAeroportos(), listarVoos(), listarReservas()
         );
     }
 
 
     /**
-     * Compara este objeto com outro para verificar a igualdade.
-     * A comparação é baseada nos atributos {@code nomeEmpresa}, {@code morada},
-     * {@code listaClientes}, {@code listaHoteis}, {@code listaAeroportos},
-     * {@code listaVoos} e {@code listaReservas}.
+     * Compara dois objetos da classe {@link Empresa} para verificar se são iguais.
+     * Dois objetos são considerados iguais se os seguintes critérios forem atendidos:
+     * - O nome da empresa é igual.
+     * - A morada da empresa é igual.
+     * - As listas de clientes, hotéis, aeroportos, voos e reservas são iguais, considerando a ordem
+     * definida pelo critério de comparação {@link Criterio3_CodigoID} para clientes, hotéis e reservas.
+     * Para aeroportos e voos, as listas são comparadas diretamente após serem ordenadas.
+     * <p>
+     * A comparação entre listas é feita após a ordenação das listas internas de cada empresa, garantindo
+     * que a ordem dos elementos seja considerada durante a comparação.
      *
-     * @param umaOutraEmpresa O objeto a ser comparado.
-     * @return {@code true} se os objetos forem iguais; {@code false} caso contrário.
+     * @param umaOutraEmpresa o objeto a ser comparado com a instância atual
+     * @return {@code true} se os objetos forem considerados iguais de acordo com os critérios definidos,
+     * {@code false} caso contrário
      */
     @Override
     public boolean equals(Object umaOutraEmpresa) {
         if (umaOutraEmpresa == null || getClass() != umaOutraEmpresa.getClass()) return false;
-        Empresa empresa = (Empresa) umaOutraEmpresa;
-        return Objects.equals(nomeEmpresa, empresa.nomeEmpresa) && Objects.equals(morada, empresa.morada) && Objects.equals(listaClientes, empresa.listaClientes) && Objects.equals(listaHoteis, empresa.listaHoteis) && Objects.equals(listaAeroportos, empresa.listaAeroportos) && Objects.equals(listaVoos, empresa.listaVoos) && Objects.equals(listaReservas, empresa.listaReservas);
+        Empresa outraEmpresa = (Empresa) umaOutraEmpresa;
+
+        Criterio3_CodigoID criterio3 = new Criterio3_CodigoID();
+        List<Cliente> listaClientesOrd = getListaClientes();
+        List<Cliente> listaClientesOrd2 = outraEmpresa.getListaClientes();
+        Collections.sort(listaClientesOrd, criterio3);
+        Collections.sort(listaClientesOrd2, criterio3);
+
+        List<Hotel> listaHoteisOrd = getListaHoteis();
+        List<Hotel> listaHoteisOrd2 = outraEmpresa.getListaHoteis();
+        Collections.sort(listaHoteisOrd, criterio3);
+        Collections.sort(listaHoteisOrd2, criterio3);
+
+        List<Aeroporto> listaAeroportosOrd = getListaAeroportos();
+        List<Aeroporto> listaAeroportosOrd2 = outraEmpresa.getListaAeroportos();
+        Collections.sort(listaAeroportosOrd);
+        Collections.sort(listaAeroportosOrd2);
+
+        List<Voo> listaVoosOrd = getListaVoos();
+        List<Voo> listaVoosOrd2 = outraEmpresa.getListaVoos();
+        Collections.sort(listaVoosOrd);
+        Collections.sort(listaVoosOrd2);
+
+        List<Reserva> listaReservasOrd = getListaReservas();
+        List<Reserva> listaReservasOrd2 = outraEmpresa.getListaReservas();
+        Collections.sort(listaReservasOrd, criterio3);
+        Collections.sort(listaReservasOrd2, criterio3);
+
+
+        return Objects.equals(nomeEmpresa, outraEmpresa.nomeEmpresa) && Objects.equals(morada, outraEmpresa.morada) &&
+                Objects.equals(listaClientesOrd, listaClientesOrd2) && Objects.equals(listaHoteisOrd, listaHoteisOrd2)
+                && Objects.equals(listaAeroportosOrd, listaAeroportosOrd2) && Objects.equals(listaVoosOrd, listaVoosOrd2) &&
+                Objects.equals(listaReservasOrd, listaReservasOrd2);
     }
 
     /**
@@ -429,15 +470,16 @@ public class Empresa implements Serializable {
      *
      * @return String formatada contendo a lista de reservas de cada tipo e o total delas.
      */
-    public String listarReservasPorTipo() {
+    public String listarReservasPorTipo(String tipo) {
         int count = 0;
         StringBuilder sb = new StringBuilder();
-        sb.append("\n========== LISTA DE RESERVAS ==========\n\n");
         for (Reserva res : listaReservas) {
-            sb.append(res);
-            sb.append("------------------------------------------");
-            sb.append("\n");
-            count++;
+            if (res.getClass().getSimpleName().equalsIgnoreCase(tipo)) {
+                sb.append(res);
+                sb.append("------------------------------------------");
+                sb.append("\n");
+                count++;
+            }
         }
         sb.append(String.format("Total de Reservas = %d\n", count));
         return sb.toString();
@@ -487,7 +529,7 @@ public class Empresa implements Serializable {
             sb.append("------------------------------------------");
             sb.append("\n");
         }
-        sb.append(String.format("\nTotal de Hoteis com Transfer = %d", countTemp));
+        sb.append(String.format("Total de Hoteis com Transfer = %d\n", countTemp));
         return sb.toString();
     }
 
@@ -759,7 +801,18 @@ public class Empresa implements Serializable {
     }
 
     /**
-     * Lista todas as reservas registradas na {@link Empresa}.
+     * Retorna uma lista de reservas efetuadas, ordenadas pela data em ordem crescente.
+     *
+     * @return Lista de reservas ordenada por data, da mais antiga para a mais recente.
+     */
+    public List<Reserva> retornarReservasEfetuadasDataCrescente() {
+        List<Reserva> listaReservasTemp = criarCopiaListaReservas();
+        Collections.sort(listaReservasTemp);
+        return listaReservasTemp;
+    }
+
+    /**
+     * Lista todas as reservas registradas na {@link Empresa} de forma ordenada.
      *
      * @return String formatada contendo a lista de reservas e o total delas.
      */
@@ -775,23 +828,11 @@ public class Empresa implements Serializable {
     }
 
     /**
-     * Retorna uma lista de reservas efetuadas, ordenadas pela data em ordem crescente.
-     *
-     * @return Lista de reservas ordenada por data, da mais antiga para a mais recente.
-     */
-    public List<Reserva> retornarReservasEfetuadasDataCrescente() {
-        List<Reserva> copia = criarCopiaListaReservas();
-        Collections.sort(copia);
-        return copia;
-    }
-
-    /**
      * Retorna uma lista de clientes ordenada pelo critério especificado na classe {@link Criterio1}.
-     *
+     * <p>
      * {@code Criterio1} = Ordenar os clientes por ordem decrescente de idade. Caso tenha idade igual,
      * ordenar por ordem decrescente do número de reservas concretizadas. Caso ainda haja clientes
      * com o mesmo número de reservas concretizadas, ordenar por ordem alfabética dos nomes.
-     *
      *
      * @return Lista de clientes ordenada de acordo com o critério.
      */

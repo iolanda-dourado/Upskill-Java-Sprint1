@@ -1,6 +1,6 @@
 package entidades;
 
-import interfaces.Identificacavel;
+import interfaces.Identificavel;
 import utilidades.Data;
 
 import java.io.Serializable;
@@ -17,7 +17,7 @@ import java.util.Objects;
  * @author Iolanda Dourado e Marianna Ramos
  * @version 1.0
  */
-public abstract class Reserva implements Identificacavel, Comparable<Reserva>, Serializable {
+public abstract class Reserva implements Identificavel, Comparable<Reserva>, Serializable {
     /**
      * Código identificador único da reserva.
      */
@@ -236,7 +236,7 @@ public abstract class Reserva implements Identificacavel, Comparable<Reserva>, S
                 Cliente: %s
                 Quantidade de Pessoas: %d
                 Reserva Concretizada? %s
-                -> Custo da reserva: %.2f
+                -> Custo da reserva: %.2f€
                 """,
                 dataReserva, cliente.getNomeCliente(), qntPessoas, resposta, calcularCustoReserva()
         );

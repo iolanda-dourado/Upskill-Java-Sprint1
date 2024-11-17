@@ -107,7 +107,7 @@ public class ReservaVoo extends Reserva {
      */
     @Override
     public String gerarIdentificador() {
-        return String.format("%s%s", PREFIXO_RESERVA_VOO, reservaVooCount);
+        return String.format("%s%s", PREFIXO_RESERVA_VOO, getReservaCount());
     }
 
 

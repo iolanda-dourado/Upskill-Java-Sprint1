@@ -11,8 +11,11 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
+/**
+ * Classe de teste para a classe ReservaHotelVooIdaVolta.
+ * Testa o cálculo do custo da reserva considerando diferentes cenários de voos,
+ * promoções, e descontos aplicados para múltiplos de 5 reservas concretizadas.
+ */
 public class ReservaHotelVooIdaVoltaTest {
     private Data data1 = new Data(2025, 3, 20);
     private Data data2 = new Data(2024, 12, 30);
@@ -23,7 +26,7 @@ public class ReservaHotelVooIdaVoltaTest {
     private Aeroporto aero1 = new Aeroporto("lalala", "www.gru.com.br", "GRU");
     private Aeroporto aero3 = new Aeroporto("lalala", "www.opo.com.br", "OPO");
 
-    private Cliente client = new Cliente("Maira", data2, Genero.FEMENINO, 322259339, "GF815694", "xxx@gmail.com", 5);
+    private Cliente client = new Cliente("Maira", data2, Genero.FEMININO, 322259339, "GF815694", "xxx@gmail.com", 5);
 
     private Voo v1 = new Voo("VOO-250", CompanhiaAerea.EASYJET, 100, aero1, aero3, 10000, 100, data2, horario);
     private Voo v2 = new Voo("VOO-350", CompanhiaAerea.EASYJET, 100, aero3, aero1, 10000, 100, data5, horario);
@@ -48,6 +51,21 @@ public class ReservaHotelVooIdaVoltaTest {
     private Empresa empresa = new Empresa("Casinha verde", "Rua do Mangue", clientes, hoteis, aeroportos, voos, reservas);
 
 
+    /**
+     * Testa o cálculo do custo da reserva em um cenário onde:
+     * - O voo de ida ocorre fora do período promocional.
+     * - O voo de volta ocorre dentro do período promocional.
+     * - As diárias do hotel começam fora do período promocional e entram no período promocional por 4 dias.
+     * Verifica se o valor calculado é igual ao esperado.
+     */
+
+    /**
+     * Testa o cálculo do custo da reserva em um cenário onde:
+     * - As mesmas condições do método anterior são mantidas para voos e hospedagem.
+     * - Além disso, é aplicado um desconto por múltiplos de 5 reservas concretizadas
+     *   pela empresa.
+     * Verifica se o valor calculado é igual ao esperado após o desconto.
+     */
     @Test
     public void calcularCustoReserva_dataForaEDentroPromocao() {
         //Voo ida fora e voo regreso dentro da promoção e diárias começando fora da promoção e entrando por 4 dias;
@@ -56,7 +74,12 @@ public class ReservaHotelVooIdaVoltaTest {
         Assertions.assertEquals(resultadoEsperado, resultado, 0.01);
     }
 
-
+    /**
+     * Testa o cálculo do custo da reserva em um cenário onde:
+     * - As mesmas condições do método anterior são mantidas para voos e hospedagem.
+     * - Além disso, é aplicado um desconto por múltiplos de 5 reservas concretizadas pela empresa.
+     * Verifica se o valor calculado é igual ao esperado após o desconto.
+     */
     @Test
     public void calcularCustoReserva_dataForaEDentroPromocaoEComMultiplo5() {
         //Mesmo metodo acima + desconto das reservas concretizadas multiplo de 5;

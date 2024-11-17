@@ -10,8 +10,12 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
+/**
+ * Classe de teste para o cálculo de custos de reservas de voo. Esta classe contém vários testes que verificam
+ * diferentes cenários de cálculo de custos para reservas de voo, levando em consideração promoções e valores
+ * múltiplos de 5. Os testes incluem cenários onde a reserva está dentro de uma promoção, fora da promoção,
+ * e com promoções aplicadas juntamente com o múltiplo de 5.
+ */
 public class ReservaVooTest {
     private Data data1 = new Data(1997, 2, 20);
     private Data data2 = new Data(1997, 12, 25);
@@ -19,7 +23,7 @@ public class ReservaVooTest {
 
     private LocalTime horario = LocalTime.of(22, 30);
 
-    private Cliente client = new Cliente("Maira", data2, Genero.FEMENINO, 322259339, "GF815694", "xxx@gmail.com", 5);
+    private Cliente client = new Cliente("Maira", data2, Genero.FEMININO, 322259339, "GF815694", "xxx@gmail.com", 5);
 
     private Aeroporto aero1 = new Aeroporto("lalala", "www.gru.com.br", "GRU");
     private Aeroporto aero3 = new Aeroporto("lalala", "www.opo.com.br", "OPO");
@@ -41,6 +45,11 @@ public class ReservaVooTest {
 
     private Empresa empresa = new Empresa("Casinha verde", "Rua do Mangue", clientes, hoteis, aeroportos, voos, reservas);
 
+    /**
+     * Testa o cálculo do custo de uma reserva de voo através do método {@code calcularCustoReserva()} quando a reserva
+     * está dentro de uma promoção de 30%.
+     * O custo esperado é 195, dado que a reserva se qualifica para o desconto.
+     */
     @Test
     public void calcularCustoReservaVooDentroPromocao() {
         double resultado = reserva1.calcularCustoReserva();
@@ -48,6 +57,10 @@ public class ReservaVooTest {
         Assertions.assertEquals(resultadoEsperado, resultado, 0.01);
     }
 
+    /**
+     * Testa o cálculo do custo de uma reserva de voo através do método {@code calcularCustoReserva()} quando a mesma está fora da promoção de 30%.
+     * O custo esperado é 520, dado que a reserva não se qualifica para a promoção.
+     */
     @Test
     public void calcularCustoReservaVooForaPromocao() {
         Data data1 = new Data(2024, 12, 10);
@@ -59,6 +72,10 @@ public class ReservaVooTest {
         Assertions.assertEquals(resultadoEsperado, resultado, 0.01);
     }
 
+    /**
+     * Testa o cálculo do custo de uma reserva de voo sem promoção, mas considerando a quantidade de reservas concretizadas ser múltipla de 5.
+     * O custo esperado é 494, dado que a soma das reservas concretizadas é um múltiplo de 5, aplicando o desconto.
+     */
     @Test
     public void calcularCustoReservaVooSemPromocaoEComMultiplo5() {
         Data data1 = new Data(2024, 12, 10);
@@ -84,6 +101,10 @@ public class ReservaVooTest {
         Assertions.assertEquals(resultadoEsperado, resultado, 0.01);
     }
 
+    /**
+     * Testa o cálculo do custo de uma reserva de voo com promoção 30% e considerando múltiplos de 5.
+     * O custo esperado é 351.5, dado que a reserva se qualifica para a promoção e o desconto múltiplo de 5.
+     */
     @Test
     public void calcularCustoReservaVooComPromocaoEComMultiplo5() {
         Data data2 = new Data(2024, 2, 10);

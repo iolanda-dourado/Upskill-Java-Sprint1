@@ -4,7 +4,7 @@ package interfaces;
  * Interface que define um método para gerar um identificador único.
  * Qualquer classe que implemente esta interface deve fornecer a lógica para gerar um identificador.
  */
-public interface Identificacavel {
+public interface Identificavel {
 
     /**
      * Método responsável por gerar um identificador único.

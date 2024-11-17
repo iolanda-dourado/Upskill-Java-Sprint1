@@ -14,6 +14,7 @@ import java.util.Objects;
  *
  */
 public class ReservaVooIdaVolta extends ReservaVoo {
+    
     /**
      * Voo de regresso (volta) associado à reserva de voo ida e volta.
      *

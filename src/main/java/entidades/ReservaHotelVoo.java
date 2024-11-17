@@ -100,7 +100,7 @@ public class ReservaHotelVoo extends ReservaHotel {
     /**
      * Verifica a igualdade entre esta reserva e outro objeto.
      *
-     * @param outraResHotelVoo o objeto a ser comparado.
+     * @param outraResHotelVoo O objeto a ser comparado.
      * @return true se forem iguais, caso contrário false.
      */
     @Override

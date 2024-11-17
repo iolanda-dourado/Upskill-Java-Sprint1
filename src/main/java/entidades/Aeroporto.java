@@ -11,7 +11,7 @@ import java.util.Objects;
  * @author Iolanda Dourado e Marianna Ramos
  */
 
-public class Aeroporto implements Serializable {
+public class Aeroporto implements Serializable, Comparable<Aeroporto> {
 
     /**
      * Endereço do aeroporto.
@@ -161,5 +161,18 @@ public class Aeroporto implements Serializable {
         if (outroAeroporto == null || getClass() != outroAeroporto.getClass()) return false;
         Aeroporto aeroporto = (Aeroporto) outroAeroporto;
         return Objects.equals(endereco, aeroporto.endereco) && Objects.equals(paginaWeb, aeroporto.paginaWeb) && Objects.equals(codigoAeroporto, aeroporto.codigoAeroporto);
+    }
+
+    /**
+     * Compara dois objetos do tipo {@link Aeroporto} com base no código do aeroporto.
+     * A comparação é feita de forma lexicográfica, ou seja, compara os códigos de aeroporto como strings.
+     *
+     * @param outro O objeto {@link Aeroporto} a ser comparado com o objeto atual.
+     * @return Um valor negativo, zero ou positivo, dependendo de o código do aeroporto do objeto atual
+     *         ser respectivamente menor, igual ou maior que o código do aeroporto do objeto {@code outro}.
+     */
+    @Override
+    public int compareTo(Aeroporto outro) {
+        return this.codigoAeroporto.compareTo(outro.codigoAeroporto);
     }
 }

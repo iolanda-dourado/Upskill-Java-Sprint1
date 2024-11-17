@@ -11,15 +11,18 @@ import org.junit.jupiter.api.Assertions;
 
 import static org.junit.Assert.*;
 
+/**
+ * Classe de teste para a classe ReservaHotel.
+ * Testa o cálculo do custo da reserva em diferentes cenários, considerando promoções e descontos.
+ */
 public class ReservaHotelTest {
-
     private Data data1 = new Data(1997, 3, 20);
     private Data data2 = new Data(2024, 12, 25);
     private Data data3 = new Data(2024, 4, 8);
     private Data data4 = new Data(2024, 4, 9);
     private Data data5 = new Data(2024, 11, 15);
 
-    private Cliente client = new Cliente("Maira", data2, Genero.FEMENINO, 322259339, "GF815694", "xxx@gmail.com", 5);
+    private Cliente client = new Cliente("Maira", data2, Genero.FEMININO, 322259339, "GF815694", "xxx@gmail.com", 5);
 
     private Hotel hotel1 = new Hotel("Hotel Luxo", CategoriaHotel.CINCO_ESTRELAS, "Rio de Janeiro", true, 200.00);
     private Hotel hotel2 = new Hotel("Hotel 2", CategoriaHotel.DUAS_ESTRELAS, "Fim", true, 150);
@@ -40,6 +43,11 @@ public class ReservaHotelTest {
     private Empresa empresa = new Empresa("Casinha verde", "Rua do Mangue", clientes, hoteis, aeroportos, voos, reservas);
 
 
+    /**
+     * Testa o cálculo do custo da reserva com uma parte do período fora da promoção
+     * e outra dentro da promoção.
+     * Verifica se o valor calculado é igual ao esperado.
+     */
     @Test
     public void calcularCustoReserva_dataForaEDentroPromocao() {
         double resultado = reserva1.calcularCustoReserva();
@@ -47,6 +55,11 @@ public class ReservaHotelTest {
         Assertions.assertEquals(resultadoEsperado, resultado, 0.01);
     }
 
+    /**
+     * Testa o cálculo do custo da reserva quando todo o período está fora do
+     * intervalo de promoção.
+     * Verifica se o valor calculado é igual ao esperado.
+     */
     @Test
     public void calcularCustoReserva_todaDataForaPromocao() {
         double resultado = reserva2.calcularCustoReserva();
@@ -54,6 +67,11 @@ public class ReservaHotelTest {
         Assertions.assertEquals(resultadoEsperado, resultado, 0.01);
     }
 
+    /**
+     * Testa o cálculo do custo da reserva quando todo o período está dentro do
+     * intervalo de promoção.
+     * Verifica se o valor calculado é igual ao esperado.
+     */
     @Test
     public void calcularCustoReserva_todaDataDentroPromocao() {
         double resultado = reserva3.calcularCustoReserva();
@@ -61,7 +79,12 @@ public class ReservaHotelTest {
         Assertions.assertEquals(resultadoEsperado, resultado, 0.01);
     }
 
-
+    /**
+     * Testa o cálculo do custo da reserva com parte do período fora da promoção
+     * e parte dentro, incluindo um desconto especial por múltiplos de 5 reservas
+     * concretizadas pela empresa.
+     * Verifica se o valor calculado é igual ao esperado.
+     */
     @Test
     public void calcularCustoReserva_dataForaEDentroPromoComDescontoMultiplos5() {
         empresa.adicionarReserva(reserva1);

@@ -11,7 +11,7 @@ public enum Genero {
      *
      * @return A string "Feminino".
      */
-    FEMENINO {
+    FEMININO {
         @Override
         public String toString() {
             return "Feminino";
