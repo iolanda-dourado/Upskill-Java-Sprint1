@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * Representa uma reserva combinada de hotel e voo.
  * @author Iolanda Dourado e Marianna Ramos
- * @version 1.0
+ *
  */
 public class ReservaHotelVoo extends ReservaHotel {
     /**
@@ -144,6 +144,7 @@ public class ReservaHotelVoo extends ReservaHotel {
         double precoPromocao = precoQuarto-(precoQuarto*getDescontoDiaria());
         int diariasPromocao = verificaDiariasPromocao();
         double reservaHotel = 0;
+        double valorFinal = 0;
 
         double novoPreco = voo.calcularCustoBilheteIda();
         double custoReservaVoo = getQntPessoas()*novoPreco;
@@ -159,10 +160,13 @@ public class ReservaHotelVoo extends ReservaHotel {
         if (saoReservasMultiplasDe5()) {
             double reservaTotal = reservaHotel + custoReservaVoo+getTaxaReserva();
             double desconto = reservaTotal * (getCliente().getPercentagemDesconto()/100);
-            return reservaTotal - desconto;
+            valorFinal = reservaTotal - desconto;
+            return valorFinal;
         } else{
-            return reservaHotel + custoReservaVoo+getTaxaReserva();
+            valorFinal = reservaHotel + custoReservaVoo+getTaxaReserva();
+            return valorFinal;
         }
+
     }
 
     /**

@@ -425,6 +425,25 @@ public class Empresa implements Serializable {
     }
 
     /**
+     * Lista as reservas registradas na {@link Empresa} por tipo.
+     *
+     * @return String formatada contendo a lista de reservas de cada tipo e o total delas.
+     */
+    public String listarReservasPorTipo() {
+        int count = 0;
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n========== LISTA DE RESERVAS ==========\n\n");
+        for (Reserva res : listaReservas) {
+            sb.append(res);
+            sb.append("------------------------------------------");
+            sb.append("\n");
+            count++;
+        }
+        sb.append(String.format("Total de Reservas = %d\n", count));
+        return sb.toString();
+    }
+
+    /**
      * Lista todas as reservas associadas a um cliente específico, identificado pelo código do cliente.
      *
      * @param codigoCliente Código do cliente cujas reservas serão listadas.
@@ -628,7 +647,7 @@ public class Empresa implements Serializable {
      *
      * @return O custo total de todas as reservas.
      */
-    public double retornarCustoTodasReservas() {
+    public double retornarCustoTotalDeTodasReservas() {
         double custoAcumulado = 0;
 
         for (Reserva reserva : listaReservas) {
@@ -656,6 +675,57 @@ public class Empresa implements Serializable {
     }
 
     /**
+     * Calcula o custo acumulado de todas as {@link ReservaHotelVoo} registradas no sistema.
+     *
+     * @return O custo total de todas as reservas de pacotes (hotel + voo ida).
+     */
+    public double retornarCustoTodasReservasHoteisVoo() {
+        double custoAcumulado = 0;
+
+        for (Reserva reserva : listaReservas) {
+            if (reserva.getClass().getSimpleName().equalsIgnoreCase("ReservaHotelVoo")) {
+                custoAcumulado += reserva.calcularCustoReserva();
+            }
+        }
+
+        return custoAcumulado;
+    }
+
+    /**
+     * Calcula o custo acumulado de todas as {@link ReservaHotelVooIdaVolta} registradas no sistema.
+     *
+     * @return O custo total de todas as reservas de pacotes (hotel + voo ida e volta).
+     */
+    public double retornarCustoTodasReservasHoteisVooIV() {
+        double custoAcumulado = 0;
+
+        for (Reserva reserva : listaReservas) {
+            if (reserva.getClass().getSimpleName().equalsIgnoreCase("ReservaHotelVooIdaVolta")) {
+                custoAcumulado += reserva.calcularCustoReserva();
+            }
+        }
+
+        return custoAcumulado;
+    }
+
+    /**
+     * Calcula o custo acumulado de todas as {@link ReservaVoo} registradas no sistema.
+     *
+     * @return O custo total de todas as reservas com apenas de voos ida.
+     */
+    public double retornarCustoTodasReservasVoo() {
+        double custoAcumulado = 0;
+
+        for (Reserva reserva : listaReservas) {
+            if (reserva.getClass().getSimpleName().equalsIgnoreCase("ReservaVoo")) {
+                custoAcumulado += reserva.calcularCustoReserva();
+            }
+        }
+
+        return custoAcumulado;
+    }
+
+    /**
      * Calcula o custo acumulado de todas as {@link ReservaVooIdaVolta} registradas no sistema.
      *
      * @return O custo total de todas as reservas de voos ida e volta.
@@ -672,6 +742,7 @@ public class Empresa implements Serializable {
         return custoAcumulado;
     }
 
+
     /**
      * Retorna uma lista de reservas ordenadas pelo custo em ordem decrescente.
      *
@@ -685,6 +756,22 @@ public class Empresa implements Serializable {
         Collections.reverse(listaReservasTemp);
 
         return listaReservasTemp;
+    }
+
+    /**
+     * Lista todas as reservas registradas na {@link Empresa}.
+     *
+     * @return String formatada contendo a lista de reservas e o total delas.
+     */
+    public String listarReservasOrdenadas(List<Reserva> listaReservasTemp) {
+        StringBuilder sb = new StringBuilder();
+        for (Reserva res : listaReservasTemp) {
+            sb.append(res);
+            sb.append("------------------------------------------");
+            sb.append("\n");
+        }
+        sb.append(String.format("Total de Reservas = %d\n", listaReservasTemp.size()));
+        return sb.toString();
     }
 
     /**

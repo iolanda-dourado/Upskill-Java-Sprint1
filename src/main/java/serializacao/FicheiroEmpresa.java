@@ -6,7 +6,7 @@ import java.io.*;
 
 /**
  * Classe responsável pela serialização e desserialização de objetos da classe {@link Empresa}.
- * Esta classe permite salvar e carregar informações de uma instância de {@link Empresa} em/para um arquivo.
+ * Esta classe permite salvar e carregar informações de uma instância de {@link Empresa} em/para um ficheiro binário.
  */
 public class FicheiroEmpresa {
 

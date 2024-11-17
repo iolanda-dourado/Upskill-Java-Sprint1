@@ -236,7 +236,7 @@ public abstract class Reserva implements Identificacavel, Comparable<Reserva>, S
                 Cliente: %s
                 Quantidade de Pessoas: %d
                 Reserva Concretizada? %s
-                Custo da reserva: %.2f
+                -> Custo da reserva: %.2f
                 """,
                 dataReserva, cliente.getNomeCliente(), qntPessoas, resposta, calcularCustoReserva()
         );

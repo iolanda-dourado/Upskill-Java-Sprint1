@@ -21,12 +21,6 @@ public class Criterio2_ReservaCustoDecrescente implements Comparator<Reserva> {
      * e zero se ambos os custos forem iguais.
      */
     public int compare(Reserva reserva1, Reserva reserva2) {
-        if (reserva1.calcularCustoReserva() > reserva2.calcularCustoReserva()) {
-            return -1;
-        } else if (reserva1.calcularCustoReserva() < reserva2.calcularCustoReserva()) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return Double.compare(reserva1.calcularCustoReserva(), reserva2.calcularCustoReserva());
     }
 }

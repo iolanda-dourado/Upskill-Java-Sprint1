@@ -23,7 +23,8 @@ public class InteracaoEmpresaUtilizador implements Serializable {
     private static final int QNT_MAX = 400;
     private static final int QNT_MIN_MENU = 0;
     private static final int QNT_MAX_MENU = 10;
-    private static final int QNT_MAX_MENU_RESERVAS = 7;
+    private static final int QNT_MAX_MENU_RESERVAS = 8;
+    private static final int QNT_MAX_MENU_VISUALIZAR = 7;
 
 
     public InteracaoEmpresaUtilizador(Empresa empresa) {
@@ -61,7 +62,7 @@ public class InteracaoEmpresaUtilizador implements Serializable {
                     inserirNovoHotel();
                     break;
                 case 5:
-                    mostrarCustoTotalReservasHotelEVooIdaVolta();
+                    mostrarCustoTotalReservas();
                     break;
                 case 0:
                     perguntaFinal();
@@ -99,10 +100,12 @@ public class InteracaoEmpresaUtilizador implements Serializable {
         int qntPessoas = 0;
 
         if (opcao == 6) {
-            eliminarReserva();
+            eliminarReserva("Digite o código da reserva que deseja eliminar: ");
         } else if (opcao == 7) {
-            System.out.println(empresa.listarReservas());
-        } else {
+            gerenciarVisualizacoes();
+        } else if (opcao == 8){
+            concretizarReserva("Digite o código da reserva que deseja concretizar: ");
+        }else {
             try {
                 System.out.println(empresa.listarClientes());
                 String codigoCliente = obterString("Insira o código do cliente pretendido:");
@@ -133,6 +136,57 @@ public class InteracaoEmpresaUtilizador implements Serializable {
             }
         }
     }
+
+    public void gerenciarVisualizacoes() {
+        int opcao1 = -1;
+        boolean invalido = true;
+
+        while (invalido) {
+            try {
+                opcao1 = obterOpcao(menuVisualizarReservas(), QNT_MIN_MENU, QNT_MAX_MENU_VISUALIZAR);
+                invalido = false;
+            } catch (IllegalArgumentException | InputMismatchException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        if (opcao1 == 0) {
+            System.out.println("Voltando ao menu anterior...\n");
+            gerenciarReservas();
+            return;
+        }
+
+        switch (opcao1) {
+            case 1:
+                empresa.listarReservas();
+                break;
+            case 2:
+                System.out.println("\n========== LISTA DE RESERVAS POR ORDEM DECRESCENTE DE CUSTO  ==========\n");
+                System.out.println(empresa.listarReservasOrdenadas(empresa.retornarReservasCustoDecrescente()));
+                break;
+            case 3:
+                System.out.println("\n========== LISTA DE RESERVAS POR ORDEM CRESCENTE DE DATA  ==========\n");
+                System.out.println(empresa.listarReservasOrdenadas(empresa.retornarReservasEfetuadasDataCrescente()));
+                break;
+            case 4:
+                System.out.println("\n========== LISTA DE RESERVAS POR ORDEM CRESCENTE DE DATA  ==========\n");
+                System.out.println(empresa.listarReservasOrdenadas(empresa.retornarReservasEfetuadasDataCrescente()));
+                break;
+            case 5:
+                System.out.println("\n========== LISTA DE RESERVAS POR ORDEM CRESCENTE DE DATA  ==========\n");
+                System.out.println(empresa.listarReservasOrdenadas(empresa.retornarReservasEfetuadasDataCrescente()));
+                break;
+            case 6:
+                System.out.println("\n========== LISTA DE RESERVAS POR ORDEM CRESCENTE DE DATA  ==========\n");
+                System.out.println(empresa.listarReservasOrdenadas(empresa.retornarReservasEfetuadasDataCrescente()));
+                break;
+            case 7:
+                System.out.println("\n========== LISTA DE RESERVAS POR ORDEM CRESCENTE DE DATA  ==========\n");
+                System.out.println(empresa.listarReservasOrdenadas(empresa.retornarReservasEfetuadasDataCrescente()));
+                break;
+        }
+    }
+
 
     public void carregarNovaReservaHotel(Data dataAtual, int qntPessoas, Cliente cliente) {
         Data dataChegada;
@@ -254,17 +308,28 @@ public class InteracaoEmpresaUtilizador implements Serializable {
         }
     }
 
-    public boolean eliminarReserva() {
+    public void eliminarReserva(String mensagem) {
         String codigoTemp;
-        System.out.println("Digite o código da reserva que deseja eliminar: ");
+        System.out.println(mensagem);
         codigoTemp = teclado.nextLine().trim().toUpperCase();
         if (empresa.eliminarReserva(codigoTemp)) {
             System.out.printf("Reserva %s removida com sucesso!", codigoTemp);
-            return true;
         } else {
             System.out.println("Falha ao remover! Reserva não encontrada.");
         }
-        return false;
+    }
+
+    public void concretizarReserva(String menssagem) {
+        String codigoTemp;
+        System.out.println(menssagem);
+        codigoTemp = teclado.nextLine().trim().toUpperCase();
+
+        if (empresa.atualizarReservasConcretizadas(empresa.pesquisarReserva(codigoTemp))) {
+            System.out.printf("Reserva %s concretizada com sucesso!", codigoTemp);
+        } else {
+            System.out.println("Falha ao concretizar! Reserva não encontrada.");
+        }
+
     }
 
     public void listarHoteisPorCategoria() {
@@ -425,12 +490,20 @@ public class InteracaoEmpresaUtilizador implements Serializable {
         empresa.adicionarHotel(novoHotel);
     }
 
-    private void mostrarCustoTotalReservasHotelEVooIdaVolta() {
+    private void mostrarCustoTotalReservas() {
         double custoRHotel = empresa.retornarCustoTodasReservasHoteis();
+        double custoRHotelVoo = empresa.retornarCustoTodasReservasHoteisVoo();
+        double custoRHotelVooIV = empresa.retornarCustoTodasReservasHoteisVooIV();
+        double custoRVoo = empresa.retornarCustoTodasReservasVoo();
         double custoRVooIV = empresa.retornarCustoTodasReservasVooIV();
+        double custoTotal = empresa.retornarCustoTotalDeTodasReservas();
+
         System.out.printf("Custo total das reservas de hotel: %.2f\n", custoRHotel);
+        System.out.printf("Custo total das reservas de hotel + voo: %.2f\n", custoRHotelVoo);
+        System.out.printf("Custo total das reservas de hotel + voo ida e volta : %.2f\n", custoRHotelVooIV);
+        System.out.printf("Custo total das reservas de voo (apenas ida): %.2f\n", custoRVoo);
         System.out.printf("Custo total das reservas de voo ida e volta: %.2f\n", custoRVooIV);
-        System.out.printf("Custo total dos dois tipos de reservas: %.2f\n", custoRHotel + custoRVooIV);
+        System.out.printf("Custo total de todas as reservas cadastras na empresa: %.2f\n", custoTotal);
     }
 
     public Cliente obterCliente(String codigo) {
@@ -571,6 +644,8 @@ public class InteracaoEmpresaUtilizador implements Serializable {
         }
     }
 
+
+
     public void serializarEmpresa() {
         FicheiroEmpresa ficheiro = new FicheiroEmpresa();
         String nome = "";
@@ -590,11 +665,11 @@ public class InteracaoEmpresaUtilizador implements Serializable {
         System.out.println("""
                 
                 ------------------ MENU ------------------
-                1 - Gerenciar reservas
+                1 - Gerenciador de reservas
                 2 - Listar hotéis por categoria
                 3 - Inserir novo cliente
                 4 - Inserir novo hotel
-                5 - Visualizar custo total das reservas de hotel e voos de ida e regresso
+                5 - Visualizar custos das reservas
                 0 - Sair do programa
                 ------------------------------------------
                 """);
@@ -609,8 +684,24 @@ public class InteracaoEmpresaUtilizador implements Serializable {
                 4 - Criar Reserva Voo
                 5 - Criar Reserva Voo Ida e Volta
                 6 - Eliminar reserva
-                7 - Listar todas as reservas
+                7 - Visualizar todas as reservas
+                8 - Concretizar reserva
                 0 - Voltar ao menu inicial
+                ------------------------------------------
+                Insira a opção desejada:""");
+    }
+
+    public String menuVisualizarReservas() {
+        return ("""
+                -----------------RESERVAS-----------------
+                1 - Visualizar reservas de Hotel
+                2 - Visualizar reservas de Hotel + Voo
+                3 - Visualizar reservas de Hotel + Voo Ida e Volta
+                4 - Visualizar reservas de Voo Ida e Volta
+                5 - Visualizar reservas de Voo somente ida
+                6 - Visualizar todas as reservas ordenadas por custo
+                7 - Visualizar todas as reservas ordenadas por data
+                0 - Voltar ao menu anterior
                 ------------------------------------------
                 Insira a opção desejada:""");
     }
