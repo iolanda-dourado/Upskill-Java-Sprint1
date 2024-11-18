@@ -12,7 +12,7 @@ public class NifInvalidoException extends IllegalArgumentException {
      * A mensagem padrão é: "O número de identificação fiscal deve ter 9 dígitos."
      */
     public NifInvalidoException() {
-        super("O número de identificação fiscal deve ter 9 dígitos.");
+        super("Erro: O número de identificação fiscal deve ter 9 dígitos.\n");
     }
 
     /**

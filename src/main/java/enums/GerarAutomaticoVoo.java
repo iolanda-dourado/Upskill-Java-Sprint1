@@ -10,7 +10,7 @@ import java.time.LocalTime;
  * o preço do bilhete, a data e a hora de partida.
  */
 public enum GerarAutomaticoVoo {
-
+    // Voos de ida
     /** Voo de ida 1: Código AB123, companhia EASYJET, 180 lugares, 50 disponíveis, distância 800 km, preço 300.0, data 28/11/2024, hora 10:30. */
     VOO1("AB123", CompanhiaAerea.EASYJET, 180, 180, 800.0, 300.0, new Data(2024, 11, 28), LocalTime.of(10, 30)),
 
@@ -20,28 +20,15 @@ public enum GerarAutomaticoVoo {
     /** Voo de ida 3: Código EF789, companhia LATAM, 200 lugares, 100 disponíveis, distância 1200 km, preço 350.0, data 07/12/2025, hora 12:00. */
     VOO3("EF789", CompanhiaAerea.LATAM, 200, 200, 1200.0, 350.0, new Data(2025, 12, 7), LocalTime.of(12, 0)),
 
-    /** Voo de ida 4: Código GH012, companhia AZUL, 220 lugares, 80 disponíveis, distância 1500 km, preço 450.0, data 10/12/2025, hora 18:00. */
-    VOO4("GH012", CompanhiaAerea.AZUL, 220, 220, 1500.0, 450.0, new Data(2025, 12, 10), LocalTime.of(18, 0)),
-
-    /** Voo de ida 5: Código IJ345, companhia RYANAIR, 150 lugares, 75 disponíveis, distância 500 km, preço 200.0, data 15/12/2025, hora 09:15. */
-    VOO5("IJ345", CompanhiaAerea.RYANAIR, 150, 150, 500.0, 200.0, new Data(2025, 12, 15), LocalTime.of(9, 15)),
-
     // Voos de volta
-
-    /** Voo de volta 1: Código KL678, companhia AZUL, 190 lugares, 120 disponíveis, distância 1800 km, preço 500.0, data 01/01/2025, hora 14:30. */
-    VOO6("KL678", CompanhiaAerea.AZUL, 190, 190, 1800.0, 500.0, new Data(2025, 1, 1), LocalTime.of(14, 30)),
-
-    /** Voo de volta 2: Código MN901, companhia EASYJET, 210 lugares, 60 disponíveis, distância 950 km, preço 375.0, data 06/02/2025, hora 20:00. */
-    VOO7("MN901", CompanhiaAerea.EASYJET, 210, 210, 950.0, 375.0, new Data(2025, 2, 6), LocalTime.of(20, 0)),
-
     /** Voo de volta 3: Código OP234, companhia RYANAIR, 170 lugares, 90 disponíveis, distância 1300 km, preço 420.0, data 20/03/2025, hora 16:15. */
-    VOO8("OP234", CompanhiaAerea.RYANAIR, 170, 170, 1300.0, 420.0, new Data(2025, 3, 20), LocalTime.of(16, 15)),
+    VOO4("OP234", CompanhiaAerea.RYANAIR, 170, 170, 1300.0, 420.0, new Data(2025, 3, 20), LocalTime.of(16, 15)),
 
     /** Voo de volta 4: Código QR567, companhia TAP, 180 lugares, 60 disponíveis, distância 1100 km, preço 300.0, data 06/04/2025, hora 08:00. */
-    VOO9("QR567", CompanhiaAerea.TAP, 180, 180, 1100.0, 300.0, new Data(2025, 4, 6), LocalTime.of(8, 0)),
+    VOO5("QR567", CompanhiaAerea.TAP, 180, 180, 1100.0, 300.0, new Data(2025, 4, 6), LocalTime.of(8, 0)),
 
     /** Voo de volta 5: Código ST890, companhia LATAM, 200 lugares, 50 disponíveis, distância 1400 km, preço 460.0, data 10/05/2025, hora 11:45. */
-    VOO10("ST890", CompanhiaAerea.LATAM, 200, 200, 1400.0, 460.0, new Data(2025, 5, 10), LocalTime.of(11, 45));
+    VOO6("ST890", CompanhiaAerea.LATAM, 200, 200, 1400.0, 460.0, new Data(2025, 5, 10), LocalTime.of(11, 45));
 
     /** O código do voo. */
     private final String codigoVoo;

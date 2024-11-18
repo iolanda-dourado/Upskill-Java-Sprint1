@@ -234,11 +234,12 @@ public abstract class Reserva implements Identificavel, Comparable<Reserva>, Ser
                 """
                 Data da Reserva: %s
                 Cliente: %s
+                Código cliente: %s
                 Quantidade de Pessoas: %d
                 Reserva Concretizada? %s
                 -> Custo da reserva: %.2f€
                 """,
-                dataReserva, cliente.getNomeCliente(), qntPessoas, resposta, calcularCustoReserva()
+                dataReserva, cliente.getNomeCliente(), cliente.getCodigoCliente(), qntPessoas, resposta, calcularCustoReserva()
         );
     }
 
@@ -280,9 +281,9 @@ public abstract class Reserva implements Identificavel, Comparable<Reserva>, Ser
     @Override
     public int compareTo(Reserva outraReserva) {
         if (dataReserva.isMaior(outraReserva.dataReserva)) {
-            return -1;
-        } else if (!dataReserva.isMaior(outraReserva.dataReserva)) {
             return 1;
+        } else if (!dataReserva.isMaior(outraReserva.dataReserva)) {
+            return -1;
         } else {
             return 0;
         }

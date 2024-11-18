@@ -94,7 +94,6 @@ public class GeradorAutomatico implements Serializable {
             voo.setPrecoBilhete(infoVoo.getPrecoBilhete());
             voo.setDataPartida(infoVoo.getDataPartida());
             voo.setHoraPartida(infoVoo.getHoraPartida());
-            cont++;
 
             if (empresa.adicionarVoo(voo)) {
                 cont++;
@@ -176,17 +175,17 @@ public class GeradorAutomatico implements Serializable {
                 DatasReserva.DATA3.getData(), 7, voos.get(1));
 
         ReservaHotelVooIdaVolta resHotVooIV1 = new ReservaHotelVooIdaVolta(dataAtual, 4, clientes.get(2),
-                hoteis.get(2), DatasReserva.DATA3.getData(), 6, voos.getFirst(), voos.get(5));
+                hoteis.get(2), DatasReserva.DATA3.getData(), 6, voos.getFirst(), voos.get(3));
         ReservaHotelVooIdaVolta resHotVooIV2 = new ReservaHotelVooIdaVolta(DatasReserva.DATA6.getData(), 1,
-                clientes.getFirst(), hoteis.get(3), DatasReserva.DATA4.getData(), 6, voos.get(1), voos.get(6));
+                clientes.getFirst(), hoteis.get(3), DatasReserva.DATA4.getData(), 6, voos.get(1), voos.get(4));
 
         ReservaVoo resVoo1 = new ReservaVoo(DatasReserva.DATA5.getData(), 8, clientes.getFirst(), voos.get(2));
         ReservaVoo resVoo2 = new ReservaVoo(DatasReserva.DATA6.getData(), 2, clientes.get(1), voos.get(3));
 
         ReservaVooIdaVolta resVooIV1 = new ReservaVooIdaVolta(dataAtual, 3, clientes.get(1), voos.getFirst(),
-                voos.get(7));
-        ReservaVooIdaVolta resVooIV2 = new ReservaVooIdaVolta(DatasReserva.DATA2.getData(), 4, clientes.get(4),
-                voos.get(1), voos.get(8));
+                voos.get(4));
+        ReservaVooIdaVolta resVooIV2 = new ReservaVooIdaVolta(DatasReserva.DATA2.getData(), 4, clientes.get(2),
+                voos.get(1), voos.get(4));
 
         empresa.adicionarReserva(resHotel1);
         empresa.adicionarReserva(resHotel2);

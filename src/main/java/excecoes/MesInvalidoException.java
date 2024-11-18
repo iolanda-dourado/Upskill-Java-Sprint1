@@ -20,6 +20,6 @@ public class MesInvalidoException extends IllegalArgumentException {
      * A mensagem padrão é: "Mês é inválido!".
      */
     public MesInvalidoException() {
-        super("Mês é inválido!");
+        super("Erro: O mês é inválido!");
     }
 }

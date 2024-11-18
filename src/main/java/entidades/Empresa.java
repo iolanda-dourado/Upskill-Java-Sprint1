@@ -493,21 +493,19 @@ public class Empresa implements Serializable {
      */
     public String listarReservaCliente(String codigoCliente) {
         StringBuilder sb = new StringBuilder();
-        int countTemp = 0;
         for (Cliente cliente : listaClientes) {
             if (codigoCliente.equals(cliente.getCodigoCliente())) {
                 sb.append(String.format("========== LISTA DE RESERVAS DO CLIENTE - %s ==========\n", cliente.getNomeCliente()));
+                int countTemp = 0;
                 for (Reserva res : listaReservas) {
-                    if (res.getCliente() == cliente) {
+                    if (res.getCliente().equals(cliente)) {
                         sb.append(res);
-                        sb.append("------------------------------------------");
-                        sb.append("\n");
+                        sb.append("------------------------------------------\n");
                         countTemp++;
                     }
                 }
+                sb.append(String.format("\nTotal de Reservas do Cliente %s = %d", cliente.getNomeCliente(), countTemp));
             }
-            sb.append(String.format("\nTotal de Reservas do Cliente %s = %d", cliente.getNomeCliente(), countTemp));
-            break;
         }
         return sb.toString();
     }
@@ -523,11 +521,10 @@ public class Empresa implements Serializable {
         sb.append("--- LISTA DE HOTÉIS QUE FORNECEM O SERVIÇO DE TRANSFER ---\n");
         for (Hotel htl : listaHoteis) {
             if (htl.isTransfer()) {
-                sb.append(htl);
+                sb.append(htl);  // Adiciona os detalhes do hotel
                 countTemp++;
+                sb.append("------------------------------------------\n");  // Linha de separação depois de cada hotel
             }
-            sb.append("------------------------------------------");
-            sb.append("\n");
         }
         sb.append(String.format("Total de Hoteis com Transfer = %d\n", countTemp));
         return sb.toString();
@@ -667,19 +664,27 @@ public class Empresa implements Serializable {
     }
 
     /**
-     * Atualiza o status de uma reserva para concretizada, caso ela exista na lista de reservas.
-     * Também incrementa o número de reservas concretizadas do cliente associado.
+     * Atualiza a lista de reservas concretizadas e incrementa o número de reservas concretizadas do cliente associado.
      *
-     * @param reserva A reserva a ser atualizada como concretizada.
-     * @return {@code true} se a reserva foi encontrada e atualizada; {@code false} caso contrário.
+     * @param reservaAtualizada a reserva atualizada que foi concretizada.
+     * @return {@code true} se a reserva foi encontrada e atualizada na lista; {@code false} caso contrário.
      */
-    public boolean atualizarReservasConcretizadas(Reserva reserva) {
-        if (listaReservas.contains(reserva)) {
-            reserva.setConcretizada(true);
-            int temp = reserva.getCliente().getNumReservasConcretizadas();
-            temp++;
-            reserva.getCliente().setNumReservasConcretizadas(temp);
-            return true;
+    public boolean atualizarReservasConcretizadas(Reserva reservaAtualizada) {
+        for (int i = 0; i < listaReservas.size(); i++) {
+            if (listaReservas.get(i).getCodigoReserva().equals(reservaAtualizada.getCodigoReserva())) {
+                listaReservas.set(i, reservaAtualizada);
+
+                Cliente clienteAtualizado = reservaAtualizada.getCliente();
+                if (clienteAtualizado != null) {
+                    for (Cliente cliente : listaClientes) {
+                        if (cliente.getCodigoCliente().equals(clienteAtualizado.getCodigoCliente())) {
+                            cliente.setNumReservasConcretizadas(cliente.getNumReservasConcretizadas() + 1);
+                            break;
+                        }
+                    }
+                }
+                return true;
+            }
         }
         return false;
     }

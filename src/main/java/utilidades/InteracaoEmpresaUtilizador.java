@@ -9,6 +9,7 @@ import excecoes.MesInvalidoException;
 import excecoes.NifInvalidoException;
 import serializacao.FicheiroEmpresa;
 
+import java.time.DateTimeException;
 import java.util.*;
 
 import java.io.Serializable;
@@ -71,7 +72,7 @@ public class InteracaoEmpresaUtilizador implements Serializable {
     /**
      * Quantidade máxima de opções no menu de reservas.
      */
-    private static final int QNT_MAX_MENU_RESERVAS = 8;
+    private static final int QNT_MAX_MENU_RESERVAS = 9;
 
     /**
      * Quantidade máxima de opções no menu de visualização.
@@ -209,7 +210,7 @@ public class InteracaoEmpresaUtilizador implements Serializable {
                     qntPessoas = obterOpcao("Insira a quantidade de pessoas:", QNT_MIN_PESSOAS, QNT_MAX_PESSOAS);
                     res2Invalida = false;
                 } catch (IllegalArgumentException | InputMismatchException e) {
-                    System.out.println("Quantidade de pessoas inválida! Digite um número acima de zero.");
+                    System.out.println("Erro: Quantidade de pessoas inválida! Digite um número entre 1 e 20.");
                 }
             } while (res2Invalida);
 
@@ -235,7 +236,7 @@ public class InteracaoEmpresaUtilizador implements Serializable {
                     carregarNovaReserva(dataAtual, qntPessoas, cliente, tipo5);
                     break;
                 default:
-                    System.out.println("Opção inválida.");
+                    System.out.println("Erro: Opção inválida.");
             }
         }
     }
@@ -356,9 +357,15 @@ public class InteracaoEmpresaUtilizador implements Serializable {
                 do {
                     try {
                         dataChegada = obterData("Insira a data de chegada ao hotel (AAAA/MM/DD):");
+
+                        if (!dataChegada.isMaior(Data.dataAtual())) {
+                            throw new DateTimeException("Erro: A data de chegada não pode ser anterior à data atual.");
+                        }
+
                         resInvalida2 = false;
 
-                    } catch (IllegalArgumentException | InputMismatchException | FormatoInvalidoException e) {
+                    } catch (DateTimeException | IllegalArgumentException | InputMismatchException |
+                             FormatoInvalidoException e) {
                         System.out.println(e.getMessage());
                     }
                 } while (resInvalida2);
@@ -477,20 +484,22 @@ public class InteracaoEmpresaUtilizador implements Serializable {
     }
 
     /**
-     * Concretiza uma reserva com base no código fornecido pelo usuário.
-     * O método solicita ao usuário que insira o código da reserva que deseja concretizar.
-     * Após a inserção, o código é passado para o método {@code empresa.pesquisarReserva}, que retorna a reserva correspondente,
-     * e, em seguida, tenta concretizar a reserva com o método {@code empresa.atualizarReservasConcretizadas}.
-     * O método exibe uma mensagem de sucesso se a reserva for concretizada com êxito,
-     * ou uma mensagem de falha caso a reserva não seja encontrada ou a concretização falhe.
+     * Permite concretizar uma reserva previamente criada, atualizando os dados no sistema.
      *
-     * @param menssagem A mensagem a ser exibida ao usuário antes de inserir o código da reserva.
+     * @param mensagem a mensagem exibida ao usuário solicitando o código da reserva.
      */
-    public void concretizarReserva(String menssagem) {
-        System.out.println(menssagem);
+    public void concretizarReserva(String mensagem) {
+        System.out.println(mensagem);
         String codigoTemp = teclado.nextLine().trim().toUpperCase();
 
-        if (empresa.atualizarReservasConcretizadas(empresa.pesquisarReserva(codigoTemp))) {
+        Reserva reserva = empresa.pesquisarReserva(codigoTemp);
+        if (reserva == null) {
+            System.out.println("Reserva não encontrada no sistema.");
+            return;
+        }
+
+        reserva.setConcretizada(true);
+        if (empresa.atualizarReservasConcretizadas(reserva)) {
             System.out.printf("Reserva %s concretizada com sucesso!", codigoTemp);
         } else {
             System.out.println("Falha ao concretizar! Reserva não encontrada.");
@@ -538,7 +547,7 @@ public class InteracaoEmpresaUtilizador implements Serializable {
                     }
                 }
                 invalido = false;
-            } catch (IllegalArgumentException e) {
+            } catch (InputMismatchException | IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
         } while (invalido);
@@ -586,7 +595,7 @@ public class InteracaoEmpresaUtilizador implements Serializable {
                 cliente.setNomeCliente(nome);
                 nomeInvalido = false;
             } catch (IllegalArgumentException e) {
-                System.out.printf("Erro: %s. Tente novamente.%n", e.getMessage());
+                System.out.println(e.getMessage());
             }
         } while (nomeInvalido);
 
@@ -595,8 +604,15 @@ public class InteracaoEmpresaUtilizador implements Serializable {
             try {
                 Data dataNasc = obterData("Insira a data de nascimento do cliente:");
                 cliente.setDataNascimento(dataNasc);
+
+                if (dataNasc.isMaior(Data.dataAtual())) {
+                    throw new DateTimeException("A data de nascimento não pode ser posterior à data atual.");
+                }
+
                 dataInvalida = false;
-            } catch (DiaInvalidoException | MesInvalidoException | FormatoInvalidoException e) {
+
+            } catch (InputMismatchException | DateTimeException | DiaInvalidoException | MesInvalidoException |
+                     FormatoInvalidoException e) {
                 System.out.println(e.getMessage());
             }
         } while (dataInvalida);
@@ -637,7 +653,7 @@ public class InteracaoEmpresaUtilizador implements Serializable {
                 teclado.nextLine();
                 cliente.setPercentagemDesconto(percDesconto);
                 descontoInvalido = false;
-            } catch (IllegalArgumentException e) {
+            } catch (InputMismatchException | IllegalArgumentException e) {
                 System.out.printf(e.getMessage());
             }
         } while (descontoInvalido);
@@ -674,11 +690,11 @@ public class InteracaoEmpresaUtilizador implements Serializable {
         boolean nomeInvalido = true;
         do {
             try {
-                String nome = obterString("Insira o nome do cliente: ");
+                String nome = obterString("Insira o nome do hotel: ");
                 novoHotel.setNomeHotel(nome);
                 nomeInvalido = false;
             } catch (IllegalArgumentException e) {
-                System.out.printf("Erro: %s. Tente novamente.%n", e.getMessage());
+                System.out.println(e.getMessage());
             }
         } while (nomeInvalido);
 
@@ -688,7 +704,7 @@ public class InteracaoEmpresaUtilizador implements Serializable {
                 CategoriaHotel cat = obterCategoriaHotel();
                 novoHotel.setCategoria(cat);
                 categoriaInvalida = false;
-            } catch (IllegalArgumentException e) {
+            } catch (InputMismatchException | IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
         } while (categoriaInvalida);
@@ -699,11 +715,11 @@ public class InteracaoEmpresaUtilizador implements Serializable {
                 System.out.println("Insira a localidade do Hotel: ");
                 String local = teclado.nextLine();
                 if (local.isEmpty()) {
-                    throw new IllegalArgumentException("O hotel deve ter uma localidade!");
+                    throw new IllegalArgumentException("O hotel deve ter uma localidade.");
                 }
                 localidadeInvalida = false;
-            } catch (IllegalArgumentException e) {
-                System.out.printf("Erro: %s. Tente novamente.%n", e.getMessage());
+            } catch (InputMismatchException | IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
         } while (localidadeInvalida);
 
@@ -711,27 +727,37 @@ public class InteracaoEmpresaUtilizador implements Serializable {
         boolean selecaoInvalida = true;
         int resposta;
         do {
-            resposta = obterOpcao("O hotel possui serviço de transfer? (1 - SIM/2 - NÃO):", 1, 2);
-            if (resposta == 1) {
-                hasTransfer = true;
-                novoHotel.setTransfer(hasTransfer);
-                selecaoInvalida = false;
-            } else if (resposta == 2) {
-                novoHotel.setTransfer(hasTransfer);
-                selecaoInvalida = false;
+            try {
+                resposta = obterOpcao("O hotel possui serviço de transfer? (1 - SIM/2 - NÃO):", 1, 2);
+                if (resposta == 1) {
+                    hasTransfer = true;
+                    novoHotel.setTransfer(hasTransfer);
+                    selecaoInvalida = false;
+                } else if (resposta == 2) {
+                    novoHotel.setTransfer(hasTransfer);
+                    selecaoInvalida = false;
+                }
+            } catch (InputMismatchException | IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
         } while (selecaoInvalida);
-
 
         boolean precoInvalido = true;
         do {
             try {
                 System.out.println("Insira o preço do quarto nesse hotel: ");
                 double precoQuarto = teclado.nextDouble();
+                teclado.nextLine();
+
+                if (precoQuarto <= 0) {
+                    throw new IllegalArgumentException("Erro: O preço do quarto tem que ser maior que 0.");
+                }
                 novoHotel.setPrecoPorQuarto(precoQuarto);
                 precoInvalido = false;
+            } catch (InputMismatchException e) {
+                System.out.println("Erro: Entrada inválida. Por favor, insira um valor numérico.");
             } catch (IllegalArgumentException e) {
-                System.out.printf(e.getMessage());
+                System.out.println(e.getMessage());
             }
         } while (precoInvalido);
 
@@ -755,7 +781,7 @@ public class InteracaoEmpresaUtilizador implements Serializable {
      * <p>
      * O custo total de cada tipo de reserva é obtido por meio dos métodos da classe {@code Empresa} e é impresso na tela
      * com o valor formatado em euros (€).
-     *
+     * <p>
      * Cada tipo de reserva é apresentado em uma linha separada, com o valor correspondente.
      */
     private void mostrarCustoTotalReservas() {
@@ -778,7 +804,7 @@ public class InteracaoEmpresaUtilizador implements Serializable {
      * Lista todos os clientes da empresa, ordenados conforme a implementação do método
      * {@code retornarClientesOrdenados} da classe {@code Empresa}. Caso haja clientes cadastrados, cada um será impresso
      * no formato de string definido na classe {@code Cliente}.
-     *
+     * <p>
      * Se não houver nenhum cliente registrado na empresa, é exibida uma mensagem informando que não existem
      * clientes cadastrados.
      */
@@ -797,7 +823,7 @@ public class InteracaoEmpresaUtilizador implements Serializable {
      * Obtém um cliente da empresa com base no código fornecido. O código do cliente é comparado com os códigos
      * dos clientes registrados na lista de clientes da empresa. Caso o cliente seja encontrado, o objeto {@code Cliente}
      * correspondente é retornado.
-     *
+     * <p>
      * Se o cliente não for encontrado, uma exceção {@link IllegalArgumentException} será lançada com a mensagem
      * "Cliente não encontrado."
      *
@@ -813,7 +839,7 @@ public class InteracaoEmpresaUtilizador implements Serializable {
             }
         }
         if (cliente == null) {
-            throw new IllegalArgumentException("Cliente não encontrado.");
+            throw new IllegalArgumentException("Erro: Cliente não encontrado.");
         }
         return cliente;
     }
@@ -822,7 +848,7 @@ public class InteracaoEmpresaUtilizador implements Serializable {
      * Obtém um hotel parceiro da empresa com base no código fornecido. O código do hotel é comparado com os códigos
      * dos hotéis registrados na lista de hotéis da empresa. Caso o hotel seja encontrado, o objeto {@code Hotel}
      * correspondente é retornado.
-     *
+     * <p>
      * Se o hotel não for encontrado, uma exceção {@link IllegalArgumentException} será lançada com a mensagem
      * "Hotel não encontrado."
      *
@@ -838,7 +864,7 @@ public class InteracaoEmpresaUtilizador implements Serializable {
             }
         }
         if (hotel == null) {
-            throw new IllegalArgumentException("Hotel não encontrado.");
+            throw new IllegalArgumentException("Erro: Hotel não encontrado.");
         }
         return hotel;
     }
@@ -847,7 +873,7 @@ public class InteracaoEmpresaUtilizador implements Serializable {
      * Obtém um voo da empresa com base no código fornecido. O código do voo é comparado com os códigos
      * dos voos registrados na lista de voos da empresa. Caso o voo seja encontrado, o objeto {@code Voo}
      * correspondente é retornado.
-     *
+     * <p>
      * Se o voo não for encontrado, uma exceção {@link IllegalArgumentException} será lançada com a mensagem
      * "Voo não encontrado."
      *
@@ -863,7 +889,7 @@ public class InteracaoEmpresaUtilizador implements Serializable {
             }
         }
         if (voo == null) {
-            throw new IllegalArgumentException("Voo não encontrado.");
+            throw new IllegalArgumentException("Erro: Voo não encontrado.");
         }
         return voo;
     }
@@ -872,7 +898,7 @@ public class InteracaoEmpresaUtilizador implements Serializable {
      * Solicita ao usuário a entrada de uma data, que deve ser informada no formato "AAAA/MM/DD".
      * A entrada do usuário é validada, e se o formato for inválido, uma exceção {@link FormatoInvalidoException}
      * será lançada com uma mensagem de erro.
-     *
+     * <p>
      * Caso a data seja inserida corretamente, um objeto {@code Data} é retornado com os valores correspondentes
      * ao ano, mês e dia fornecidos.
      *
@@ -949,7 +975,7 @@ public class InteracaoEmpresaUtilizador implements Serializable {
             }
         }
 
-        throw new IllegalArgumentException("Erro: O gênero inserido está incorreto.");
+        throw new IllegalArgumentException("Erro: O gênero inserido está incorreto\n.");
     }
 
     /**
@@ -963,12 +989,19 @@ public class InteracaoEmpresaUtilizador implements Serializable {
      */
     public int obterNif(String mensagem) {
         System.out.println(mensagem);
-        int nif = teclado.nextInt();
-        teclado.nextLine();
+        String entrada = teclado.nextLine();
 
+        for (int i = 0; i < entrada.length(); i++) {
+            if (!Character.isDigit(entrada.charAt(i))) {
+                throw new NifInvalidoException("Erro: O NIF deve conter apenas números.\n");
+            }
+        }
+
+        int nif = Integer.parseInt(entrada);
         if (nif < 100000000 || nif > 999999999) {
             throw new NifInvalidoException();
         }
+
         return nif;
     }
 
@@ -978,8 +1011,8 @@ public class InteracaoEmpresaUtilizador implements Serializable {
      * ou fora do intervalo, uma exceção {@link IllegalArgumentException} será lançada.
      *
      * @param mensagem A mensagem a ser exibida ao usuário para solicitar a entrada da opção.
-     * @param min O valor mínimo permitido para a opção.
-     * @param max O valor máximo permitido para a opção.
+     * @param min      O valor mínimo permitido para a opção.
+     * @param max      O valor máximo permitido para a opção.
      * @return O número da opção inserida, se válido.
      * @throws IllegalArgumentException Se o número inserido estiver fora do intervalo permitido ou se a entrada for inválida.
      */
@@ -991,7 +1024,7 @@ public class InteracaoEmpresaUtilizador implements Serializable {
         try {
             numero = Integer.parseInt(entrada);
         } catch (NumberFormatException e) {
-            throw new InputMismatchException("Entrada inválida.");
+            throw new InputMismatchException("Erro: Entrada inválida.");
         }
 
         if (numero < min || numero > max || entrada.isEmpty()) {
@@ -1008,8 +1041,17 @@ public class InteracaoEmpresaUtilizador implements Serializable {
      * @return A string inserida pelo usuário, após a remoção de espaços.
      */
     public String obterString(String mensagem) {
-        System.out.println(mensagem);
-        return teclado.nextLine().trim();
+        String entrada;
+        do {
+            System.out.println(mensagem);
+            entrada = teclado.nextLine().trim();
+
+            if (entrada.isEmpty()) {
+                System.out.println("Erro: Entrada não pode estar vazia.");
+            }
+        } while (entrada.isEmpty());
+
+        return entrada;
     }
 
     /**
@@ -1018,12 +1060,21 @@ public class InteracaoEmpresaUtilizador implements Serializable {
      * Caso contrário, o processo é finalizado.
      */
     public void perguntaFinal() {
-        int resposta = obterOpcao("Deseja salvar as informações da empresa em um ficheiro binário? (1- SIM / 2- NÃO):", 1, 2);
+        boolean invalido = true;
+        while (invalido) {
+            try {
+                int resposta = obterOpcao("Deseja salvar as informações da empresa em um ficheiro binário? (1 - SIM / 2 - NÃO):", 1, 2);
 
-        if (resposta == 1) {
-            serializarEmpresa();
-        } else {
-            System.out.println("Logout concluído!");
+                if (resposta == 1) {
+                    serializarEmpresa();
+                    System.out.println("Informações salvas com sucesso.");
+                } else {
+                    System.out.println("Logout concluído!");
+                }
+                invalido = false;
+            } catch (InputMismatchException | IllegalArgumentException e) {
+                System.out.println("Erro: Entrada inválida. Insira apenas 1 ou 2.");
+            }
         }
     }
 

@@ -11,7 +11,7 @@ public class DiaInvalidoException extends IllegalArgumentException {
      * A mensagem padrão é: "Dia é inválido!!".
      */
     public DiaInvalidoException() {
-        super("Dia é inválido!!");
+        super("Erro: Dia é inválido!");
     }
 
     /**
@@ -22,5 +22,4 @@ public class DiaInvalidoException extends IllegalArgumentException {
     public DiaInvalidoException(String mensagem) {
         super(mensagem);
     }
-
 }

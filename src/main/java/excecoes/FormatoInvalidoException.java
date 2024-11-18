@@ -11,7 +11,7 @@ public class FormatoInvalidoException extends RuntimeException {
      * A mensagem padrão é: "Dia é inválido!!".
      */
     public FormatoInvalidoException() {
-        super("Dia é inválido!!");
+        super("Erro: O formato é inválido!");
     }
 
     /**
