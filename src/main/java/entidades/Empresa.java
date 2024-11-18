@@ -659,7 +659,6 @@ public class Empresa implements Serializable {
                 }
             }
         }
-
         return null;
     }
 
@@ -669,22 +668,26 @@ public class Empresa implements Serializable {
      * @param reservaAtualizada a reserva atualizada que foi concretizada.
      * @return {@code true} se a reserva foi encontrada e atualizada na lista; {@code false} caso contrário.
      */
-    public boolean atualizarReservasConcretizadas(Reserva reservaAtualizada) {
-        for (int i = 0; i < listaReservas.size(); i++) {
-            if (listaReservas.get(i).getCodigoReserva().equals(reservaAtualizada.getCodigoReserva())) {
-                listaReservas.set(i, reservaAtualizada);
+    /**
+     * Atualiza o status de uma reserva para concretizada, caso ela exista na lista de reservas.
+     * Também incrementa o número de reservas concretizadas do cliente associado.
+     *
+     * @param reserva A reserva a ser atualizada como concretizada.
+     * @return {@code true} se a reserva foi encontrada e atualizada; {@code false} caso contrário.
+     */
+    public boolean atualizarReservasConcretizadas(Reserva reserva) {
+        if (listaReservas.contains(reserva)) {
+            reserva.setConcretizada(true);
 
-                Cliente clienteAtualizado = reservaAtualizada.getCliente();
-                if (clienteAtualizado != null) {
-                    for (Cliente cliente : listaClientes) {
-                        if (cliente.getCodigoCliente().equals(clienteAtualizado.getCodigoCliente())) {
-                            cliente.setNumReservasConcretizadas(cliente.getNumReservasConcretizadas() + 1);
-                            break;
-                        }
-                    }
+            for (Cliente cli : listaClientes) {
+                if (reserva.getCliente().getNif() == cli.getNif()) {
+                    cli.setNumReservasConcretizadas(cli.getNumReservasConcretizadas() + 1);
+                    // Sincroniza a reserva com o cliente atualizado
+                    reserva.setCliente(cli);
                 }
-                return true;
             }
+
+            return true;
         }
         return false;
     }

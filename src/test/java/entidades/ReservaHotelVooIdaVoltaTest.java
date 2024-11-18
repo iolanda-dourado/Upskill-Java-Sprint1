@@ -82,7 +82,7 @@ public class ReservaHotelVooIdaVoltaTest {
      */
     @Test
     public void calcularCustoReserva_dataForaEDentroPromocaoEComMultiplo5() {
-        //Mesmo metodo acima + desconto das reservas concretizadas multiplo de 5;
+        empresa.adicionarCliente(client);
         empresa.adicionarReserva(reserva10);
         empresa.adicionarReserva(reserva2);
         empresa.adicionarReserva(reserva3);

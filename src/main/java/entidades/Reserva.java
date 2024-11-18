@@ -295,9 +295,14 @@ public abstract class Reserva implements Identificavel, Comparable<Reserva>, Ser
      * @return true se múltiplo, false caso contrário.
      */
     public boolean saoReservasMultiplasDe5() {
-        return getCliente().getNumReservasConcretizadas() != 0 &&
-                getCliente().getNumReservasConcretizadas() % getNumMultiploDeX() == 0;
+        Cliente cliente = getCliente();
+        int numReservas = cliente.getNumReservasConcretizadas();
+
+        System.out.printf("Cliente %s tem %d reservas concretizadas.%n", cliente.getNomeCliente(), numReservas);
+
+        return numReservas != 0 && numReservas % getNumMultiploDeX() == 0;
     }
+
 
     /**
      * Calcula o custo da reserva.

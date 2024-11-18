@@ -80,6 +80,7 @@ public class ReservaVooTest {
     public void calcularCustoReservaVooSemPromocaoEComMultiplo5() {
         Data data1 = new Data(2024, 12, 10);
         Voo voo1 = new Voo("VOO-450", CompanhiaAerea.EASYJET, 100, aero1, aero3, 14000, 250, data1, horario);
+        empresa.adicionarCliente(client);
         empresa.adicionarReserva(reserva1);
         empresa.adicionarReserva(reserva2);
         empresa.adicionarReserva(reserva3);

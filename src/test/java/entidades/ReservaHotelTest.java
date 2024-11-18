@@ -87,6 +87,7 @@ public class ReservaHotelTest {
      */
     @Test
     public void calcularCustoReserva_dataForaEDentroPromoComDescontoMultiplos5() {
+        empresa.adicionarCliente(client);
         empresa.adicionarReserva(reserva1);
         empresa.adicionarReserva(reserva2);
         empresa.adicionarReserva(reserva3);

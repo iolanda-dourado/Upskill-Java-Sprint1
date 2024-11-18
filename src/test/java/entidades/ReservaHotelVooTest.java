@@ -101,7 +101,7 @@ public class ReservaHotelVooTest {
      */
     @Test
     public void calcularCustoReservaVooEHotelNaPromocaoEComMultiplo5() {
-        //Voo e diárias dentro da promoção + desconto das reservas concretizadas multiplo de 5;
+        empresa.adicionarCliente(client);
         empresa.adicionarReserva(reserva1);
         empresa.adicionarReserva(reserva2);
         empresa.adicionarReserva(reserva3);

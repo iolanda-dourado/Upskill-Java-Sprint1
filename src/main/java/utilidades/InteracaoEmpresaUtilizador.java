@@ -484,22 +484,20 @@ public class InteracaoEmpresaUtilizador implements Serializable {
     }
 
     /**
-     * Permite concretizar uma reserva previamente criada, atualizando os dados no sistema.
+     * Concretiza uma reserva com base no código fornecido pelo usuário.
+     * O método solicita ao usuário que insira o código da reserva que deseja concretizar.
+     * Após a inserção, o código é passado para o método {@code empresa.pesquisarReserva}, que retorna a reserva correspondente,
+     * e, em seguida, tenta concretizar a reserva com o método {@code empresa.atualizarReservasConcretizadas}.
+     * O método exibe uma mensagem de sucesso se a reserva for concretizada com êxito,
+     * ou uma mensagem de falha caso a reserva não seja encontrada ou a concretização falhe.
      *
-     * @param mensagem a mensagem exibida ao usuário solicitando o código da reserva.
+     * @param mensagem A mensagem a ser exibida ao usuário antes de inserir o código da reserva.
      */
     public void concretizarReserva(String mensagem) {
         System.out.println(mensagem);
         String codigoTemp = teclado.nextLine().trim().toUpperCase();
 
-        Reserva reserva = empresa.pesquisarReserva(codigoTemp);
-        if (reserva == null) {
-            System.out.println("Reserva não encontrada no sistema.");
-            return;
-        }
-
-        reserva.setConcretizada(true);
-        if (empresa.atualizarReservasConcretizadas(reserva)) {
+        if (empresa.atualizarReservasConcretizadas(empresa.pesquisarReserva(codigoTemp))) {
             System.out.printf("Reserva %s concretizada com sucesso!", codigoTemp);
         } else {
             System.out.println("Falha ao concretizar! Reserva não encontrada.");
